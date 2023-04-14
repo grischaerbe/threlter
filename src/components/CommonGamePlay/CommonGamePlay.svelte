@@ -30,8 +30,15 @@
 	const carActive = derived([state, visibility, paused], ([state, visibility, paused]) => {
 		if (visibility === 'hidden') return false
 		if (paused) return false
-		if (state === 'playing' || state === 'finished') return true
+		if (state === 'playing') return true
 		return false
+	})
+
+	const carFrozen = derived([state, visibility, paused], ([state, visibility, paused]) => {
+		if (visibility === 'hidden') return true
+		if (paused) return true
+		if (state === 'playing' || state === 'finished') return false
+		return true
 	})
 
 	const carVolume = derived([paused], ([paused]) => {
@@ -131,13 +138,19 @@
 	</TrackViewer>
 {/if}
 
-<Car active={$carActive} volume={$carVolume} freezeCamera={$state === 'finished'} let:carState>
+<Car
+	active={$carActive}
+	volume={$carVolume}
+	freeze={$carFrozen}
+	freezeCamera={$state === 'finished'}
+	let:carState
+>
 	{#if workingTrackRecord.ghost && $state === 'playing'}
 		<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
 	{/if}
 </Car>
 
-{#if currentTrackRecord && currentTrackRecord.ghost && $state === 'playing'}
+{#if currentTrackRecord?.ghost && $state === 'playing'}
 	<GhostPlayer ghost={currentTrackRecord.ghost} time={$time} />
 {/if}
 

@@ -19,6 +19,9 @@ export class Ghost {
 	public id = Math.random().toString(36).substring(2, 9)
 	public averageTimeBetweenFrames = -1
 
+	public firstFrameTime = 0
+	public lastFrameTime = 0
+
 	constructor() {
 		this.frames = []
 	}
@@ -41,18 +44,13 @@ export class Ghost {
 	) {
 		this.averageTimeBetweenFrames = -1
 		this.frames.push(new GhostFrame(position, quaternion, time))
+		if (time > this.lastFrameTime) this.lastFrameTime = time
+		if (time < this.firstFrameTime) this.firstFrameTime = time
 	}
 
-	public getFrame(time: number):
-		| {
-				index: number
-				isLastFrame: boolean
-				frame: GhostFrame
-		  }
-		| undefined {
+	public getFrame(time: number): GhostFrame | undefined {
 		// get frame that is closest to the time
 		let closestFrame: GhostFrame | undefined = undefined
-		let closestIndex = -1
 		let closestDiff = Infinity
 
 		// we are potentially iterating over thousands of frames, so we start at a reasonable index.
@@ -70,20 +68,13 @@ export class Ghost {
 			const diff = Math.abs(frame.time - time)
 			if (diff < closestDiff) {
 				closestFrame = frame
-				closestIndex = index
 				closestDiff = diff
 			} else {
 				break frameloop
 			}
 		}
 
-		if (!closestFrame) return undefined
-
-		return {
-			index: closestIndex,
-			isLastFrame: closestIndex === this.frames.length - 1,
-			frame: closestFrame
-		}
+		return closestFrame
 	}
 
 	public static fromString(string: string) {

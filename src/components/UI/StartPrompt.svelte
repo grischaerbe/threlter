@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { actions, appState } from '$stores/app'
+	import { appState } from '$stores/app'
 	import UiWrapper from './UiWrapper.svelte'
 	import Button from './components/Button.svelte'
 	import Card from './components/Card.svelte'
@@ -28,7 +28,7 @@
 						style="inverted"
 						disabled={!playerName.length}
 						on:click={() => {
-							actions.setPlayerName(playerName)
+							name.set(playerName)
 							started = true
 						}}
 					>
@@ -39,7 +39,6 @@
 				<Button
 					forceFocusOnMount
 					on:click={() => {
-						actions.setPlayerName(playerName)
 						started = true
 					}}
 				>

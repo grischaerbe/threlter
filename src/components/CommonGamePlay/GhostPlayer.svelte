@@ -9,28 +9,29 @@
 	export let ghost: Ghost
 	export let time: number
 
-	$: console.log(ghost)
-
 	$: ghost.calculateAverageTimeBetweenFrames()
 
 	let group: Group
 
 	let showGhost = true
 
-	$: ghostAvailable = ghost.frames.length > 0
-	$: combinedShowGhost = ghostAvailable && showGhost
-
 	useFrame(() => {
-		if (!group || !ghostAvailable) return
-		const currentFrame = ghost.getFrame(time)
-		// console.log(currentFrame?.index)
-
-		if (!currentFrame || currentFrame.isLastFrame) {
+		if (!ghost.frames.length) {
 			showGhost = false
+			return
+		}
+		if (time > ghost.lastFrameTime || time < ghost.firstFrameTime) {
+			showGhost = false
+			return
+		}
+		const currentFrame = ghost.getFrame(time)
+		if (!currentFrame) {
+			showGhost = false
+			return
 		} else {
 			showGhost = true
-			group?.position.set(...currentFrame.frame.position)
-			group?.quaternion.set(...currentFrame.frame.quaternion)
+			group?.position.set(...currentFrame.position)
+			group?.quaternion.set(...currentFrame.quaternion)
 		}
 	})
 
@@ -39,7 +40,7 @@
 	const height = -0.4
 </script>
 
-{#if combinedShowGhost}
+{#if showGhost}
 	<T.Group bind:ref={group}>
 		<T.Group rotation.y={-90 * DEG2RAD}>
 			<MuscleCar />

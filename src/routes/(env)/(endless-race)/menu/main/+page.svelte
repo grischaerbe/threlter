@@ -3,9 +3,6 @@
 	import BottomBar from '$components/UI/components/BottomBar.svelte'
 	import Button from '$components/UI/components/Button.svelte'
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import type { PageData } from './$types'
-
-	export let data: PageData
 </script>
 
 <UiWrapper>

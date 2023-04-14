@@ -1,18 +1,15 @@
 <script lang="ts">
-	import { Canvas } from '@threlte/core'
-	import '../app.postcss'
-	import { Debug, World } from '@threlte/rapier'
 	import Loader from '$components/Loader/Loader.svelte'
-	import { appState } from '$stores/app'
-	import { AudioListener } from '@threlte/extras'
-	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
 	import KeyboardNavigation from '$components/UI/KeyboardNavigation.svelte'
+	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
+	import { appState } from '$stores/app'
+	import { Canvas } from '@threlte/core'
+	import { AudioListener } from '@threlte/extras'
+	import { Debug, World } from '@threlte/rapier'
+	import '../app.postcss'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
-	import { page } from '$app/stores'
 
 	const { debug } = appState
-
-	$: console.log($page.route.id)
 </script>
 
 <div class="w-full h-full absolute bg-black">

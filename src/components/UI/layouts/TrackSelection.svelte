@@ -22,11 +22,6 @@
 		selectedTrackId = trackId
 	}
 
-	useKeyDown('Escape', (e) => {
-		e.stopPropagation()
-		selectedTrackId = undefined
-	})
-
 	const dispatch = createEventDispatcher<{
 		playtrack: { trackId: string }
 		edittrack: { trackId: string }

@@ -6,9 +6,13 @@
 	import Checkbox from '$components/UI/components/Checkbox.svelte'
 	import TextInput from '$components/UI/components/TextInput.svelte'
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import { actions, appState } from '$stores/app'
+	import { appState } from '$stores/app'
 
-	const { audio, video } = appState.options
+	const { audio, video, player } = appState.options
+
+	const { name } = player
+	const { music, sfx } = audio
+	const { postprocessing, shadows } = video
 
 	let oldPlayerName = appState.options.player.name.current
 </script>
@@ -22,49 +26,16 @@
 			<Card class="flex flex-col items-start justify-start">
 				<div class="mb-[10px]">Audio</div>
 
-				<Checkbox
-					forceFocusOnMount
-					class="pl-0"
-					checked={audio.music.current}
-					on:change={(value) => {
-						actions.setMusic(value.detail)
-					}}
-				>
-					Music
-				</Checkbox>
+				<Checkbox forceFocusOnMount class="pl-0" bind:checked={$music}>Music</Checkbox>
 
-				<Checkbox
-					class="pl-0"
-					checked={audio.sfx.current}
-					on:change={(value) => {
-						actions.setSfx(value.detail)
-					}}
-				>
-					SFX
-				</Checkbox>
+				<Checkbox class="pl-0" bind:checked={$sfx}>SFX</Checkbox>
 			</Card>
 
 			<Card class="flex flex-col items-start justify-start">
 				<div class="mb-[10px]">Video</div>
 
-				<Checkbox
-					class="pl-0"
-					checked={video.shadows.current}
-					on:change={(value) => {
-						actions.setShadows(value.detail)
-					}}
-				>
-					SHADOWS
-				</Checkbox>
-				<Checkbox
-					class="pl-0"
-					checked={video.postprocessing.current}
-					on:change={(value) => {
-						actions.setPostprocessing(value.detail)
-					}}
-				>
-					POST PROCESSING
-				</Checkbox>
+				<Checkbox class="pl-0" bind:checked={$shadows}>SHADOWS</Checkbox>
+				<Checkbox class="pl-0" bind:checked={$postprocessing}>POST PROCESSING</Checkbox>
 			</Card>
 
 			<Card class="flex flex-col items-start justify-start">
@@ -76,7 +47,7 @@
 						style="grey"
 						disabled={!oldPlayerName.length}
 						on:click={() => {
-							actions.setPlayerName(oldPlayerName)
+							name.set(oldPlayerName)
 						}}
 					>
 						Save

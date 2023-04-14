@@ -35,7 +35,8 @@
 	const showInfo = currentWritable(false)
 	const view = currentWritable<'car' | 'orbit'>('orbit')
 
-	$: carActive = $view === 'car' && !$showMenu
+	$: carActive = $view === 'car' && !$showMenu && !$showInfo
+	$: carFrozen = $view === 'orbit' || $showMenu || $showInfo
 
 	const validated = trackData.validated
 
@@ -256,7 +257,7 @@
 	</TrackElementTransform>
 </TrackViewer>
 
-<Car active={carActive} useCarCamera={carActive} volume={carActive ? 1 : 0} />
+<Car freeze={carFrozen} active={carActive} useCarCamera={carActive} volume={carActive ? 1 : 0} />
 
 <T.PerspectiveCamera
 	makeDefault={$view === 'orbit'}

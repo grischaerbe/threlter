@@ -15,13 +15,14 @@
 	import { Collider, RigidBody, useRapier } from '@threlte/rapier'
 	import { spring } from 'svelte/motion'
 	import { Group, Quaternion, Vector3 } from 'three'
-	import { clamp, lerp, mapLinear } from 'three/src/math/MathUtils'
+	import { DEG2RAD, clamp, lerp, mapLinear } from 'three/src/math/MathUtils'
 	import Impulse from './Impulse.svelte'
 	import type { CarState } from './types'
 	import { useArrowKeys } from './useArrowKeys'
 	import { add, fromAToB, length, normalize } from './vectorUtils'
 	import { computeBitMask } from './utils/computeBitMask'
 
+	export let freeze = false
 	export let active = true
 	export let volume = 1
 	export let useAudio = true
@@ -572,7 +573,7 @@
 				suspensionForceSum += tempVectorB.length()
 
 				const suspensionImpulse = { x: tempVectorB.x, y: tempVectorB.y, z: tempVectorB.z }
-				if (active) {
+				if (!freeze) {
 					rigidBody.applyImpulseAtPoint(suspensionImpulse, surfaceImpactPoint, true)
 					if (debug) {
 						updateImpulseVisualisation(`${wheelState.type}-suspension`, {
@@ -682,9 +683,9 @@
 				1
 			)
 			const finalForwardImpulse = threeVectorToRapierVector(
-				setFromRapierVector(forwardImpulse, tempVectorA).multiplyScalar(
-					forwardImpulseInclinationMap(inclination)
-				)
+				setFromRapierVector(forwardImpulse, tempVectorA)
+					.multiplyScalar(forwardImpulseInclinationMap(inclination))
+					.multiplyScalar(active ? 1 : 0)
 			)
 
 			const forwardImpulseOrigin = localPositionToWorld(
@@ -814,7 +815,7 @@
 			}
 
 			// apply summed	forward and side impulse
-			if (active) {
+			if (!freeze) {
 				rigidBody.applyImpulseAtPoint(forwardSideSum, forwardImpulseOrigin, true)
 
 				if (debug) {
@@ -874,9 +875,17 @@
 
 		// even if we're airborn, we still set the steering angle
 		// get the linear velocity of the car
-		steeringAngle.set(
-			(visualSteeringMap(velocityNormalized) * $axis.x * maxSteeringAngle * Math.PI) / 180
-		)
+		if (!freeze) {
+			steeringAngle.set(
+				visualSteeringMap(velocityNormalized) *
+					$axis.x *
+					maxSteeringAngle *
+					DEG2RAD *
+					(active ? 1 : 0)
+			)
+		} else {
+			steeringAngle.update((s) => s)
+		}
 
 		// the volume is set by the "forward" input
 		const desiredVolume =
@@ -888,7 +897,7 @@
 		_volume = lerp(_volume, desiredVolume, t) * volume
 
 		// set the dampings
-		if (active) {
+		if (!freeze) {
 			rigidBody.setAngularDamping(finalAngularDamping)
 			rigidBody.setLinearDamping(finalLinearDamping)
 		}
@@ -936,7 +945,7 @@
 {/each}
 
 <T.Group>
-	<RigidBody canSleep={false} type="dynamic" bind:rigidBody enabled={active}>
+	<RigidBody canSleep={false} type="dynamic" bind:rigidBody enabled={!freeze}>
 		<Collider
 			restitution={0}
 			friction={0.4}

@@ -5,9 +5,7 @@
 	import TopBar from '$components/UI/components/TopBar.svelte'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
 
-	import type { PageData } from './$types'
-
-	export let data: PageData
+	export let data
 
 	let trackSelected = false
 </script>

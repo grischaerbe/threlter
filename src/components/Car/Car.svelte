@@ -26,6 +26,7 @@
 
 	export let debug = false
 	export let active = false
+	export let freeze = false
 	export let useCarCamera = true
 	export let freezeCamera = false
 	export let volume = 1
@@ -65,7 +66,14 @@
 	makeDefault={camera === 'carFreeze'}
 />
 
-<RaycastVehicleController bind:respawn={respawnCar} {debug} {active} {volume} useAudio={$sfx}>
+<RaycastVehicleController
+	bind:respawn={respawnCar}
+	{debug}
+	{active}
+	{volume}
+	useAudio={$sfx}
+	{freeze}
+>
 	<T.PerspectiveCamera
 		bind:ref={carCam}
 		slot="camera"
