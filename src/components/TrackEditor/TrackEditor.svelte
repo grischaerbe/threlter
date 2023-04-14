@@ -221,23 +221,25 @@
 {:else if $view === 'car'}
 	<UiWrapper>
 		<TopBarLayout>
-			<div slot="topbar-left" class="flex flex-col gap-[2px] w-fit">
-				<BackButton
-					on:click={() => {
-						view.set('orbit')
-					}}
-				>
-					Track
-				</BackButton>
-				<Button
-					forceFocusOnMount
-					on:click={() => {
-						respawnCar()
-					}}
-				>
-					Reset
-				</Button>
-			</div>
+			<BackButton
+				slot="topbar-left"
+				on:click={() => {
+					view.set('orbit')
+				}}
+			>
+				Track
+			</BackButton>
+
+			<Button
+				slot="topbar-right"
+				forceFocusOnMount
+				on:click={() => {
+					respawnCar()
+					resetTrackViewer()
+				}}
+			>
+				Reset
+			</Button>
 		</TopBarLayout>
 	</UiWrapper>
 {/if}

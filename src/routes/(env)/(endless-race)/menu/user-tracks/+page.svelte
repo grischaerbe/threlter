@@ -112,6 +112,7 @@
 			tracksCanBeEdited
 			tracksCanBeDeleted
 			tracksCanBeDuplicated
+			tracksCanBeValidated
 			showAuthor
 			on:playtrack={(e) => {
 				goto(`/user/${e.detail.trackId}/time-attack`)
@@ -128,6 +129,9 @@
 				if (!trackData) return
 				trackData.clone().toLocalStorage(0)
 				TrackData.updateLocalStorageTrackIds()
+			}}
+			on:validatetrack={(e) => {
+				goto(`/user/${e.detail.trackId}/validate`)
 			}}
 		/>
 	</TopBarLayout>

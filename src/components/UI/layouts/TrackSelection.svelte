@@ -13,6 +13,7 @@
 	export let tracksCanBeEdited = false
 	export let tracksCanBeDuplicated = false
 	export let tracksCanBeDeleted = false
+	export let tracksCanBeValidated = false
 	export let showAuthor = false
 
 	let selectedTrackId: string | undefined = undefined
@@ -29,6 +30,7 @@
 		edittrack: { trackId: string }
 		deletetrack: { trackId: string }
 		duplicatetrack: { trackId: string }
+		validatetrack: { trackId: string }
 	}>()
 </script>
 
@@ -62,7 +64,17 @@
 						{/if}
 					</div>
 
-					<TrackTimes class="w-[27ch]" {trackData} {trackRecord} />
+					{#if tracksCanBeValidated && !trackData.validated.current}
+						<div class="text-[0.65em]">
+							Track is not validated yet.
+							<br />
+							To play it, you need to validate it first.
+						</div>
+					{/if}
+
+					{#if trackData.validated.current}
+						<TrackTimes class="w-[27ch]" {trackData} {trackRecord} />
+					{/if}
 
 					<div class="flex flex-row justify-between items-center mb-[2px]">
 						{#if trackData.validated.current}
@@ -74,6 +86,15 @@
 								}}
 							>
 								Play
+							</Button>
+						{:else if tracksCanBeValidated}
+							<Button
+								style="green"
+								on:click={() => {
+									dispatch('validatetrack', { trackId: trackData.trackId })
+								}}
+							>
+								Validate
 							</Button>
 						{:else}
 							<div />
