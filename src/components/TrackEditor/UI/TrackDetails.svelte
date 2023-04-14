@@ -17,6 +17,7 @@
 		on:click={() => {
 			if (!trackName.length) return
 			trackData.trackName.set(trackName)
+			trackData.toLocalStorage(0)
 		}}
 	>
 		Save

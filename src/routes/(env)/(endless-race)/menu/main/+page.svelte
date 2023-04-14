@@ -13,8 +13,8 @@
 			<div class="grid grid-cols-3 gap-[15px]">
 				<div class="col-span-1">
 					<div class="flex flex-col items-stretch gap-[2px]">
-						<Button class="flex-1" href="/menu/campaign">Campaign</Button>
-						<Button forceFocusOnMount class="flex-1" href="/menu/user-tracks">User Tracks</Button>
+						<Button forceFocusOnMount class="flex-1" href="/menu/campaign">Campaign</Button>
+						<Button class="flex-1" href="/menu/user-tracks">User Tracks</Button>
 					</div>
 				</div>
 			</div>

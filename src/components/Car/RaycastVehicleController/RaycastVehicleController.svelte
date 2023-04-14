@@ -850,7 +850,7 @@
 			}
 			// if we're not touching the ground, the playback rate is adhering to the forward input
 			const desiredPlaybackRate = mapLinear(
-				soundPlaybackMap(Math.max($axis.y, 0)),
+				soundPlaybackMap(Math.max($axis.y, 0) * (active ? 1 : 0)),
 				0,
 				1,
 				minPlaybackRate,

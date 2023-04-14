@@ -6,6 +6,7 @@
 	import { formatTime } from '$lib/utils/formatters'
 	import { createEventDispatcher } from 'svelte'
 	import Button from '../components/Button.svelte'
+	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 
 	export let trackDatas: TrackData[]
 
@@ -51,23 +52,19 @@
 		{#if trackData}
 			{@const trackRecord = TrackRecord.fromLocalStorage(trackData)}
 			<div class="col-span-2">
-				<div class="bg-white rounded-sm px-[2px] text-black uppercase flex flex-col gap-[0px]">
+				<div class="bg-white rounded-sm px-[2px] text-black uppercase flex flex-col gap-[10px]">
 					<div>
 						"{trackData.trackName.current}"
+						{#if trackData.authorName.current.length && showAuthor}
+							<div>
+								{trackData.authorName.current}
+							</div>
+						{/if}
 					</div>
-					{#if trackData.authorName.current.length && showAuthor}
-						<div>
-							{trackData.authorName.current}
-						</div>
-					{/if}
 
-					{#if trackRecord}
-						<div>
-							BEST: {formatTime(trackRecord.time.current)}
-						</div>
-					{/if}
+					<TrackTimes class="w-[27ch]" {trackData} {trackRecord} />
 
-					<div class="flex flex-row justify-between items-center mb-[2px] mt-[10px]">
+					<div class="flex flex-row justify-between items-center mb-[2px]">
 						{#if trackData.validated.current}
 							<Button
 								forceFocusOnMount

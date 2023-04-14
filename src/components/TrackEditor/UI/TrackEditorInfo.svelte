@@ -27,22 +27,29 @@
 		<div slot="topbar-center">Track Editor</div>
 
 		<div class="flex flex-col gap-[15px]">
-			<Card class="flex flex-col gap-[15px] max-w-[650px]">
+			<Card class="flex flex-col gap-[10px] max-w-[650px]">
 				<div>Keyboard controls</div>
 
 				<div class="text-[0.65em]">
-					Shift + D - Duplicate selected element<br />
-					Shift + R - Rotate selected element<br />
-					T - Translate controls<br />
-					R - Rotate controls<br />
-					G - Toggle Transformation spaces "world" and "local"<br />
-					V - Toggle Test Drive Mode<br />
-					Control + Backspace - Delete selected element<br />
+					Shift + D - Duplicate selected element
+					<br />
+					Shift + R - Rotate selected element
+					<br />
+					T - Translate controls
+					<br />
+					R - Rotate controls
+					<br />
+					G - Toggle Transformation spaces "world" and "local"
+					<br />
+					V - Toggle Test Drive Mode
+					<br />
+					Control + Backspace - Delete selected element
+					<br />
 					Shift + Drag - Snap to grid
 				</div>
 			</Card>
 
-			<Card class="flex flex-col gap-[15px] max-w-[650px]">
+			<Card class="flex flex-col gap-[10px] max-w-[650px]">
 				<div>TRACK VALIDATION</div>
 
 				<div class="text-[0.65em]">
@@ -52,7 +59,7 @@
 				</div>
 			</Card>
 
-			<Card class="flex flex-col gap-[15px] max-w-[650px]">
+			<Card class="flex flex-col gap-[10px] max-w-[650px]">
 				<div>Track export</div>
 
 				<div class="text-[0.65em]">
