@@ -150,9 +150,9 @@
 {/if}
 
 <T.Fog
-	near={10}
-	far={80}
-	color={new Color('#868ba2').convertLinearToSRGB()}
+	near={30}
+	far={90}
+	color={new Color('#454a5e').convertLinearToSRGB()}
 	on:create={({ ref, cleanup }) => {
 		scene.fog = ref
 		cleanup(() => {
