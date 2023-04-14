@@ -114,10 +114,12 @@
 	})
 
 	const respawnCar = useEvent('respawn-car')
+	const resetTrackViewer = useEvent('reset-track-viewer')
 
 	useKeyDown('Enter', () => {
 		if ($view === 'car') {
 			respawnCar()
+			resetTrackViewer()
 		}
 	})
 </script>
