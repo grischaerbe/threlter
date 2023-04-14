@@ -1,12 +1,10 @@
 <script lang="ts">
+	import { formatTime } from '$lib/utils/formatters'
+	import type { TrackData } from '../../../lib/TrackData/TrackData'
+	import type { TrackRecord } from '../../../lib/TrackRecord/TrackRecord'
 	import Button from '../../UI/components/Button.svelte'
 	import Card from '../../UI/components/Card.svelte'
 	import TopbarLayout from '../../UI/layouts/TopBarLayout.svelte'
-	import { actions, gameState } from '$stores/app'
-	import { getters } from '$stores/getters'
-	import { formatTime } from '$lib/utils/formatters'
-	import type { TrackRecord } from '../../../lib/TrackRecord/TrackRecord'
-	import type { TrackData } from '../../../lib/TrackData/TrackData'
 
 	export let time: number
 	export let restart: () => void
@@ -29,9 +27,12 @@
 				<div class="mb-[10px]">Current best: {$formattedRecordTime}</div>
 			{/if}
 			<div>
-				AUTHOR: {formatTime(trackData.trackTimes.author.current ?? 0)}<br />
-				GOLD: {formatTime(trackData.trackTimes.gold.current ?? 0)}<br />
-				SILVER: {formatTime(trackData.trackTimes.silver.current ?? 0)}<br />
+				AUTHOR: {formatTime(trackData.trackTimes.author.current ?? 0)}
+				<br />
+				GOLD: {formatTime(trackData.trackTimes.gold.current ?? 0)}
+				<br />
+				SILVER: {formatTime(trackData.trackTimes.silver.current ?? 0)}
+				<br />
 				BRONZE: {formatTime(trackData.trackTimes.bronze.current ?? 0)}
 			</div>
 		</Card>

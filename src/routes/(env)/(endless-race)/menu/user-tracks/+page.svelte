@@ -6,7 +6,7 @@
 	import TopBar from '$components/UI/components/TopBar.svelte'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
 	import { TrackData } from '$lib/TrackData/TrackData'
-	import { actions, appState } from '$stores/app'
+	import { appState } from '$stores/app'
 	import JSZip from 'jszip'
 
 	let trackSelected = false
@@ -70,40 +70,38 @@
 						fileInputEl.click()
 					}}
 				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256"
-						><path
+					<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256">
+						<path
 							d="M216.49,199.51a12,12,0,0,1-17,17L128,145,56.49,216.49a12,12,0,0,1-17-17l80-80a12,12,0,0,1,17,0Zm-160-63L128,65l71.51,71.52a12,12,0,0,0,17-17l-80-80a12,12,0,0,0-17,0l-80,80a12,12,0,0,0,17,17Z"
-						/></svg
-					>
+						/>
+					</svg>
 					IMPORT
 				</Button>
 				<Button
 					forceFocusOnMount={!userHasTracks}
 					on:click={() => {
-						actions.loadEmptyTrackData((trackData) => {
-							const trackDatas = $localStorageTrackIds
-								.map((userTrackId) => {
-									return TrackData.fromLocalStorage(userTrackId)
-								})
-								.filter(filterUndefined)
+						const trackDatas = $localStorageTrackIds
+							.map((userTrackId) => {
+								return TrackData.fromLocalStorage(userTrackId)
+							})
+							.filter(filterUndefined)
+						const trackNamesStartingWithUnnamed = trackDatas.filter((trackData) => {
+							return trackData.trackName.current.startsWith('Unnamed Track')
+						}).length
 
-							const trackNamesStartingWithUnnamed = trackDatas.filter((trackData) => {
-								return trackData.trackName.current.startsWith('Unnamed Track')
-							}).length
+						const trackData = TrackData.createEmpty()
+						trackData.trackName.set(`Unnamed Track ${trackNamesStartingWithUnnamed + 1}`)
+						trackData.authorName.set(appState.options.player.name.current)
+						trackData.addTrackElement('Box')
 
-							trackData.trackName.set(`Unnamed Track ${trackNamesStartingWithUnnamed + 1}`)
-							trackData.authorName.set(appState.options.player.name.current)
-							trackData.addTrackElement('Box')
-
-							actions.startTrackEditor()
-						})
+						goto(`/user/${trackData.trackId}/edit`)
 					}}
 				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256"
-						><path
+					<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256">
+						<path
 							d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"
-						/></svg
-					>
+						/>
+					</svg>
 					CREATE
 				</Button>
 			</div>

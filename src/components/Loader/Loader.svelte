@@ -12,7 +12,6 @@
 	import { preloadBarrierEnd } from '$components/TrackElements/BarrierEnd.svelte'
 	import { preloadBoost } from '$components/TrackElements/Boost.svelte'
 	import { preloadBarrierTurnLeft } from '$components/TrackElements/BarrierTurnLeft.svelte'
-	import { preloadBarrierTurnRight } from '$components/TrackElements/BarrierTurnRight.svelte'
 	import { preloadSlope } from '$components/TrackElements/Slope.svelte'
 	import { preloadBasicBox } from '$components/TrackElements/BasicBox.svelte'
 	import { preloadSounds } from '$components/Utilities/AudioProvider.svelte'
@@ -31,7 +30,6 @@
 			preloadBarrierEnd(),
 			preloadBoost(),
 			preloadBarrierTurnLeft(),
-			preloadBarrierTurnRight(),
 			preloadBarrier(),
 			preloadSlope(),
 			preloadEnv(),

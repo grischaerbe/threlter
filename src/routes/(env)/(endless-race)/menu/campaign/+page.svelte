@@ -4,20 +4,12 @@
 	import BackButton from '$components/UI/components/BackButton.svelte'
 	import TopBar from '$components/UI/components/TopBar.svelte'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
-	import { useKeyDown } from '$hooks/useKeyDown'
-	import { actions } from '$stores/app'
 
 	import type { PageData } from './$types'
 
 	export let data: PageData
 
-	$: console.log(data)
-
 	let trackSelected = false
-	useKeyDown('Escape', () => {
-		if (trackSelected) return
-		actions.goToMainMenu()
-	})
 </script>
 
 <UiWrapper>

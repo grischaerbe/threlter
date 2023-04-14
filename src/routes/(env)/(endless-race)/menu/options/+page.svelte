@@ -1,14 +1,12 @@
 <script lang="ts">
-	import { useKeyDown } from '$hooks/useKeyDown'
-	import { actions, appState } from '$stores/app'
 	import UiWrapper from '$components/UI/UiWrapper.svelte'
-	import type { PageData } from './$types'
-	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import Checkbox from '$components/UI/components/Checkbox.svelte'
 	import BackButton from '$components/UI/components/BackButton.svelte'
-	import Card from '$components/UI/components/Card.svelte'
-	import TextInput from '$components/UI/components/TextInput.svelte'
 	import Button from '$components/UI/components/Button.svelte'
+	import Card from '$components/UI/components/Card.svelte'
+	import Checkbox from '$components/UI/components/Checkbox.svelte'
+	import TextInput from '$components/UI/components/TextInput.svelte'
+	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
+	import { actions, appState } from '$stores/app'
 
 	const { audio, video } = appState.options
 

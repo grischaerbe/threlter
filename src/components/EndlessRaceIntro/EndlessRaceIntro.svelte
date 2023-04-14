@@ -1,4 +1,7 @@
 <script lang="ts">
+	import CameraFade from '$components//Utilities/CameraFade.svelte'
+	import Sound from '$components/Utilities/Sound.svelte'
+	import { appState } from '$stores/app'
 	import { T, useFrame, useThrelte } from '@threlte/core'
 	import { Float } from '@threlte/extras'
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte'
@@ -6,13 +9,10 @@
 	import { tweened } from 'svelte/motion'
 	import { Color, PerspectiveCamera } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
+	import { introLength } from '../../config'
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
 	import MuscleCarWheel from '../Car/Models/MuscleCarWheel.svelte'
-	import { actions, appState } from '$stores/app'
 	import Box from './Box.svelte'
-	import CameraFade from '$components//Utilities/CameraFade.svelte'
-	import Sound from '$components/Utilities/Sound.svelte'
-	import { introLength } from '../../config'
 
 	const { options } = appState
 

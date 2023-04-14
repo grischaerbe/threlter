@@ -9,7 +9,6 @@ export function useEvent(
 	if (callback) {
 		// we are inside the receiving component
 		const handlers = getContext(`comp-event-${eventName}`) as Set<(...args: any[]) => void>
-		console.log(handlers)
 		if (!handlers) {
 			console.warn('No handlers found for event', eventName)
 			return

@@ -1,7 +1,6 @@
 // Elements
 import BarrierEnd from './BarrierEnd.svelte'
 import BarrierTurnLeft from './BarrierTurnLeft.svelte'
-import BarrierTurnRight from './BarrierTurnRight.svelte'
 import BasicBox from './BasicBox.svelte'
 import Boost from './Boost.svelte'
 import Checkpoint from './Checkpoint.svelte'
@@ -99,12 +98,6 @@ export const trackElementPrototypes = {
 	BarrierTurnLeft: {
 		buttonLabel: 'Barrier Turn Left',
 		component: BarrierTurnLeft,
-		category: 'barriers'
-	},
-
-	BarrierTurnRight: {
-		buttonLabel: 'Barrier Turn Right',
-		component: BarrierTurnRight,
 		category: 'barriers'
 	},
 
