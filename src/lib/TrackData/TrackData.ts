@@ -205,6 +205,14 @@ export class TrackData {
 		}
 	}
 
+	public clone() {
+		const json = JSON.stringify(this)
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		const trackData = TrackData.fromString(json)!
+		trackData.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+		return trackData
+	}
+
 	private updateCheckpointCount() {
 		const checkpointCount = this.#trackElements.current.filter((trackElement) => {
 			return trackElement.type.current.startsWith('Checkpoint')

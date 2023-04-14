@@ -112,6 +112,7 @@
 			{trackDatas}
 			tracksCanBeEdited
 			tracksCanBeDeleted
+			tracksCanBeDuplicated
 			showAuthor
 			on:playtrack={(e) => {
 				goto(`/user/${e.detail.trackId}/time-attack`)
@@ -122,6 +123,12 @@
 			}}
 			on:edittrack={(e) => {
 				goto(`/user/${e.detail.trackId}/edit`)
+			}}
+			on:duplicatetrack={(e) => {
+				const trackData = TrackData.fromLocalStorage(e.detail.trackId)
+				if (!trackData) return
+				trackData.clone().toLocalStorage(0)
+				TrackData.updateLocalStorageTrackIds()
 			}}
 		/>
 	</div>

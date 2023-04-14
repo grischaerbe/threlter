@@ -10,6 +10,7 @@
 	export let trackDatas: TrackData[]
 
 	export let tracksCanBeEdited = false
+	export let tracksCanBeDuplicated = false
 	export let tracksCanBeDeleted = false
 	export let showAuthor = false
 
@@ -26,6 +27,7 @@
 		playtrack: { trackId: string }
 		edittrack: { trackId: string }
 		deletetrack: { trackId: string }
+		duplicatetrack: { trackId: string }
 	}>()
 </script>
 
@@ -91,6 +93,16 @@
 										}}
 									>
 										Edit
+									</Button>
+								{/if}
+								{#if tracksCanBeDuplicated}
+									<Button
+										style="inverted"
+										on:click={() => {
+											dispatch('duplicatetrack', { trackId: trackData.trackId })
+										}}
+									>
+										Duplicate
 									</Button>
 								{/if}
 
