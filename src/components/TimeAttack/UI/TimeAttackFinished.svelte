@@ -5,47 +5,34 @@
 	import { actions, gameState } from '$stores/app'
 	import { getters } from '$stores/getters'
 	import { formatTime } from '$lib/utils/formatters'
+	import type { TrackRecord } from '../../../lib/TrackRecord/TrackRecord'
+	import type { TrackData } from '../../../lib/TrackData/TrackData'
 
-	const { formattedTime } = getters.game.common.time
+	export let time: number
+	export let restart: () => void
+	export let trackRecord: TrackRecord | undefined
+	export let trackData: TrackData
 
-	const { trackRecord, trackData } = gameState
-
-	$: formattedRecordTime = $trackRecord?.timeFormatted
+	$: formattedRecordTime = trackRecord?.timeFormatted
 </script>
 
 <TopbarLayout>
-	<Button
-		slot="topbar-left"
-		preventFocusOnFocusLost
-		on:click={() => {
-			actions.goToMainMenu()
-		}}
-	>
-		Menu
-	</Button>
+	<Button slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</Button>
 	<div slot="topbar-center">
-		{trackData.current?.trackName.current}
+		{trackData.trackName.current}
 	</div>
-	<Button
-		slot="topbar-right"
-		forceFocusOnMount
-		on:click={() => {
-			actions.goToIntro()
-		}}
-	>
-		Restart
-	</Button>
+	<Button slot="topbar-right" forceFocusOnMount on:click={restart}>Restart</Button>
 	<div class="absolute top-0 left-0 w-full h-full">
 		<Card class="inline-block">
-			<div class="mb-[10px]">Time: {$formattedTime}</div>
-			{#if $trackRecord}
+			<div class="mb-[10px]">Time: {formatTime(time)}</div>
+			{#if trackRecord}
 				<div class="mb-[10px]">Current best: {$formattedRecordTime}</div>
 			{/if}
 			<div>
-				AUTHOR: {formatTime(trackData.current?.trackTimes.author.current ?? 0)}<br />
-				GOLD: {formatTime(trackData.current?.trackTimes.gold.current ?? 0)}<br />
-				SILVER: {formatTime(trackData.current?.trackTimes.silver.current ?? 0)}<br />
-				BRONZE: {formatTime(trackData.current?.trackTimes.bronze.current ?? 0)}
+				AUTHOR: {formatTime(trackData.trackTimes.author.current ?? 0)}<br />
+				GOLD: {formatTime(trackData.trackTimes.gold.current ?? 0)}<br />
+				SILVER: {formatTime(trackData.trackTimes.silver.current ?? 0)}<br />
+				BRONZE: {formatTime(trackData.trackTimes.bronze.current ?? 0)}
 			</div>
 		</Card>
 	</div>

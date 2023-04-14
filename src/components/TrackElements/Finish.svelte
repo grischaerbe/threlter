@@ -12,8 +12,8 @@
 	import { useTexture } from '@threlte/extras'
 	import { Collider, CollisionGroups } from '@threlte/rapier'
 	import { BoxGeometry, MeshStandardMaterial } from 'three'
+	import { useTrackViewer } from '../TrackViewer/TrackViewer.svelte'
 	import { useRefreshCollider } from './utils/useRefreshCollider'
-	import { actions } from '$stores/app'
 
 	// color: 'Dark' | 'Green' | 'Light' | 'Orange' | 'Purple' | 'Red' = 'Dark'
 
@@ -23,6 +23,8 @@
 		material.map = $map
 		material.needsUpdate = true
 	}
+
+	const { finishReached } = useTrackViewer()
 
 	const { refreshFns } = useRefreshCollider()
 </script>
@@ -44,7 +46,7 @@
 				shape="cuboid"
 				args={[5, 0.2, 5]}
 				on:sensorenter={() => {
-					actions.finishReached()
+					finishReached()
 				}}
 				sensor
 				bind:refresh={refreshFns[1]}

@@ -1,5 +1,5 @@
 import { type Readable, derived } from 'svelte/store'
-import type { Vector3Tuple } from 'three'
+import type { EulerOrder, Vector3Tuple } from 'three'
 import { type JsonCurrentWritable, jsonCurrentWritable } from '../utils/jsonCurrentWritable'
 import { type CurrentWritable, currentWritable } from '@threlte/core'
 import { cyrb53 } from '../utils/hash'
@@ -28,13 +28,13 @@ export class TrackElement {
 	type: JsonCurrentReadable<TrackElementType>
 	#position: JsonCurrentWritable<Vector3Tuple>
 	position: JsonCurrentReadable<Vector3Tuple>
-	#rotation: JsonCurrentWritable<[x: number, y: number, z: number, order: string]>
-	rotation: JsonCurrentReadable<[x: number, y: number, z: number, order: string]>
+	#rotation: JsonCurrentWritable<[x: number, y: number, z: number, order: EulerOrder]>
+	rotation: JsonCurrentReadable<[x: number, y: number, z: number, order: EulerOrder]>
 
 	constructor(
 		type: TrackElementType,
 		position: Vector3Tuple,
-		rotation: [x: number, y: number, z: number, order: string]
+		rotation: [x: number, y: number, z: number, order: EulerOrder]
 	) {
 		this.#type = jsonCurrentWritable(type)
 		this.type = jsonCurrentReadable(this.#type)
@@ -68,7 +68,7 @@ export class TrackElement {
 		this.#position.set(position)
 	}
 
-	public setRotation(rotation: [x: number, y: number, z: number, order: string]) {
+	public setRotation(rotation: [x: number, y: number, z: number, order: EulerOrder]) {
 		this.#rotation.set(rotation)
 	}
 }
@@ -365,7 +365,7 @@ export class TrackData {
 
 	public setTrackElementRotation = (
 		id: string,
-		rotation: [x: number, y: number, z: number, order: string],
+		rotation: [x: number, y: number, z: number, order: EulerOrder],
 		save = true
 	) => {
 		if (this.#validated.current) {

@@ -4,9 +4,9 @@ specifiers:
   '@dimforge/rapier3d-compat': ^0.11.2
   '@sveltejs/adapter-auto': ^2.0.0
   '@sveltejs/kit': ^1.5.0
-  '@threlte/core': 6.0.0-next.1
-  '@threlte/extras': 5.0.0-next.4
-  '@threlte/rapier': 1.0.0-next.0
+  '@threlte/core': 6.0.0-next.2
+  '@threlte/extras': 5.0.0-next.5
+  '@threlte/rapier': 1.0.0-next.1
   '@types/three': ^0.150.1
   '@typescript-eslint/eslint-plugin': ^5.45.0
   '@typescript-eslint/parser': ^5.45.0
@@ -33,9 +33,9 @@ devDependencies:
   '@dimforge/rapier3d-compat': 0.11.2
   '@sveltejs/adapter-auto': 2.0.0_@sveltejs+kit@1.15.5
   '@sveltejs/kit': 1.15.5_svelte@3.58.0+vite@4.2.1
-  '@threlte/core': 6.0.0-next.1
-  '@threlte/extras': 5.0.0-next.4_three@0.151.3
-  '@threlte/rapier': 1.0.0-next.0
+  '@threlte/core': 6.0.0-next.2
+  '@threlte/extras': 5.0.0-next.5_three@0.151.3
+  '@threlte/rapier': 1.0.0-next.1
   '@types/three': 0.150.1
   '@typescript-eslint/eslint-plugin': 5.58.0_gjoxkwycl3ml7yxlw3iuo7gyna
   '@typescript-eslint/parser': 5.58.0_voubu7prgxjfsfbgx5d4sqnwiy
@@ -434,12 +434,12 @@ packages:
       - supports-color
     dev: true
 
-  /@threlte/core/6.0.0-next.1:
-    resolution: {integrity: sha512-V58bpqRqpmbzq32jkJsMscpq+vpSSMYVeTVq8KKT0y+Qs2jgJ/FALx+cbVpN3WH1+C+zCvjrWI0SRbJIU0nsyA==}
+  /@threlte/core/6.0.0-next.2:
+    resolution: {integrity: sha512-WhxesaEDQYBuchWS5emSN2bIxEIgRP/3g5LDNYZ+XmmTPJ2jtMAtqJlN0gT4CKgerZm0S5/QxPHT/8/eaJyRKg==}
     dev: true
 
-  /@threlte/extras/5.0.0-next.4_three@0.151.3:
-    resolution: {integrity: sha512-oeVsXpSNHZhAAcmJ/xfXnd7ncbP1kHFivRkx2a+B+/IxaE6lWnj1lhSkjAfJSkbspmQeRNyH6IROdCE9eJsMFg==}
+  /@threlte/extras/5.0.0-next.5_three@0.151.3:
+    resolution: {integrity: sha512-THoGXm6aS4Njw6M7xTyasJ51Wv/W2IUkbksWMZT5GfGRemPYWWVO2izO/twJoHVxkJPIZtcdc8gIBStizM15vA==}
     dependencies:
       lodash: 4.17.21
       troika-three-text: 0.46.4_three@0.151.3
@@ -447,8 +447,8 @@ packages:
       - three
     dev: true
 
-  /@threlte/rapier/1.0.0-next.0:
-    resolution: {integrity: sha512-0WzgXCyhaveUhskeW5zeyR8bqGBo1zKcXtDEsuML6qZt1I7QjageHn/yeJ7Od9Yv0UsCg+WDGC4F2lVPcWWpoA==}
+  /@threlte/rapier/1.0.0-next.1:
+    resolution: {integrity: sha512-f5OehYyc0LvNONli7q+K6JUFXxjfNx129EFGfUqmwPdYqDPKBt/vS93bTGF71rpZKjKNRVT3rEGJt5R67CSt+Q==}
     dev: true
 
   /@types/cookie/0.5.1:

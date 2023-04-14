@@ -7,32 +7,28 @@
 	the track editor, where the position and rotation of the track elements can change.
 -->
 <script lang="ts">
-  import { T } from '@threlte/core'
-  import type { TrackElement } from '../TrackData/TrackData'
+	import { T } from '@threlte/core'
+	import type { TrackElement } from '$lib/TrackData/TrackData'
 
-  export let trackElement: TrackElement
-  export let reactive = false
+	export let trackElement: TrackElement
+	export let reactive = false
 
-  const position = trackElement.position
-  const rotation = trackElement.rotation
+	const position = trackElement.position
+	const rotation = trackElement.rotation
 </script>
 
 {#if reactive}
-  <T.Group
-    let:ref
-    position={$position}
-    rotation={$rotation}
-  >
-    <slot {ref} />
-  </T.Group>
+	<T.Group let:ref position={$position} rotation={$rotation}>
+		<slot {ref} />
+	</T.Group>
 {:else}
-  <T.Group
-    on:create={({ ref }) => {
-      ref.position.set(...position.current)
-      ref.rotation.set(...rotation.current)
-    }}
-    let:ref
-  >
-    <slot {ref} />
-  </T.Group>
+	<T.Group
+		on:create={({ ref }) => {
+			ref.position.set(...position.current)
+			ref.rotation.set(...rotation.current)
+		}}
+		let:ref
+	>
+		<slot {ref} />
+	</T.Group>
 {/if}

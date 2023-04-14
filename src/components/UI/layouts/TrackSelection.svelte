@@ -28,9 +28,9 @@
 	})
 
 	const dispatch = createEventDispatcher<{
-		ontrackplay: { trackId: string }
-		ontrackedit: { trackId: string }
-		ontrackdelete: { trackId: string }
+		playtrack: { trackId: string }
+		edittrack: { trackId: string }
+		deletetrack: { trackId: string }
 	}>()
 </script>
 
@@ -76,7 +76,7 @@
 								forceFocusOnMount
 								style="green"
 								on:click={() => {
-									dispatch('ontrackplay', { trackId: trackData.trackId })
+									dispatch('playtrack', { trackId: trackData.trackId })
 								}}
 							>
 								Play
@@ -92,7 +92,7 @@
 										forceFocusOnMount={!trackData.validated.current}
 										style="inverted"
 										on:click={() => {
-											dispatch('ontrackedit', { trackId: trackData.trackId })
+											dispatch('edittrack', { trackId: trackData.trackId })
 										}}
 									>
 										Edit
@@ -103,7 +103,7 @@
 									<Button
 										style="red"
 										on:click={() => {
-											dispatch('ontrackdelete', { trackId: trackData.trackId })
+											dispatch('deletetrack', { trackId: trackData.trackId })
 										}}
 									>
 										Delete

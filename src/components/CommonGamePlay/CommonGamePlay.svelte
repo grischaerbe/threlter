@@ -1,25 +1,31 @@
 <script lang="ts">
-	import { useFrame } from '@threlte/core'
+	import { useKeyDown } from '$hooks/useKeyDown'
+	import type { TrackData } from '$lib/TrackData/TrackData'
+	import { appState } from '$stores/app'
+	import { currentWritable, useFrame, watch } from '@threlte/core'
 	import { derived } from 'svelte/store'
 	import Car from '../Car/Car.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
 	import TrackElementTransform from '../TrackViewer/TrackElementTransform.svelte'
 	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
-	import { actions, appState, gameState } from '$stores/app'
-	import { useGameIsPausable } from '$hooks/useGameIsPausable'
-	import { useKeyDown } from '$hooks/useKeyDown'
-	import TrackRecord from './TrackRecord.svelte'
+	import GhostPlayer from './GhostPlayer.svelte'
+	import { Ghost } from '$lib/TrackRecord/Ghost'
+	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
+	import { useEvent } from '../../hooks/useEvents'
+	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
-	import Ghost from './Ghost.svelte'
-	import type { TrackData } from '$lib/TrackData/TrackData'
 
 	export let trackData: TrackData
 
-	const { visibility } = appState
-	const { common, paused } = gameState
+	let currentTrackRecord = TrackRecord.fromLocalStorage(trackData)
+	let workingTrackRecord = TrackRecord.fromTrackData(trackData, new Ghost())
 
-	const { state, finishReached, showGhost } = common
+	const { visibility } = appState
+
+	const state = currentWritable<'intro' | 'count-in' | 'playing' | 'finished'>('intro')
+	const paused = currentWritable(false)
+	const time = currentWritable(0)
 
 	const carActive = derived([state, visibility, paused], ([state, visibility, paused]) => {
 		if (visibility === 'hidden') return false
@@ -32,62 +38,107 @@
 		return paused ? 0 : 1
 	})
 
-	useKeyDown('Enter', () => {
+	useFrame((_, delta) => {
+		if ($paused || $state !== 'playing') return
+		time.update((t) => t + delta * 1000)
+	})
+
+	useKeyDown('Escape', () => {
 		if ($state === 'playing') {
-			actions.goToCountIn()
+			paused.set(true)
 		}
 	})
 
-	useKeyDown('g', () => {
-		const show = !$showGhost
-		actions.setShowGhost(show)
+	const proceed = () => {
+		if ($paused) {
+			paused.set(false)
+		} else if ($state === 'intro') {
+			state.set('count-in')
+		} else if ($state === 'count-in') {
+			state.set('playing')
+		} else if ($state === 'playing') {
+			state.set('finished')
+		}
+	}
+
+	const resetTrackViewer = useEvent('reset-track-viewer')
+	const respawnCar = useEvent('respawn-car')
+
+	const restart = () => {
+		paused.set(false)
+		respawnCar()
+		resetTrackViewer()
+		state.set('intro')
+		time.set(0)
+	}
+
+	watch(state, (state) => {
+		// when we're "playing", we initialize a new working track record
+		if (state === 'playing') {
+			workingTrackRecord = TrackRecord.fromTrackData(trackData, new Ghost())
+		}
 	})
 
-	useGameIsPausable()
+	const softReset = () => {
+		respawnCar()
+		resetTrackViewer()
+		state.set('count-in')
+		time.set(0)
+	}
 
-	useFrame((_, delta) => {
-		if ($paused || $state !== 'playing' || $finishReached) return
-		actions.incrementGameTime(delta * 1000)
+	useKeyDown('Enter', () => {
+		if ($state === 'playing' && !$paused) {
+			softReset()
+		}
 	})
+
+	const onFinishReached = () => {
+		state.set('finished')
+		workingTrackRecord.time.set($time)
+		if (
+			!currentTrackRecord ||
+			TrackRecord.isNewTrackRecord(currentTrackRecord, workingTrackRecord)
+		) {
+			workingTrackRecord.saveToLocalStorage()
+			currentTrackRecord = workingTrackRecord
+		}
+	}
 </script>
 
 <!-- UI -->
 <UiWrapper>
 	{#if $paused}
-		<slot name="ui-paused" />
+		<slot name="ui-paused" {proceed} {restart} trackRecord={currentTrackRecord} />
 	{:else if $state === 'intro'}
-		<slot name="ui-intro" />
+		<slot name="ui-intro" {proceed} trackRecord={currentTrackRecord} />
 	{:else if $state === 'count-in'}
-		<slot name="ui-count-in">
-			<CountIn
-				on:countindone={() => {
-					actions.startPlaying()
-				}}
-			/>
+		<slot name="ui-count-in" {proceed} trackRecord={currentTrackRecord}>
+			<CountIn on:countindone={proceed} />
 		</slot>
 	{:else if $state === 'playing'}
-		<slot name="ui-playing" />
+		<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord} />
 	{:else if $state === 'finished'}
-		<slot name="ui-finished" />
+		<slot name="ui-finished" {restart} time={$time} trackRecord={currentTrackRecord} />
 	{/if}
 </UiWrapper>
 
-<!-- TRACK -->
+<!-- 3D -->
 {#if trackData}
-	<TrackViewer let:trackElement {trackData}>
+	<TrackViewer let:trackElement {trackData} on:trackcompleted={onFinishReached}>
 		<TrackElementTransform {trackElement}>
 			<TrackElement {trackElement} />
 		</TrackElementTransform>
 	</TrackViewer>
 {/if}
 
-<!-- GAME RECORDER -->
-<TrackRecord />
+<Car active={$carActive} volume={$carVolume} freezeCamera={$state === 'finished'} let:carState>
+	{#if workingTrackRecord.ghost && $state === 'playing'}
+		<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
+	{/if}
+</Car>
 
-<!-- GHOST -->
-{#if $showGhost}
-	<Ghost />
+{#if currentTrackRecord && currentTrackRecord.ghost && $state === 'playing'}
+	<GhostPlayer ghost={currentTrackRecord.ghost} time={$time} />
 {/if}
 
-<!-- CAR -->
-<Car active={$carActive} volume={$carVolume} />
+<slot {proceed} {restart} time={$time} trackRecord={currentTrackRecord} />

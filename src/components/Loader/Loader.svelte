@@ -4,7 +4,6 @@
 	import { preloadBarrier } from '$components/TrackElements/Barrier.svelte'
 	import { preloadMuscleCar } from '$components/Car/Models/MuscleCar.svelte'
 	import { preloadMuscleCarWheel } from '$components/Car/Models/MuscleCarWheel.svelte'
-	import LoadingUi from '$components/UI/LoadingUi.svelte'
 	import { preloadCheckpoint } from '$components/TrackElements/Checkpoint.svelte'
 	import { preloadHalfbox } from '$components/TrackElements/HalfBox.svelte'
 	import { preloadRamp } from '$components/TrackElements/Ramp.svelte'
@@ -17,6 +16,8 @@
 	import { preloadSlope } from '$components/TrackElements/Slope.svelte'
 	import { preloadBasicBox } from '$components/TrackElements/BasicBox.svelte'
 	import { preloadSounds } from '$components/Utilities/AudioProvider.svelte'
+
+	import LoadingUi from '$components/UI/LoadingUi.svelte'
 
 	const preload = () => {
 		return Promise.all([

@@ -1,0 +1,71 @@
+<script lang="ts" context="module">
+	let isDraggingTimeout: ReturnType<typeof setTimeout>
+</script>
+
+<script lang="ts">
+	import { T } from '@threlte/core'
+	import { TransformControls } from '@threlte/extras'
+	import { derived } from 'svelte/store'
+	import type { Group } from 'three'
+	import { useTrackEditor } from './context'
+	import { onDestroy } from 'svelte'
+	import type { TrackElement } from '$lib/TrackData/TrackData'
+
+	export let trackElement: TrackElement
+
+	const {
+		currentlySelectedElement,
+		trackData,
+		transformMode,
+		transformSpace,
+		transformSnap,
+		isDragging
+	} = useTrackEditor()
+
+	$: position = $currentlySelectedElement?.position
+	$: rotation = $currentlySelectedElement?.rotation
+
+	const selected = derived(currentlySelectedElement, (currentlySelectedElement) => {
+		return currentlySelectedElement?.id === trackElement.id
+	})
+
+	const onChange = (ref: Group) => {
+		trackData.setTrackElementPosition(trackElement.id, ref.position.toArray())
+		const rotation = ref.rotation.toArray() as TrackElement['rotation']['current']
+		trackData.setTrackElementRotation(trackElement.id, rotation)
+	}
+
+	const onMouseDown = () => {
+		clearTimeout(isDraggingTimeout)
+		isDragging.set(true)
+	}
+
+	const onMouseUp = () => {
+		clearTimeout(isDraggingTimeout)
+		// we're delaying this a bit so that the click event on the track element selector
+		// doesn't get triggered. this is a bit of a hack, but it works for now.
+		isDraggingTimeout = setTimeout(() => {
+			isDragging.set(false)
+		}, 50)
+	}
+	onDestroy(() => {
+		clearTimeout(isDraggingTimeout)
+	})
+</script>
+
+{#if $selected && $position && $rotation}
+	<T.Group position={$position} rotation={$rotation} let:ref>
+		<TransformControls
+			object={ref}
+			space={$transformSpace}
+			mode={$transformMode}
+			translationSnap={$transformSnap ? 1 : null}
+			rotationSnap={$transformSnap ? (5 * Math.PI) / 180 : null}
+			on:change={() => {
+				onChange(ref)
+			}}
+			on:mouseDown={onMouseDown}
+			on:mouseUp={onMouseUp}
+		/>
+	</T.Group>
+{/if}

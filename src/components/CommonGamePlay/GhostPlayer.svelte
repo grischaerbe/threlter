@@ -1,34 +1,30 @@
 <script lang="ts">
-	import { T, useFrame, watch } from '@threlte/core'
+	import { T, useFrame } from '@threlte/core'
 	import type { Group } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
+	import type { Ghost } from '../../lib/TrackRecord/Ghost'
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
 	import MuscleCarWheel from '../Car/Models/MuscleCarWheel.svelte'
-	import { gameState } from '$stores/app'
 
-	const { time, state } = gameState.common
-	const { trackRecord } = gameState
+	export let ghost: Ghost
+	export let time: number
+
+	$: console.log(ghost)
+
+	$: ghost.calculateAverageTimeBetweenFrames()
 
 	let group: Group
 
-	watch(trackRecord, (trackRecord) => {
-		trackRecord?.ghost?.calculateAverageTimeBetweenFrames()
-	})
-
 	let showGhost = true
 
-	$: ghostAvailable =
-		$state === 'playing' &&
-		$trackRecord &&
-		$trackRecord.ghost &&
-		$trackRecord.ghost.frames.length > 0
-
+	$: ghostAvailable = ghost.frames.length > 0
 	$: combinedShowGhost = ghostAvailable && showGhost
 
 	useFrame(() => {
 		if (!group || !ghostAvailable) return
+		const currentFrame = ghost.getFrame(time)
+		// console.log(currentFrame?.index)
 
-		const currentFrame = $trackRecord?.ghost?.getFrame(time.current)
 		if (!currentFrame || currentFrame.isLastFrame) {
 			showGhost = false
 		} else {

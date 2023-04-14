@@ -10,8 +10,8 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 	import type * as THREE from 'three'
 	import { Group, Mesh } from 'three'
 	import { useTrackElement } from '../TrackViewer/TrackElement.svelte'
+	import { useTrackViewer } from '../TrackViewer/TrackViewer.svelte'
 	import { useRefreshCollider } from './utils/useRefreshCollider'
-	import { actions, gameState } from '$stores/app'
 
 	type GLTFResult = {
 		nodes: {
@@ -42,12 +42,10 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 
 	const gltf = load()
 
-	const { paused, common } = gameState
-	const { checkpointsReached } = common
-
+	const { checkpointReached, checkpointsReached } = useTrackViewer()
 	const trackElement = useTrackElement()
 
-	const checkpointReached = derived(checkpointsReached, (checkpointsReached) => {
+	const currentCheckpointReached = derived(checkpointsReached, (checkpointsReached) => {
 		return trackElement && checkpointsReached.has(trackElement.id)
 	})
 
@@ -55,16 +53,10 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 
 	$: signMaterial = $gltf?.materials.Material.clone()
 
-	const { start, stop } = useFrame(() => {
+	useFrame(() => {
 		if (!signMesh) return
 		signMesh.rotation.y -= 0.007
 	})
-
-	$: if ($paused) {
-		stop()
-	} else {
-		start()
-	}
 
 	const { refreshFns } = useRefreshCollider()
 </script>
@@ -86,7 +78,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 					material.color="#606060"
 					material.roughness={0.3}
 					material.metalness={0.3}
-					material.emissive={$checkpointReached ? 'green' : 'red'}
+					material.emissive={$currentCheckpointReached ? 'green' : 'red'}
 					bind:ref={signMesh}
 				>
 					<Collider
@@ -132,7 +124,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 					bind:refresh={refreshFns[2]}
 					on:sensorenter={() => {
 						if (!trackElement) return
-						actions.checkpointReached(trackElement.id)
+						checkpointReached(trackElement.id)
 					}}
 					sensor
 				/>

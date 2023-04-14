@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation'
 	import UiWrapper from '$components/UI/UiWrapper.svelte'
 	import BackButton from '$components/UI/components/BackButton.svelte'
 	import Button from '$components/UI/components/Button.svelte'
@@ -114,6 +115,16 @@
 			tracksCanBeEdited
 			tracksCanBeDeleted
 			showAuthor
+			on:playtrack={(e) => {
+				goto(`/user/${e.detail.trackId}/time-attack`)
+			}}
+			on:deletetrack={(e) => {
+				TrackData.removeFromLocalStorage(e.detail.trackId)
+				TrackData.updateLocalStorageTrackIds()
+			}}
+			on:edittrack={(e) => {
+				goto(`/user/${e.detail.trackId}/edit`)
+			}}
 		/>
 	</div>
 </UiWrapper>

@@ -26,7 +26,6 @@
 	let camera: PerspectiveCamera
 
 	export let showIntro: boolean
-	console.log(showIntro)
 
 	type AnimationValue<T = any> = [intro: T, regular: T]
 

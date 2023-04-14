@@ -1,16 +1,16 @@
 <script lang="ts">
+	import { useEvent } from '$hooks/useEvents'
+	import { sunPos } from '$src/config'
+	import { appState } from '$stores/app'
 	import { T, useThrelte } from '@threlte/core'
 	import { Portal } from '@threlte/extras'
+	import { onDestroy } from 'svelte'
+	import { PerspectiveCamera, Quaternion, Vector3 } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import RaycastVehicleController from './RaycastVehicleController/RaycastVehicleController.svelte'
+	import { useKeyboardNavigation } from '../UI/KeyboardNavigation.svelte'
 	import MuscleCar from './Models/MuscleCar.svelte'
 	import MuscleCarWheel from './Models/MuscleCarWheel.svelte'
-	import { sunPos } from '$src/config'
-	import { actions, appState, gameState } from '$stores/app'
-	import { PerspectiveCamera, Quaternion, Vector3 } from 'three'
-	import CarState from './CarState.svelte'
-	import { useKeyboardNavigation } from '../UI/KeyboardNavigation.svelte'
-	import { onDestroy } from 'svelte'
+	import RaycastVehicleController from './RaycastVehicleController/RaycastVehicleController.svelte'
 
 	let carCam: PerspectiveCamera
 	let freezeCam: PerspectiveCamera
@@ -18,14 +18,20 @@
 	const { sfx } = appState.options.audio
 	const { shadows } = appState.options.video
 
-	let respawnCar: () => void
+	let respawnCar: (() => void) | undefined = undefined
+
+	useEvent('respawn-car', () => {
+		respawnCar?.()
+	})
 
 	export let debug = false
 	export let active = false
 	export let useCarCamera = true
+	export let freezeCamera = false
 	export let volume = 1
 
 	const { disable, enable } = useKeyboardNavigation()
+
 	$: if (active) {
 		disable()
 	} else {
@@ -35,18 +41,9 @@
 		enable()
 	})
 
-	// The car is respawning on certain events
-	actions.use('resetCar', () => {
-		respawnCar?.()
-	})
-
 	const { scene } = useThrelte()
 
-	const { finishReached } = gameState.common
-
-	$: freezeCamera = useCarCamera && $finishReached
-
-	$: if (freezeCamera && carCam && freezeCam) {
+	$: if (useCarCamera && freezeCamera && carCam && freezeCam) {
 		carCam.updateMatrix()
 		const carCamWorldPosition = new Vector3()
 		carCam.getWorldPosition(carCamWorldPosition)
@@ -100,7 +97,7 @@
 	</T.Group>
 
 	<svelte:fragment let:carState>
-		<CarState {carState} />
+		<slot {carState} />
 
 		{#if $shadows}
 			<T.DirectionalLight
