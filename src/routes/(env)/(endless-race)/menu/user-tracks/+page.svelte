@@ -8,6 +8,7 @@
 	import { TrackData } from '$lib/TrackData/TrackData'
 	import { appState } from '$stores/app'
 	import JSZip from 'jszip'
+	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 
 	let trackSelected = false
 
@@ -43,69 +44,67 @@
 </script>
 
 <UiWrapper>
-	<div class="flex flex-col relative w-full h-full top-0 left-0">
-		<TopBar>
-			<BackButton slot="left" href="/menu/main">Back</BackButton>
+	<TopBarLayout>
+		<BackButton slot="topbar-left" href="/menu/main">Back</BackButton>
 
-			<p slot="center">USER TRACKS</p>
+		<p slot="topbar-center">USER TRACKS</p>
 
-			<div slot="right" class="flex flex-row gap-[2px]">
-				<input
-					bind:this={fileInputEl}
-					class="hidden"
-					type="file"
-					on:change={() => {
-						if (!fileInputEl) return
-						const selectedFile = fileInputEl.files?.[0]
-						if (!selectedFile || !selectedFile?.name.endsWith('.zip')) {
-							alert('Please select a .zip file')
-							return
-						}
-						handleImport(selectedFile)
-					}}
-				/>
-				<Button
-					on:click={() => {
-						if (!fileInputEl) return
-						fileInputEl.click()
-					}}
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256">
-						<path
-							d="M216.49,199.51a12,12,0,0,1-17,17L128,145,56.49,216.49a12,12,0,0,1-17-17l80-80a12,12,0,0,1,17,0Zm-160-63L128,65l71.51,71.52a12,12,0,0,0,17-17l-80-80a12,12,0,0,0-17,0l-80,80a12,12,0,0,0,17,17Z"
-						/>
-					</svg>
-					IMPORT
-				</Button>
-				<Button
-					forceFocusOnMount={!userHasTracks}
-					on:click={() => {
-						const trackDatas = $localStorageTrackIds
-							.map((userTrackId) => {
-								return TrackData.fromLocalStorage(userTrackId)
-							})
-							.filter(filterUndefined)
-						const trackNamesStartingWithUnnamed = trackDatas.filter((trackData) => {
-							return trackData.trackName.current.startsWith('Unnamed Track')
-						}).length
+		<div slot="topbar-right" class="flex flex-row gap-[2px]">
+			<input
+				bind:this={fileInputEl}
+				class="hidden"
+				type="file"
+				on:change={() => {
+					if (!fileInputEl) return
+					const selectedFile = fileInputEl.files?.[0]
+					if (!selectedFile || !selectedFile?.name.endsWith('.zip')) {
+						alert('Please select a .zip file')
+						return
+					}
+					handleImport(selectedFile)
+				}}
+			/>
+			<Button
+				on:click={() => {
+					if (!fileInputEl) return
+					fileInputEl.click()
+				}}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256">
+					<path
+						d="M216.49,199.51a12,12,0,0,1-17,17L128,145,56.49,216.49a12,12,0,0,1-17-17l80-80a12,12,0,0,1,17,0Zm-160-63L128,65l71.51,71.52a12,12,0,0,0,17-17l-80-80a12,12,0,0,0-17,0l-80,80a12,12,0,0,0,17,17Z"
+					/>
+				</svg>
+				IMPORT
+			</Button>
+			<Button
+				forceFocusOnMount={!userHasTracks}
+				on:click={() => {
+					const trackDatas = $localStorageTrackIds
+						.map((userTrackId) => {
+							return TrackData.fromLocalStorage(userTrackId)
+						})
+						.filter(filterUndefined)
+					const trackNamesStartingWithUnnamed = trackDatas.filter((trackData) => {
+						return trackData.trackName.current.startsWith('Unnamed Track')
+					}).length
 
-						const trackData = TrackData.createEmpty()
-						trackData.trackName.set(`Unnamed Track ${trackNamesStartingWithUnnamed + 1}`)
-						trackData.authorName.set(appState.options.player.name.current)
-						trackData.addTrackElement('Box')
+					const trackData = TrackData.createEmpty()
+					trackData.trackName.set(`Unnamed Track ${trackNamesStartingWithUnnamed + 1}`)
+					trackData.authorName.set(appState.options.player.name.current)
+					trackData.addTrackElement('Box')
 
-						goto(`/user/${trackData.trackId}/edit`)
-					}}
-				>
-					<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256">
-						<path
-							d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"
-						/>
-					</svg>
-					CREATE
-				</Button>
-			</div>
-		</TopBar>
+					goto(`/user/${trackData.trackId}/edit`)
+				}}
+			>
+				<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 256 256">
+					<path
+						d="M228,128a12,12,0,0,1-12,12H140v76a12,12,0,0,1-24,0V140H40a12,12,0,0,1,0-24h76V40a12,12,0,0,1,24,0v76h76A12,12,0,0,1,228,128Z"
+					/>
+				</svg>
+				CREATE
+			</Button>
+		</div>
 
 		<TrackSelection
 			bind:trackSelected
@@ -131,5 +130,5 @@
 				TrackData.updateLocalStorageTrackIds()
 			}}
 		/>
-	</div>
+	</TopBarLayout>
 </UiWrapper>

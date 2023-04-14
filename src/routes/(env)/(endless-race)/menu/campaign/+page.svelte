@@ -4,6 +4,7 @@
 	import BackButton from '$components/UI/components/BackButton.svelte'
 	import TopBar from '$components/UI/components/TopBar.svelte'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
+	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 
 	export let data
 
@@ -11,17 +12,17 @@
 </script>
 
 <UiWrapper>
-	<TopBar>
-		<BackButton slot="left" href="/menu/main">Back</BackButton>
+	<TopBarLayout>
+		<BackButton slot="topbar-left" href="/menu/main">Back</BackButton>
 
-		<p slot="center">CAMPAIGN</p>
-	</TopBar>
+		<p slot="topbar-center">CAMPAIGN</p>
 
-	<TrackSelection
-		bind:trackSelected
-		trackDatas={data.campaign.tracks}
-		on:playtrack={(e) => {
-			goto(`/campaign/${e.detail.trackId}/time-attack`)
-		}}
-	/>
+		<TrackSelection
+			bind:trackSelected
+			trackDatas={data.campaign.tracks}
+			on:playtrack={(e) => {
+				goto(`/campaign/${e.detail.trackId}/time-attack`)
+			}}
+		/>
+	</TopBarLayout>
 </UiWrapper>

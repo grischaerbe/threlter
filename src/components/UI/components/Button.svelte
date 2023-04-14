@@ -65,7 +65,7 @@
 	on:click
 	{disabled}
 	class={c(
-		'text-center rounded-sm uppercase [&_svg]:!fill-current inline-flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] outline-none',
+		'text-center rounded-sm uppercase [&_svg]:!fill-current flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] outline-none',
 		size === 'small'
 			? 'px-2 [&_svg]:h-[0.75em] [&_svg]:w-[0.75em] [&_img]:h-[0.75em] [&_img]:w-[0.75em] text-[0.5em]'
 			: 'px-3 [&_svg]:h-[1em] [&_svg]:w-[1em] [&_img]:h-[1em] [&_img]:w-[1em]',

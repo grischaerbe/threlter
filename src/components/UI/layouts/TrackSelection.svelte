@@ -32,7 +32,7 @@
 	}>()
 </script>
 
-<div class="grid grid-cols-3 mt-[15px] gap-[15px] h-full min-h-0">
+<div class="grid grid-cols-3 gap-[15px] h-full min-h-0">
 	<div class="flex flex-col col-span-1 gap-[2px] h-full overflow-auto pointer-events-auto">
 		{#each trackDatas as trackData, index}
 			{#if trackData}

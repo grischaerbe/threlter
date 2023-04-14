@@ -3,12 +3,15 @@
 	import BottomBar from '$components/UI/components/BottomBar.svelte'
 	import Button from '$components/UI/components/Button.svelte'
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
+	import BackButton from '../../../../../components/UI/components/BackButton.svelte'
 </script>
 
 <UiWrapper>
 	<TopBarLayout>
-		<div slot="topbar-center">THRELTEMANIA</div>
+		<div slot="topbar-center">THRELTER</div>
+
 		<Button slot="topbar-right" href="/menu/options">Options</Button>
+
 		<svelte:fragment>
 			<div class="grid grid-cols-3 gap-[15px]">
 				<div class="col-span-1">
