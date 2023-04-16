@@ -8,23 +8,23 @@
 
 <UiWrapper>
 	<TopBarLayout>
-		<div slot="topbar-center">THRELTER</div>
-
-		<Button slot="topbar-right" href="/menu/options">Options</Button>
-
-		<svelte:fragment>
-			<div class="grid grid-cols-3 gap-[15px]">
-				<div class="col-span-1">
-					<div class="flex flex-col items-stretch gap-[2px]">
-						<Button forceFocusOnMount class="flex-1" href="/menu/campaign">Campaign</Button>
-						<Button class="flex-1" href="/menu/user-tracks">User Tracks</Button>
-					</div>
-				</div>
+		<div>
+			<div
+				class="font-headline flex flex-row justify-center w-full text-7xl mt-24 text-orange-500 px-5 py-2 pb-1 rounded-3xl drop-shadow-xl"
+			>
+				THRELTEMANIA
 			</div>
 
 			<BottomBar>
 				<Button slot="right">Made with Threlte</Button>
 			</BottomBar>
-		</svelte:fragment>
+		</div>
+
+		<Button slot="topbar-right" href="/menu/options">Options</Button>
+
+		<div slot="topbar-left" class="flex flex-col gap-[2px]">
+			<Button forceFocusOnMount class="flex-1" href="/menu/campaign">Campaign</Button>
+			<Button class="flex-1" href="/menu/user-tracks">User Tracks</Button>
+		</div>
 	</TopBarLayout>
 </UiWrapper>

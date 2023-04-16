@@ -3,8 +3,8 @@ import { persist } from './utils'
 
 export const appState = {
 	visibility: currentWritable<'visible' | 'hidden'>('visible'),
-	debug: currentWritable(false),
 	options: {
+		debug: persist(currentWritable(false), 'tm-options-debug'),
 		player: {
 			name: persist(currentWritable(''), 'tm-options-player-name')
 		},

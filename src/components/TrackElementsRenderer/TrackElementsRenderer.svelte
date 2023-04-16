@@ -2,11 +2,11 @@
 <script lang="ts">
 	import { T, useFrame, useRender, useThrelte } from '@threlte/core'
 	import Env from '$components/Common/Env.svelte'
-	import TrackElement from '../../TrackViewer/TrackElement.svelte'
-	import TrackViewer from '../../TrackViewer/TrackViewer.svelte'
-	import UiWrapper from '../../UI/UiWrapper.svelte'
-	import Button from '../../UI/components/Button.svelte'
-	import { trackElementPrototypes } from '../elements'
+	import TrackElement from '../TrackViewer/TrackElement.svelte'
+	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
+	import UiWrapper from '../UI/UiWrapper.svelte'
+	import Button from '../UI/components/Button.svelte'
+	import { trackElementPrototypes } from '../TrackElements/elements'
 	import TrackElementPositionHelper from './TrackElementPositionHelper.svelte'
 	import type { Sphere } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
@@ -35,6 +35,15 @@
 	let doRender = false
 
 	let currentRadius = 1
+
+	useRender(
+		({ camera, renderer, scene }) => {
+			renderer?.render(scene, camera.current)
+		},
+		{
+			order: 0
+		}
+	)
 
 	useRender(
 		() => {

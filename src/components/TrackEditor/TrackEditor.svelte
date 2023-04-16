@@ -28,6 +28,9 @@
 	import RotateElement from './UI/RotateElement.svelte'
 	import { createTrackEditorContext } from './context'
 	import { useEvent } from '../../hooks/useEvents'
+	import { appState } from '../../stores/app'
+
+	const { visibility } = appState
 
 	export let trackData: TrackData
 
@@ -35,8 +38,8 @@
 	const showInfo = currentWritable(false)
 	const view = currentWritable<'car' | 'orbit'>('orbit')
 
-	$: carActive = $view === 'car' && !$showMenu && !$showInfo
-	$: carFrozen = $view === 'orbit' || $showMenu || $showInfo
+	$: carActive = $view === 'car' && !$showMenu && !$showInfo && $visibility === 'visible'
+	$: carFrozen = $view === 'orbit' || $showMenu || $showInfo || $visibility === 'hidden'
 
 	const validated = trackData.validated
 

@@ -11,6 +11,12 @@ import HalfBox from './HalfBox.svelte'
 import Ramp from './Ramp.svelte'
 import RampInverse from './RampInverse.svelte'
 import Slope from './Slope.svelte'
+import Tiltfullmediumbend from './Tilts/TiltFullMediumBend/Tiltfullmediumbend.svelte'
+import Tiltfulltightbend from './Tilts/TiltFullTightBend/Tiltfulltightbend.svelte'
+import Tilttransitionleft from './Tilts/TiltTransitions/TiltTransitionLeft/Tilttransitionleft.svelte'
+import Tilttransitionleftlong from './Tilts/TiltTransitions/TiltTransitionLeftLong/Tilttransitionleftlong.svelte'
+import Tilttransitionright from './Tilts/TiltTransitions/TiltTransitionRight/Tilttransitionright.svelte'
+import Tilttransitionrightlong from './Tilts/TiltTransitions/TiltTransitionRightLong/Tilttransitionrightlong.svelte'
 // import Barrier from './Barrier.svelte'
 
 export const elementCategories = {
@@ -28,6 +34,9 @@ export const elementCategories = {
 	},
 	checkpoints: {
 		label: 'Checkpoints'
+	},
+	tilts: {
+		label: 'Tilts'
 	}
 }
 
@@ -111,6 +120,42 @@ export const trackElementPrototypes = {
 		buttonLabel: 'Finish',
 		component: Finish,
 		category: 'basics'
+	},
+
+	TiltTransitionLeft: {
+		buttonLabel: 'Tilt Transition Left',
+		component: Tilttransitionleft,
+		category: 'tilts'
+	},
+
+	TiltTransitionLeftLong: {
+		buttonLabel: 'Tilt Transition Left Long',
+		component: Tilttransitionleftlong,
+		category: 'tilts'
+	},
+
+	TiltTransitionRight: {
+		buttonLabel: 'Tilt Transition Right',
+		component: Tilttransitionright,
+		category: 'tilts'
+	},
+
+	TiltTransitionRightLong: {
+		buttonLabel: 'Tilt Transition Right Long',
+		component: Tilttransitionrightlong,
+		category: 'tilts'
+	},
+
+	TiltFullTightBend: {
+		buttonLabel: 'Tilt Full Tight Bend',
+		component: Tiltfulltightbend,
+		category: 'tilts'
+	},
+
+	TiltFullMediumBend: {
+		buttonLabel: 'Tilt Full Medium Bend',
+		component: Tiltfullmediumbend,
+		category: 'tilts'
 	}
 } satisfies Record<
 	string,

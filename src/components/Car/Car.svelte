@@ -17,6 +17,7 @@
 
 	const { sfx } = appState.options.audio
 	const { shadows } = appState.options.video
+	const { debug } = appState.options
 
 	let respawnCar: (() => void) | undefined = undefined
 
@@ -24,7 +25,6 @@
 		respawnCar?.()
 	})
 
-	export let debug = false
 	export let active = false
 	export let freeze = false
 	export let useCarCamera = true
@@ -68,7 +68,7 @@
 
 <RaycastVehicleController
 	bind:respawn={respawnCar}
-	{debug}
+	debug={$debug}
 	{active}
 	{volume}
 	useAudio={$sfx}

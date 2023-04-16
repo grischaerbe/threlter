@@ -9,8 +9,19 @@
 	import '../app.postcss'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
 
-	const { debug } = appState
+	const { visibility, options } = appState
+	const { debug } = options
+
+	const onVisibilityChange = () => {
+		if (document.hidden || document.visibilityState === 'hidden') {
+			visibility.set('hidden')
+		} else {
+			visibility.set('visible')
+		}
+	}
 </script>
+
+<svelte:window on:visibilitychange={onVisibilityChange} />
 
 <div class="w-full h-full absolute bg-black">
 	<Canvas

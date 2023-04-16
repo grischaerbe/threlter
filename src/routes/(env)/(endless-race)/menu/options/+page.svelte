@@ -8,7 +8,7 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { appState } from '$stores/app'
 
-	const { audio, video, player } = appState.options
+	const { audio, video, player, debug } = appState.options
 
 	const { name } = player
 	const { music, sfx } = audio
@@ -53,6 +53,12 @@
 						Save
 					</Button>
 				</div>
+			</Card>
+
+			<Card class="flex flex-col items-start justify-start">
+				<div class="mb-[10px]">Misc</div>
+
+				<Checkbox class="pl-0" bind:checked={$debug}>DEBUG</Checkbox>
 			</Card>
 		</div>
 	</TopBarLayout>

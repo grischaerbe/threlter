@@ -3,20 +3,20 @@ import { tick } from 'svelte'
 import { useTrackElement } from '../../TrackViewer/TrackElement.svelte'
 
 export const useRefreshCollider = () => {
-  let refreshFns: any[] = []
+	const refreshFns: any[] = []
 
-  const trackElement = useTrackElement()
+	const trackElement = useTrackElement()
 
-  if (trackElement) {
-    const { position, rotation } = trackElement
+	if (trackElement) {
+		const { position, rotation } = trackElement
 
-    watch([position, rotation], async () => {
-      await tick()
-      refreshFns.forEach((fn) => fn())
-    })
-  }
+		watch([position, rotation], async () => {
+			await tick()
+			refreshFns.forEach((fn) => fn())
+		})
+	}
 
-  return {
-    refreshFns
-  }
+	return {
+		refreshFns
+	}
 }
