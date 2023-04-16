@@ -24,7 +24,7 @@ export const persist = <T>(store: CurrentWritable<T>, key: string) => {
 	const localStorageValue = localStorage.getItem(key)
 	if (localStorageValue) {
 		const { value } = JSON.parse(localStorageValue)
-		store.set(value)
+		set(value)
 	}
 	return s as CurrentWritable<T>
 }
