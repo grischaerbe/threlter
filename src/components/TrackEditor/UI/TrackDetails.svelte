@@ -8,7 +8,7 @@
 	let trackName = trackData.trackName.current
 </script>
 
-<div class="flex flex-row gap-[2px] items-end text-[0.65em]">
+<div class="flex flex-row gap-[2px] items-end text-[0.8em]">
 	<TextInput label="Track Name" id="track-name" preventFocusOnFocusLost bind:value={trackName} />
 
 	<Button

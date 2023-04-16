@@ -53,9 +53,9 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 
 	$: signMaterial = $gltf?.materials.Material.clone()
 
-	useFrame(() => {
+	useFrame((_, delta) => {
 		if (!signMesh) return
-		signMesh.rotation.y -= 0.007
+		signMesh.rotation.y -= delta * 0.5
 	})
 
 	const { refreshFns } = useRefreshCollider()

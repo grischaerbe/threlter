@@ -1,40 +1,32 @@
 <script lang="ts">
-	import { formatTime } from '$lib/utils/formatters'
-	import type { TrackData } from '../../../lib/TrackData/TrackData'
-	import type { TrackRecord } from '../../../lib/TrackRecord/TrackRecord'
-	import Button from '../../UI/components/Button.svelte'
-	import Card from '../../UI/components/Card.svelte'
-	import TopbarLayout from '../../UI/layouts/TopBarLayout.svelte'
+	import Card from '$components/UI/components/Card.svelte'
+	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
+	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
+	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
+	import UiWrapper from '../../UI/UiWrapper.svelte'
+	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
-	export let time: number
 	export let restart: () => void
 	export let trackRecord: TrackRecord | undefined
 	export let trackData: TrackData
-
-	$: formattedRecordTime = trackRecord?.timeFormatted
 </script>
 
-<TopbarLayout>
-	<Button slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</Button>
-	<div slot="topbar-center">
+<UiWrapper>
+	<div
+		class="absolute -z-10 h-[40vh] w-full bottom-0 left-0 bg-gradient-to-t from-blue-darkest to-transparent opacity-60"
+	/>
+	<div
+		class="font-headline text-orange absolute bottom-[30px] left-1/2 -translate-x-1/2 text-[3em] text-center leading-[88%]"
+	>
 		{trackData.trackName.current}
 	</div>
-	<Button slot="topbar-right" forceFocusOnMount on:click={restart}>Restart</Button>
-	<div class="absolute top-0 left-0 w-full h-full">
-		<Card class="inline-block">
-			<div class="mb-[10px]">Time: {formatTime(time)}</div>
-			{#if trackRecord}
-				<div class="mb-[10px]">Current best: {$formattedRecordTime}</div>
-			{/if}
-			<div>
-				AUTHOR: {formatTime(trackData.trackTimes.author.current ?? 0)}
-				<br />
-				GOLD: {formatTime(trackData.trackTimes.gold.current ?? 0)}
-				<br />
-				SILVER: {formatTime(trackData.trackTimes.silver.current ?? 0)}
-				<br />
-				BRONZE: {formatTime(trackData.trackTimes.bronze.current ?? 0)}
-			</div>
-		</Card>
-	</div>
+</UiWrapper>
+
+<TopbarLayout>
+	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
+	<SpecialButton slot="topbar-right" forceFocusOnMount on:click={restart}>Restart</SpecialButton>
+	<Card class="inline-block text-[0.9em]">
+		<TrackTimes {trackData} {trackRecord} />
+	</Card>
 </TopbarLayout>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Button from '$components/UI/components/Button.svelte'
+	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
 	const { trackData } = useTrackEditor()
@@ -8,14 +9,16 @@
 </script>
 
 {#if $validated}
-	<Button
+	<SpecialButton
 		style="red"
 		on:click={() => {
 			trackData.invalidate()
 		}}
 	>
 		Unlock Track
-	</Button>
+	</SpecialButton>
 {:else}
-	<Button style="green" href={`/user/${trackData.trackId}/validate`}>Validate Track</Button>
+	<SpecialButton style="green-inverted" href={`/user/${trackData.trackId}/validate`}>
+		Validate Track
+	</SpecialButton>
 {/if}

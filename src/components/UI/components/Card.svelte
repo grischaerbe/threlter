@@ -5,6 +5,6 @@
 	export { _class as class }
 </script>
 
-<div class={c('bg-white rounded-sm px-[2px] text-black uppercase', _class)}>
+<div class={c('bg-blue-darkest rounded-xl text-orange px-[17px] py-[15px]', _class)}>
 	<slot />
 </div>

@@ -8,6 +8,7 @@
 	import { Debug, World } from '@threlte/rapier'
 	import '../app.postcss'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
+	import Renderer from '../components/Renderer.svelte'
 
 	const { visibility, options } = appState
 	const { debug } = options
@@ -47,10 +48,12 @@
 				</AudioProvider>
 			</Loader>
 		</World>
+
+		<Renderer />
 	</Canvas>
 
 	<div
-		class="absolute top-0 left-0 w-full h-full z-10 text-[28px] [&_button]:pointer-events-auto [&_a]:pointer-events-auto p-[15px] pointer-events-none leading-none select-none"
+		class="leading-tight absolute top-0 left-0 w-full h-full z-10 text-[30px] [&_button]:pointer-events-auto [&_a]:pointer-events-auto p-[15px] pointer-events-none select-none"
 		id="car-ui-portal-target"
 	/>
 </div>

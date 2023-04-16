@@ -5,6 +5,8 @@
 	import TopBar from '$components/UI/components/TopBar.svelte'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
+	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
+	import TopMenu from '../../../../../components/UI/layouts/TopMenu.svelte'
 
 	export let data
 
@@ -13,9 +15,7 @@
 
 <UiWrapper>
 	<TopBarLayout>
-		<BackButton slot="topbar-left" href="/menu/main">Back</BackButton>
-
-		<p slot="topbar-center">CAMPAIGN</p>
+		<TopMenu slot="topbar-center" />
 
 		<TrackSelection
 			bind:trackSelected

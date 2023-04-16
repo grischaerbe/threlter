@@ -3,6 +3,7 @@
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
 	import { formatTime } from '$lib/utils/formatters'
+	import FormattedTime from './FormattedTime.svelte'
 
 	export let trackData: TrackData
 	export let trackRecord: TrackRecord | undefined
@@ -30,27 +31,39 @@
 		: ''
 </script>
 
-<div class={c('grid grid-cols-[auto_auto] gap-x-[30px]', _class)}>
-	{#if trackRecord}
-		<div class="mb-[10px]">{personalBestMedal} PERSONAL BEST</div>
-		<div class="font-mono text-right mb-[10px]">
-			{formatTime(trackRecord.time.current)}
+<div class={c('grid grid-cols-[auto_auto] gap-x-[30px] gap-y-[15px]', _class)}>
+	<div>🏅 Author</div>
+	<div class="font-mono text-right">
+		<FormattedTime time={trackData.trackTimes.author.current} />
+	</div>
+
+	{#if trackData.trackTimes.gold.current !== 0}
+		<div>🥇 Gold</div>
+		<div class="font-mono text-right">
+			<FormattedTime time={trackData.trackTimes.gold.current} />
 		</div>
 	{/if}
-	<div>🏅 AUTHOR</div>
-	<div class="font-mono text-right">
-		{formatTime(trackData.trackTimes.author.current)}
-	</div>
-	<div>🥇 GOLD</div>
-	<div class="font-mono text-right">
-		{formatTime(trackData.trackTimes.gold.current)}
-	</div>
-	<div>🥈 SILVER</div>
-	<div class="font-mono text-right">
-		{formatTime(trackData.trackTimes.silver.current)}
-	</div>
-	<div>🥉 BRONZE</div>
-	<div class="font-mono text-right">
-		{formatTime(trackData.trackTimes.bronze.current)}
-	</div>
+
+	{#if trackData.trackTimes.silver.current !== 0}
+		<div>🥈 Silver</div>
+		<div class="font-mono text-right">
+			<FormattedTime time={trackData.trackTimes.silver.current} />
+		</div>
+	{/if}
+
+	{#if trackData.trackTimes.bronze.current !== 0}
+		<div>🥉 Bronze</div>
+		<div class="font-mono text-right">
+			<FormattedTime time={trackData.trackTimes.bronze.current} />
+		</div>
+	{/if}
+
+	{#if trackRecord}
+		<div class="col-span-2 h-[2px] w-full bg-orange" />
+
+		<div>{personalBestMedal} Personal Best</div>
+		<div class="font-mono text-right">
+			<FormattedTime time={trackRecord.time.current} />
+		</div>
+	{/if}
 </div>

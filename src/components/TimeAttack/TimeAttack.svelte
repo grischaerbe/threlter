@@ -10,8 +10,8 @@
 </script>
 
 <CommonGamePlay {trackData} let:proceed let:time let:restart let:trackRecord>
-	<TimeAttackPaused {trackData} slot="ui-paused" {proceed} {restart} />
+	<TimeAttackPaused {time} {trackData} slot="ui-paused" {proceed} {restart} />
 	<TimeAttackIntro slot="ui-intro" {proceed} {trackData} {trackRecord} />
 	<TimeAttackUi slot="ui-playing" {time} />
-	<TimeAttackFinished slot="ui-finished" {restart} {trackRecord} {time} {trackData} />
+	<TimeAttackFinished slot="ui-finished" {restart} {trackRecord} {trackData} />
 </CommonGamePlay>

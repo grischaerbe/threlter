@@ -159,6 +159,8 @@
 	 * In units/s
 	 */
 	let maxDesiredVelocity = 93
+	// let suspensionStiffness = 0.99
+	// let suspensionDamping = 0.1
 
 	// const suspensionMountHeightRelativeToCarFloor = 0
 	let suspensionStiffness = 0.5

@@ -29,6 +29,7 @@
 	import { createTrackEditorContext } from './context'
 	import { useEvent } from '../../hooks/useEvents'
 	import { appState } from '../../stores/app'
+	import SpecialButton from '../UI/components/SpecialButton.svelte'
 
 	const { visibility } = appState
 
@@ -143,34 +144,32 @@
 {:else if $view === 'orbit'}
 	<UiWrapper>
 		<TopBarLayout>
-			<div slot="topbar-left" class="flex flex-col gap-[2px] w-fit">
-				<Button
+			<div slot="topbar-left" class="flex flex-col gap-[15px] w-fit">
+				<SpecialButton
 					on:click={() => {
 						showMenu.set(true)
 					}}
 				>
 					Menu
-				</Button>
+				</SpecialButton>
 
-				<Button
+				<SpecialButton
 					on:click={() => {
 						showInfo.set(true)
 					}}
 				>
 					Info
-				</Button>
+				</SpecialButton>
 			</div>
 
-			<div slot="topbar-center">Track editor</div>
-
-			<Button
+			<SpecialButton
 				slot="topbar-right"
 				on:click={() => {
 					view.set('car')
 				}}
 			>
 				Play
-			</Button>
+			</SpecialButton>
 
 			{#if $validated}
 				<Card class="flex flex-col gap-[20px] max-w-[400px]">
@@ -182,14 +181,14 @@
 					</div>
 
 					<div class="pb-[2px]">
-						<Button
-							style="red"
+						<SpecialButton
+							style="red-inverted"
 							on:click={() => {
 								trackData.invalidate()
 							}}
 						>
 							Unlock
-						</Button>
+						</SpecialButton>
 					</div>
 				</Card>
 			{/if}
@@ -224,16 +223,16 @@
 {:else if $view === 'car'}
 	<UiWrapper>
 		<TopBarLayout>
-			<BackButton
+			<SpecialButton
 				slot="topbar-left"
 				on:click={() => {
 					view.set('orbit')
 				}}
 			>
-				Track
-			</BackButton>
+				Edit
+			</SpecialButton>
 
-			<Button
+			<SpecialButton
 				slot="topbar-right"
 				forceFocusOnMount
 				on:click={() => {
@@ -242,7 +241,7 @@
 				}}
 			>
 				Reset
-			</Button>
+			</SpecialButton>
 		</TopBarLayout>
 	</UiWrapper>
 {/if}

@@ -7,6 +7,7 @@
 	} from '$components/TrackElements/elements'
 	import Button from '$components/UI/components/Button.svelte'
 	import { useTrackEditor } from '../context'
+	import PlainButton from '../../UI/components/PlainButton.svelte'
 
 	const { trackData, currentlySelectedElement } = useTrackEditor()
 	const validated = trackData.validated
@@ -36,13 +37,19 @@
 	})
 </script>
 
-<div class={c('flex flex-row items-end gap-[2px]', $validated && 'opacity-50')}>
+<div class={c('flex flex-row items-end gap-[5px]', $validated && 'opacity-50')}>
 	{#each categories as category, index}
-		<div class="flex flex-col gap-[2px]">
-			{#if selectedCategory === category && !$validated}
+		{@const isSelected = selectedCategory === category}
+		<div class="flex flex-col gap-[0px]">
+			{#if isSelected && !$validated}
 				{#each category.elements as element, index}
-					<Button
-						class="!px-0"
+					{@const isFirst = index === 0}
+					{@const isLast = index === category.elements.length - 1}
+					<PlainButton
+						class={c(
+							'border-orange border-x-2 border-b-2 p-[6px] bg-blue-950',
+							isFirst && 'rounded-t-md border-t-2'
+						)}
 						disabled={$validated}
 						forceFocusOnMount={index === category.elements.length - 1 && !$validated}
 						on:click={() => {
@@ -57,13 +64,13 @@
 						<img
 							src="/TrackElements/images/{element}.png"
 							alt={element}
-							class="!h-[60px] !w-[60px]"
+							class="!h-[56px] !w-[56px]"
 						/>
-					</Button>
+					</PlainButton>
 				{/each}
 			{/if}
 
-			<Button
+			<PlainButton
 				on:click={() => {
 					if (selectedCategory === category) {
 						selectedCategory = undefined
@@ -72,11 +79,16 @@
 					}
 				}}
 				forceFocusOnMount={index === 0 && !$validated}
-				class="!px-0"
+				class={c(
+					'border-orange p-[6px]',
+					isSelected
+						? 'border-x-2 border-b-2 rounded-b-md bg-blue-900'
+						: 'border-2 rounded-md bg-blue-950'
+				)}
 				disabled={$validated}
 			>
-				<img src={category.previewImage} alt={category.name} class="!h-[60px] !w-[60px]" />
-			</Button>
+				<img src={category.previewImage} alt={category.name} class="!h-[56px] !w-[56px]" />
+			</PlainButton>
 		</div>
 	{/each}
 </div>

@@ -9,17 +9,16 @@
 	export let audioCues = true
 	export let preventFocusOnFocusLost = false
 	export let forceFocusOnMount = false
-	export let style: 'regular' | 'inverted' | 'grey' | 'green' | 'red' = 'regular'
+	export let style: 'regular' | 'green' | 'green-inverted' | 'inverted' | 'red' | 'red-inverted' =
+		'regular'
 
-	const styles: Record<typeof style, string> = {
-		regular:
-			'bg-blue-darkest text-orange hover:bg-blue-darker focus:bg-blue-darker disabled:!bg-[#e8e8e8] disabled:!text-black',
-		inverted:
-			'bg-black text-white hover:bg-[#e8e8e8] hover:text-black focus:bg-[#e8e8e8] focus:text-black disabled:!bg-[#505050] disabled:!text-[#e8e8e8]',
-		grey: 'bg-[#e8e8e8] hover:bg-[#d6d6d6] focus:bg-[#d6d6d6] text-black disabled:!bg-[#e8e8e8] disabled:!text-[#505050]',
-		green:
-			'bg-green-500 text-black hover:bg-green-400 focus:bg-green-400 disabled:!bg-green-600 disabled:!text-[#505050]',
-		red: 'bg-red-500 text-black hover:bg-red-400 focus:bg-red-400 disabled:!bg-red-600 disabled:!text-[#505050]'
+	export const styles: Record<typeof style, string> = {
+		regular: 'text-orange bg-blue-darkest hover:bg-blue-darker focus:bg-blue-darker',
+		inverted: 'text-blue-darkest bg-orange hover:text-blue-darker focus:text-blue-darker',
+		green: 'text-green-500 bg-blue-950 hover:bg-blue-darker focus:bg-blue-darker',
+		'green-inverted': 'text-blue-950 bg-green-500 hover:text-blue-darker focus:text-blue-darker',
+		red: 'text-red-500 bg-blue-950 hover:bg-blue-darker focus:bg-blue-darker',
+		'red-inverted': 'text-blue-950 bg-red-500 hover:text-blue-darker focus:text-blue-darker'
 	}
 
 	const { sfx } = appState.options.audio
@@ -64,7 +63,7 @@
 	on:click
 	{disabled}
 	class={c(
-		'text-[0.8em] text-center rounded-xl border-[3px] border-current normal-case [&_svg]:!fill-current flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] outline-none px-3 py-1 [&_svg]:h-[1em] [&_svg]:w-[1em] [&_img]:h-[1em] [&_img]:w-[1em] leading-none',
+		'text-center uppercase font-headline rounded-xl px-3 pb-1 pt-1.5 leading-none border-[3px] border-current pointer-events-auto outline-none [&_svg]:fill-current [&_svg]:w-[1em] [&_svg]:h-[1em] flex flex-row gap-[10px] justify-center',
 		styles[style],
 		_class
 	)}

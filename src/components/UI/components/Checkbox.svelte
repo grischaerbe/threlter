@@ -42,7 +42,7 @@
 		})
 	}}
 	class={c(
-		'group bg-white rounded-sm relative text-black uppercase [&_svg]:!fill-current flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] px-3 outline-none',
+		'group rounded-sm relative text-black uppercase [&_svg]:!fill-current flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] px-3 outline-none',
 		_class
 	)}
 >
@@ -58,10 +58,11 @@
 			width="72"
 			height="72"
 			viewBox="0 0 256 256"
-			><path
-				d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"
-			/></svg
 		>
+			<path
+				d="M232.49,80.49l-128,128a12,12,0,0,1-17,0l-56-56a12,12,0,1,1,17-17L96,183,215.51,63.51a12,12,0,0,1,17,17Z"
+			/>
+		</svg>
 	</div>
 	<slot />
 </button>

@@ -3,9 +3,20 @@ const config = {
 
 	theme: {
 		extend: {
+			colors: {
+				orange: {
+					DEFAULT: 'var(--color-orange)'
+				},
+				blue: {
+					dark: 'var(--color-blue-dark)',
+					darker: 'var(--color-blue-darker)',
+					darkest: 'var(--color-blue-darkest)'
+				}
+			},
 			fontFamily: {
-				sans: ['Rubik', 'sans-serif'],
-				headline: ['Rubik Mono One', 'sans-serif']
+				sans: 'var(--font-sans)',
+				headline: 'var(--font-headline)',
+				segments: 'var(--font-segments)'
 			}
 		}
 	},

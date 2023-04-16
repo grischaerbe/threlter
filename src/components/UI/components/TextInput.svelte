@@ -22,14 +22,14 @@
 </script>
 
 <div class={c('flex flex-col w-full', _class)}>
-	<label for={id}>{label}</label>
+	<label class="mb-[5px]" for={id}>{label}</label>
 	<input
 		use:keyboardNavigationAction={{
 			forceFocus: forceFocusOnMount,
 			preventFocusOnFocusLost
 		}}
 		on:keydown={onInputKeyDown}
-		class="pointer-events-auto w-full uppercase h-[1em]"
+		class="pointer-events-auto w-full uppercase bg-transparent px-[10px] py-[5px] focus:outline-none border-orange border-2 rounded-md"
 		{id}
 		name={id}
 		type="text"
@@ -37,9 +37,3 @@
 		on:input
 	/>
 </div>
-
-<style>
-	input {
-		@apply rounded-sm bg-[#e8e8e8] px-[2px] py-0 focus:bg-[#d6d6d6] focus:outline-none;
-	}
-</style>
