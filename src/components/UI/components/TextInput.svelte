@@ -35,7 +35,7 @@
 		}}
 		on:keydown={onInputKeyDown}
 		class={c(
-			'pointer-events-auto w-full uppercase bg-transparent px-[10px] py-[5px] focus:outline-none border-orange border-[3px] rounded-xl',
+			'pointer-events-auto w-full bg-transparent px-[10px] py-[5px] focus:outline-none border-orange border-[3px] rounded-xl',
 			inputClass
 		)}
 		{id}

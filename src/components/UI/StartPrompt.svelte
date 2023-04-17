@@ -3,6 +3,7 @@
 	import UiWrapper from './UiWrapper.svelte'
 	import Button from './components/Button.svelte'
 	import Card from './components/Card.svelte'
+	import SpecialButton from './components/SpecialButton.svelte'
 	import TextInput from './components/TextInput.svelte'
 
 	const { name } = appState.options.player
@@ -23,7 +24,7 @@
 						<TextInput forceFocusOnMount bind:value={playerName} label="Your Name" />
 					</div>
 
-					<Button
+					<SpecialButton
 						class="mb-[2px]"
 						style="inverted"
 						disabled={!playerName.length}
@@ -33,17 +34,17 @@
 						}}
 					>
 						Start
-					</Button>
+					</SpecialButton>
 				</Card>
 			{:else}
-				<Button
+				<SpecialButton
 					forceFocusOnMount
 					on:click={() => {
 						started = true
 					}}
 				>
 					Start
-				</Button>
+				</SpecialButton>
 			{/if}
 		</div>
 	</UiWrapper>

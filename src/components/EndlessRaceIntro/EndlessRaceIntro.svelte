@@ -52,10 +52,13 @@
 	})
 
 	const fadeAnimationValue: AnimationValue<number> = [1, 0]
+	const init = initialValue(fadeAnimationValue)
 	const fade = tweened(initialValue(fadeAnimationValue), {
 		duration: 3e3,
 		easing: cubicInOut
 	})
+	export let cameraFadeOpacity = $fade
+	$: cameraFadeOpacity = $fade
 
 	const fovAnimationValue: AnimationValue<number> = [7, 20]
 	const fov = tweened(initialValue(fovAnimationValue), {
