@@ -129,6 +129,9 @@
 						<ButtonGroup let:divider={Divider} class="text-[0.7em] !rounded-t-none !border-t-0">
 							{#if !trackData.validated.current && tracksCanBeValidated}
 								<PlainButton
+									on:click={() => {
+										dispatch('validatetrack', { trackId: trackData.trackId })
+									}}
 									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500"
 								>
 									Validate

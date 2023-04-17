@@ -9,7 +9,9 @@
 	export let trackData: TrackData
 	export let time: number
 
-	const timeIsBetter = (trackData.trackTimes.author.current ?? Infinity) > time
+	const timeIsBetter =
+		trackData.trackTimes.author.current === 0 ||
+		(trackData.trackTimes.author.current ?? Infinity) > time
 
 	if (timeIsBetter) trackData.validate(time)
 
