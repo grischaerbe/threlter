@@ -146,7 +146,7 @@
 						trackData.trackName.set(`Unnamed Track ${trackNamesStartingWithUnnamed + 1}`)
 						trackData.authorName.set(appState.options.player.name.current)
 						trackData.addTrackElement('Box')
-						trackData.toLocalStorage(0)
+						trackData.toLocalStorage(false)
 
 						goto(`/user/${trackData.trackId}/edit`)
 					}}
