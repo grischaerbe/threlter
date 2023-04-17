@@ -949,7 +949,7 @@
 </script>
 
 {#if useAudio}
-	<Audio src="/engine6.wav" loop autoplay volume={_volume} {playbackRate} />
+	<Audio src="/sfx/engine6_normalized.wav" loop autoplay volume={_volume} {playbackRate} />
 {/if}
 
 {#each impulseVisualisations as impulseVisualisation (impulseVisualisation.id)}

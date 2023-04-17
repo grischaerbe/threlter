@@ -100,7 +100,6 @@
 						{#if trackData.validated.current}
 							<SpecialButton
 								style="green-inverted"
-								forceFocusOnMount
 								on:click={() => {
 									dispatch('playtrack', { trackId: trackData.trackId })
 								}}

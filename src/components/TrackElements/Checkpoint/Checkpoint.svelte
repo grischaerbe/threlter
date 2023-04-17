@@ -81,7 +81,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 					material.color="#606060"
 					material.roughness={0.3}
 					material.metalness={0.3}
-					material.emissive={$currentCheckpointReached ? 'green' : '#f97316'}
+					material.emissive={$currentCheckpointReached ? 'green' : '#dc2626'}
 					bind:ref={signMesh}
 				>
 					<Collider

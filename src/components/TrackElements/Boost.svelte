@@ -61,7 +61,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./boost.glb -i -P -t -s -T
 		rigidBodies.forEach((rigidBody) => {
 			impulse.set(-1, 0, 0)
 			impulse.applyQuaternion(worldQuaternion)
-			impulse.multiplyScalar(1100)
+			impulse.multiplyScalar(900)
 			rigidBody.applyImpulse(impulse, true)
 		})
 	})

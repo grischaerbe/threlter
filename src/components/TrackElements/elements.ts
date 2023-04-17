@@ -10,6 +10,7 @@ import Finish from './Finish/Finish.svelte'
 import HalfBox from './HalfBox.svelte'
 import Ramp from './Ramp.svelte'
 import RampInverse from './RampInverse.svelte'
+import HalfUnitBox from './HalfUnitBox/HalfUnitBox.svelte'
 import Slope from './Slope.svelte'
 import Tiltfullmediumbend from './Tilts/TiltFullMediumBend/Tiltfullmediumbend.svelte'
 import Tiltfulltightbend from './Tilts/TiltFullTightBend/Tiltfulltightbend.svelte'
@@ -52,6 +53,12 @@ export const trackElementPrototypes = {
 	HalfBox: {
 		buttonLabel: 'Half Box',
 		component: HalfBox,
+		category: 'basics'
+	},
+
+	HalfUnitBox: {
+		buttonLabel: 'Half Unit Box',
+		component: HalfUnitBox,
 		category: 'basics'
 	},
 

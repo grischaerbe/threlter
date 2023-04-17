@@ -24,6 +24,7 @@
 	import { preloadTilttransitionrightlong } from '../TrackElements/Tilts/TiltTransitions/TiltTransitionRightLong/Tilttransitionrightlong.svelte'
 	import { preloadFinish } from '../TrackElements/Finish/Finish.svelte'
 	import { preloadCheckpoint } from '../TrackElements/Checkpoint/Checkpoint.svelte'
+	import { preloadHalfunitbox } from '../TrackElements/HalfUnitBox/HalfUnitBox.svelte'
 
 	const preload = () => {
 		return Promise.all([
@@ -48,7 +49,8 @@
 			preloadTilttransitionleftlong(),
 			preloadTilttransitionrightlong(),
 			preloadFinish(),
-			preloadCheckpoint()
+			preloadCheckpoint(),
+			preloadHalfunitbox()
 		])
 	}
 

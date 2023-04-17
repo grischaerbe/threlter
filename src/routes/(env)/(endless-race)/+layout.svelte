@@ -14,7 +14,7 @@
 </script>
 
 {#if $music}
-	<audio autoplay src="/music/let-the-games-begin-21858.mp3" />
+	<audio autoplay src="/music/let-the-games-begin-21858.mp3" loop />
 {/if}
 
 <UiWrapper>
