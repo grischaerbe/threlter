@@ -115,6 +115,12 @@
 		}
 	})
 
+	useKeyDown('Escape', () => {
+		if ($view === 'car') {
+			view.set('orbit')
+		}
+	})
+
 	const respawnCar = useEvent('respawn-car')
 	const resetTrackViewer = useEvent('reset-track-viewer')
 

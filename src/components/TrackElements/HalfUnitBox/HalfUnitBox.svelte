@@ -49,12 +49,16 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 			receiveShadow
 			geometry={$gltf.nodes.Floor001.geometry}
 			material={$gltf.materials['Metallic Blue']}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 		<T.Mesh
 			castShadow
 			receiveShadow
 			geometry={$gltf.nodes.Floor001_1.geometry}
 			material={$gltf.materials['Gray Concretelike']}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 	</T>
 {/if}
