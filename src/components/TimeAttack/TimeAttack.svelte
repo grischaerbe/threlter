@@ -11,5 +11,5 @@
 <CommonGamePlay {trackData} let:proceed let:time let:restart let:trackRecord>
 	<TimeAttackPaused {time} {trackData} slot="ui-paused" {proceed} {restart} />
 	<TimeAttackIntro slot="ui-intro" {proceed} {trackData} {trackRecord} />
-	<TimeAttackFinished slot="ui-finished" {restart} {trackRecord} {trackData} />
+	<TimeAttackFinished {time} slot="ui-finished" {restart} {trackRecord} {trackData} />
 </CommonGamePlay>

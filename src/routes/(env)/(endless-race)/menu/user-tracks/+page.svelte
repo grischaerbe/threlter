@@ -8,7 +8,6 @@
 	import JSZip from 'jszip'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import TopMenu from '../../../../../components/UI/layouts/TopMenu.svelte'
-	import { onMount } from 'svelte'
 
 	let trackSelected = false
 

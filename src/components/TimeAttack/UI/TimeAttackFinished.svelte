@@ -8,6 +8,7 @@
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
 	export let restart: () => void
+	export let time: number
 	export let trackRecord: TrackRecord | undefined
 	export let trackData: TrackData
 </script>
@@ -18,6 +19,6 @@
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
 	<SpecialButton slot="topbar-right" forceFocusOnMount on:click={restart}>Restart</SpecialButton>
 	<Card class="inline-block text-[0.9em]">
-		<TrackTimes {trackData} {trackRecord} />
+		<TrackTimes {time} {trackData} {trackRecord} />
 	</Card>
 </TopbarLayout>

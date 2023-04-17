@@ -1,7 +1,5 @@
 <script lang="ts">
 	import UiWrapper from '$components/UI/UiWrapper.svelte'
-	import BackButton from '$components/UI/components/BackButton.svelte'
-	import Button from '$components/UI/components/Button.svelte'
 	import Card from '$components/UI/components/Card.svelte'
 	import Checkbox from '$components/UI/components/Checkbox.svelte'
 	import TextInput from '$components/UI/components/TextInput.svelte'

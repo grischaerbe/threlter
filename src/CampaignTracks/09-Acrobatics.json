@@ -249,7 +249,7 @@
 		},
 		{ "id": "nqziw3r", "type": "Boost", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] }
 	],
-	"trackTimes": { "author": 7618, "gold": 0, "silver": 0, "bronze": 0 },
+	"trackTimes": { "author": 7618, "gold": 8000, "silver": 9000, "bronze": 10000 },
 	"trackRespawns": { "author": 0, "gold": 0, "silver": 0, "bronze": 0 },
 	"validated": true,
 	"validationId": "d60414d7b20f3",

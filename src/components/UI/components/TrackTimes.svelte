@@ -7,6 +7,7 @@
 
 	export let trackData: TrackData
 	export let trackRecord: TrackRecord | undefined = undefined
+	export let time: number | undefined = undefined
 
 	let _class = ''
 	export { _class as class }
@@ -26,6 +27,18 @@
 			: trackRecord.time.current < trackData.trackTimes.silver.current
 			? medals.silver
 			: trackRecord.time.current < trackData.trackTimes.bronze.current
+			? medals.bronze
+			: ''
+		: ''
+
+	const yourTimeMedal = time
+		? time < trackData.trackTimes.author.current
+			? medals.author
+			: time < trackData.trackTimes.gold.current
+			? medals.gold
+			: time < trackData.trackTimes.silver.current
+			? medals.silver
+			: time < trackData.trackTimes.bronze.current
 			? medals.bronze
 			: ''
 		: ''
@@ -58,12 +71,21 @@
 		</div>
 	{/if}
 
-	{#if trackRecord}
+	{#if trackRecord || time !== undefined}
 		<div class="col-span-2 h-[2px] w-full bg-orange" />
+	{/if}
 
+	{#if trackRecord}
 		<div>{personalBestMedal} Personal Best</div>
 		<div class="font-mono text-right">
 			<FormattedTime time={trackRecord.time.current} />
+		</div>
+	{/if}
+
+	{#if time !== undefined}
+		<div>{yourTimeMedal} Your Time</div>
+		<div class="font-mono text-right">
+			<FormattedTime {time} />
 		</div>
 	{/if}
 </div>
