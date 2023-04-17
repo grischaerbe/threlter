@@ -59,7 +59,7 @@
 		// doesn't get triggered. this is a bit of a hack, but it works for now.
 		isDraggingTimeout = setTimeout(() => {
 			isDragging.set(false)
-		}, 50)
+		}, 150)
 	}
 	onDestroy(() => {
 		clearTimeout(isDraggingTimeout)
@@ -69,6 +69,9 @@
 {#if $selected && $position && $rotation}
 	<T.Group position={$position} rotation={$rotation} let:ref>
 		<TransformControls
+			raycast={() => {
+				return false
+			}}
 			object={ref}
 			space={$transformSpace}
 			mode={$transformMode}
