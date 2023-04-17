@@ -2,8 +2,18 @@
 	"name": "threlter",
 	"version": "0.0.1",
 	"private": true,
+	"watch": {
+		"move-glb-to-static": {
+			"patterns": [
+				"./src/**/*[!-transformed].glb"
+			],
+			"extensions": "glb"
+		}
+	},
 	"scripts": {
 		"dev": "vite dev",
+		"watch": "npm-watch",
+		"move-glb-to-static": "node ./transformGlbFiles.js",
 		"build": "vite build",
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -25,8 +35,10 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
+		"glob": "^10.1.0",
 		"jszip": "^3.10.1",
 		"mitt": "^3.0.0",
+		"npm-watch": "^0.11.0",
 		"postcss": "^8.4.14",
 		"postcss-load-config": "^4.0.1",
 		"prettier": "^2.8.0",

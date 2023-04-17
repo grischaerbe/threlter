@@ -23,6 +23,7 @@
 	import { preloadTiltfullmediumbend } from '../TrackElements/Tilts/TiltFullMediumBend/Tiltfullmediumbend.svelte'
 	import { preloadTilttransitionleftlong } from '../TrackElements/Tilts/TiltTransitions/TiltTransitionLeftLong/Tilttransitionleftlong.svelte'
 	import { preloadTilttransitionrightlong } from '../TrackElements/Tilts/TiltTransitions/TiltTransitionRightLong/Tilttransitionrightlong.svelte'
+	import { preloadFinish } from '../TrackElements/Finish/Finish.svelte'
 
 	const preload = () => {
 		return Promise.all([
@@ -46,7 +47,8 @@
 			preloadTiltfullmediumbend(),
 			preloadTiltfulltightbend(),
 			preloadTilttransitionleftlong(),
-			preloadTilttransitionrightlong()
+			preloadTilttransitionrightlong(),
+			preloadFinish()
 		])
 	}
 

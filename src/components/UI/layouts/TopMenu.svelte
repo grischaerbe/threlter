@@ -11,9 +11,13 @@
 
 <div class="mb-[30px]">
 	<div
-		class="font-headline flex flex-row justify-center w-full text-[2.55em] mt-0 text-orange rounded-3xl"
+		class="font-headline flex flex-row justify-center w-full text-[2.65em] mt-0 text-orange rounded-3xl"
 	>
-		THRELTEMANIA
+		THRE
+		<span class="ml-[-0.06em]" />
+		L
+		<span class="ml-[-0.18em]" />
+		TEMANIA
 	</div>
 
 	<div class="flex flex-row gap-[5px] justify-between">

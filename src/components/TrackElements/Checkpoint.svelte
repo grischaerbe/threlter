@@ -78,7 +78,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 ./checkpoint.glb -i -P -t -s -T
 					material.color="#606060"
 					material.roughness={0.3}
 					material.metalness={0.3}
-					material.emissive={$currentCheckpointReached ? 'green' : 'red'}
+					material.emissive={$currentCheckpointReached ? 'green' : '#f97316'}
 					bind:ref={signMesh}
 				>
 					<Collider
