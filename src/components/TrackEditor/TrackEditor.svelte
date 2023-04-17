@@ -206,7 +206,7 @@
 			{#if $currentlySelectedElement && $currentlySelectedElementType}
 				<div class="absolute bottom-0 right-0">
 					<Card>
-						<div class="mb-[20px]">
+						<div class="mb-[10px] font-headline">
 							{trackElementPrototypes[$currentlySelectedElementType].buttonLabel}
 						</div>
 						<div class="mb-[20px]">
@@ -215,7 +215,7 @@
 							{/key}
 						</div>
 						<div class="flex flex-row justify-between gap-[2px] text-[0.65em] pb-[2px]">
-							<div class="flex flex-row gap-[2px]">
+							<div class="flex flex-row gap-[15px]">
 								<DuplicateElement />
 								<RotateElement />
 							</div>

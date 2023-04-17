@@ -12,4 +12,6 @@
 	}
 </script>
 
-<Button style="grey" disabled={$validated} on:click={duplicateElement}>Duplicate</Button>
+<Button style="regular" class="font-mono" disabled={$validated} on:click={duplicateElement}>
+	Duplicate
+</Button>

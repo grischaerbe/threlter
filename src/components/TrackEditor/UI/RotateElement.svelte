@@ -19,4 +19,6 @@
 	}
 </script>
 
-<Button style="grey" disabled={$validated} on:click={rotateElement}>ROTATE</Button>
+<Button style="regular" class="font-mono" disabled={$validated} on:click={rotateElement}>
+	Rotate
+</Button>

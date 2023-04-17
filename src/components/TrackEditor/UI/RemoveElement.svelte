@@ -12,4 +12,4 @@
 	}
 </script>
 
-<Button style="red" disabled={$validated} on:click={removeElement}>DELETE</Button>
+<Button style="red" disabled={$validated} class="font-mono" on:click={removeElement}>Delete</Button>

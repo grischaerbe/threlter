@@ -19,7 +19,7 @@
 		grey: 'bg-[#e8e8e8] hover:bg-[#d6d6d6] focus:bg-[#d6d6d6] text-black disabled:!bg-[#e8e8e8] disabled:!text-[#505050]',
 		green:
 			'bg-green-500 text-black hover:bg-green-400 focus:bg-green-400 disabled:!bg-green-600 disabled:!text-[#505050]',
-		red: 'bg-red-500 text-black hover:bg-red-400 focus:bg-red-400 disabled:!bg-red-600 disabled:!text-[#505050]'
+		red: 'bg-red-500 text-blue-950 hover:text-blue-900 focus:text-blue-900 disabled:!bg-red-600 disabled:!text-[#505050]'
 	}
 
 	const { sfx } = appState.options.audio

@@ -68,7 +68,7 @@
 </script>
 
 <div class="pointer-events-auto text-[0.65em]">
-	<div class="mb-[10px]">
+	<div class="mb-[15px]">
 		<div>Position</div>
 		<label for="position.x">X</label>
 		<input
