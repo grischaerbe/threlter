@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '$components/UI/components/Button.svelte'
 	import TextInput from '$components/UI/components/TextInput.svelte'
+	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
 	const { trackData } = useTrackEditor()
@@ -8,12 +9,18 @@
 	let trackName = trackData.trackName.current
 </script>
 
-<div class="flex flex-row gap-[2px] items-end text-[0.8em]">
-	<TextInput label="Track Name" id="track-name" preventFocusOnFocusLost bind:value={trackName} />
+<div class="flex flex-row items-end text-[0.8em]">
+	<TextInput
+		label="Track Name"
+		id="track-name"
+		inputClass="!rounded-r-none !border-r-0"
+		preventFocusOnFocusLost
+		bind:value={trackName}
+	/>
 
-	<Button
+	<SpecialButton
 		disabled={!trackName.length}
-		style="grey"
+		class="h-[46px] !rounded-l-none"
 		on:click={() => {
 			if (!trackName.length) return
 			trackData.trackName.set(trackName)
@@ -21,5 +28,5 @@
 		}}
 	>
 		Save
-	</Button>
+	</SpecialButton>
 </div>

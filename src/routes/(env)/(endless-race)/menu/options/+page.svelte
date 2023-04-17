@@ -8,6 +8,7 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { appState } from '$stores/app'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
+	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import TopMenu from '../../../../../components/UI/layouts/TopMenu.svelte'
 
 	const { audio, video, player, debug } = appState.options
@@ -23,46 +24,51 @@
 	<TopBarLayout>
 		<TopMenu slot="topbar-center" />
 
-		<BlurryCard class="h-full">
-			<div class="flex flex-col gap-[15px] w-1/2">
-				<Card class="flex flex-col items-start justify-start">
-					<div class="mb-[10px] font-headline">Audio</div>
+		<BlurryCard class="h-full grid grid-cols-2 gap-[15px]">
+			<Card class="flex flex-col items-start justify-start">
+				<div class="mb-[10px] font-headline">Audio</div>
 
-					<Checkbox forceFocusOnMount class="pl-0" bind:checked={$music}>Music</Checkbox>
+				<Checkbox forceFocusOnMount class="pl-0" bind:checked={$music}>Music</Checkbox>
 
-					<Checkbox class="pl-0" bind:checked={$sfx}>SFX</Checkbox>
-				</Card>
+				<Checkbox class="pl-0" bind:checked={$sfx}>SFX</Checkbox>
+			</Card>
 
-				<Card class="flex flex-col items-start justify-start">
-					<div class="mb-[10px] font-headline">Video</div>
+			<Card class="flex flex-col items-start justify-start">
+				<div class="mb-[10px] font-headline">Video</div>
 
-					<Checkbox class="pl-0" bind:checked={$shadows}>SHADOWS</Checkbox>
-					<Checkbox class="pl-0" bind:checked={$postprocessing}>POST PROCESSING</Checkbox>
-				</Card>
+				<Checkbox class="pl-0" bind:checked={$shadows}>SHADOWS</Checkbox>
+				<Checkbox class="pl-0" bind:checked={$postprocessing}>POST PROCESSING</Checkbox>
+			</Card>
 
-				<Card class="flex flex-col items-start justify-start">
-					<div class="mb-[10px] font-headline">Player</div>
+			<Card class="flex flex-col items-start justify-start">
+				<div class="mb-[10px] font-headline">Player</div>
 
-					<TextInput class="mb-[10px]" label="Name" id="name" bind:value={oldPlayerName} />
-					<div class="pb-[2px]">
-						<Button
-							style="grey"
-							disabled={!oldPlayerName.length}
-							on:click={() => {
-								name.set(oldPlayerName)
-							}}
-						>
-							Save
-						</Button>
-					</div>
-				</Card>
+				<div class="flex flex-row items-end text-[0.8em] w-full">
+					<TextInput
+						label="Name"
+						id="name"
+						inputClass="!rounded-r-none !border-r-0"
+						preventFocusOnFocusLost
+						bind:value={oldPlayerName}
+					/>
 
-				<Card class="flex flex-col items-start justify-start">
-					<div class="mb-[10px] font-headline">Misc</div>
+					<SpecialButton
+						disabled={!oldPlayerName.length}
+						class="h-[46px] !rounded-l-none"
+						on:click={() => {
+							name.set(oldPlayerName)
+						}}
+					>
+						Save
+					</SpecialButton>
+				</div>
+			</Card>
 
-					<Checkbox class="pl-0" bind:checked={$debug}>DEBUG</Checkbox>
-				</Card>
-			</div>
+			<Card class="flex flex-col items-start justify-start">
+				<div class="mb-[10px] font-headline">Misc</div>
+
+				<Checkbox class="pl-0" bind:checked={$debug}>DEBUG</Checkbox>
+			</Card>
 		</BlurryCard>
 	</TopBarLayout>
 </UiWrapper>

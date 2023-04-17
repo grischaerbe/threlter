@@ -10,7 +10,8 @@
 
 {#if $validated}
 	<SpecialButton
-		style="red"
+		class="w-max"
+		style="red-inverted"
 		on:click={() => {
 			trackData.invalidate()
 		}}
@@ -18,7 +19,7 @@
 		Unlock Track
 	</SpecialButton>
 {:else}
-	<SpecialButton style="green-inverted" href={`/user/${trackData.trackId}/validate`}>
+	<SpecialButton class="w-max" style="green-inverted" href={`/user/${trackData.trackId}/validate`}>
 		Validate Track
 	</SpecialButton>
 {/if}

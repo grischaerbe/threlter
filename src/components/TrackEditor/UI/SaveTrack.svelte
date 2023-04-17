@@ -11,4 +11,6 @@
 	}
 </script>
 
-<SpecialButton style="inverted" forceFocusOnMount on:click={onClick}>Export Track</SpecialButton>
+<SpecialButton class="w-max" style="inverted" forceFocusOnMount on:click={onClick}>
+	Export Track
+</SpecialButton>

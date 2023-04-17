@@ -15,6 +15,7 @@
 	import { useEvent } from '../../hooks/useEvents'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
+	import GamePlay from './UI/GamePlay.svelte'
 
 	export let trackData: TrackData
 
@@ -123,7 +124,9 @@
 			<CountIn on:countindone={proceed} />
 		</slot>
 	{:else if $state === 'playing'}
-		<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord} />
+		<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord}>
+			<GamePlay time={$time} />
+		</slot>
 	{:else if $state === 'finished'}
 		<slot name="ui-finished" {restart} time={$time} trackRecord={currentTrackRecord} />
 	{/if}

@@ -172,12 +172,14 @@
 			</SpecialButton>
 
 			{#if $validated}
-				<Card class="flex flex-col gap-[20px] max-w-[400px]">
-					<div>Track is validated</div>
+				<Card class="flex flex-col gap-[15px] max-w-[28ch]">
+					<div class="font-headline">Track validated</div>
 
-					<div class="text-[0.65em]">
-						The track is validated and can be played. While the track is validated, you cannot edit
-						it. If you want to edit the track, you have to unlock it first.
+					<div class="text-[0.8em]">
+						<p class="mb-[10px]">
+							The track is validated and can be played. A validated track cannot be edited.
+						</p>
+						<p>If you want to edit the track, you have to unlock it first.</p>
 					</div>
 
 					<div class="pb-[2px]">

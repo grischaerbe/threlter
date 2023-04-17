@@ -1,30 +1,27 @@
 <script lang="ts">
-	import Button from '$components/UI/components/Button.svelte'
+	import Card from '$components/UI/components/Card.svelte'
+	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
+	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import type { TrackData } from '$lib/TrackData/TrackData'
-	import { formatTime } from '$lib/utils/formatters'
+	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
+	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
 	export let trackData: TrackData
 	export let time: number
 
-	const { trackTimes } = trackData
+	const timeIsBetter = (trackData.trackTimes.author.current ?? Infinity) > time
 
-	const { author } = trackTimes
+	if (timeIsBetter) trackData.validate(time)
 
-	$: currentAuthorTime = formatTime($author)
-
-	trackData.validate(time)
+	export let restart: () => void
 </script>
 
-<p>
-	Current Author Time: {currentAuthorTime}
-</p>
+<BottomScreenTrackName title={trackData.trackName.current} />
 
-<Button
-	on:click={() => {
-		trackData.saveTrackToDisk()
-	}}
->
-	Save Track
-</Button>
-
-<Button href="/user/{trackData.trackId}/edit">Edit Track</Button>
+<TopbarLayout>
+	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
+	<SpecialButton slot="topbar-right" forceFocusOnMount on:click={restart}>Restart</SpecialButton>
+	<Card class="inline-block text-[0.9em]">
+		<TrackTimes {trackData} />
+	</Card>
+</TopbarLayout>

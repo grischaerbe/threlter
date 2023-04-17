@@ -42,11 +42,11 @@
 		})
 	}}
 	class={c(
-		'group rounded-sm relative text-black uppercase [&_svg]:!fill-current flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] px-3 outline-none',
+		'group rounded-sm relative text-orange uppercase [&_svg]:!fill-current flex flex-row gap-2 items-center justify-center [&_img]:block [&_img]:p-[2px] px-3 outline-none',
 		_class
 	)}
 >
-	<div class={c('aspect-square h-[0.9em] py-[2px] rounded-sm border-2 border-black relative')}>
+	<div class={c('aspect-square h-[0.9em] py-[2px] rounded-sm border-2 border-orange relative')}>
 		<svg
 			class={c(
 				'w-full h-full absolute top-0 left-0',

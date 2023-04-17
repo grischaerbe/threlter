@@ -17,20 +17,29 @@
 	export let value = ''
 	export let id = ''
 	export let label: string
+	export let placeholder = ''
+
 	let _class = ''
 	export { _class as class }
+
+	export let inputClass = ''
+	export let labelClass = ''
 </script>
 
 <div class={c('flex flex-col w-full', _class)}>
-	<label class="mb-[5px]" for={id}>{label}</label>
+	<label class={c('mb-[5px]', labelClass)} for={id}>{label}</label>
 	<input
 		use:keyboardNavigationAction={{
 			forceFocus: forceFocusOnMount,
 			preventFocusOnFocusLost
 		}}
 		on:keydown={onInputKeyDown}
-		class="pointer-events-auto w-full uppercase bg-transparent px-[10px] py-[5px] focus:outline-none border-orange border-2 rounded-md"
+		class={c(
+			'pointer-events-auto w-full uppercase bg-transparent px-[10px] py-[5px] focus:outline-none border-orange border-[3px] rounded-xl',
+			inputClass
+		)}
 		{id}
+		{placeholder}
 		name={id}
 		type="text"
 		bind:value

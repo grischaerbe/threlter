@@ -33,32 +33,22 @@
 		<BlurryCard class="h-full grid grid-cols-2 gap-[15px]">
 			<Card class="flex flex-col gap-[15px]">
 				<div class="font-headline">Track details</div>
-				<div class="pb-[2px]">
-					<TrackDetails />
-				</div>
+				<TrackDetails />
 			</Card>
 
 			<Card class="flex flex-col gap-[15px]">
 				<div class="font-headline">TRACK VALIDATION</div>
-
 				<div class="text-[0.8em]">
 					A track must be validated before it can be played. To validate a track, it must be
 					completed from start to finish.
 				</div>
-
-				<div class="pb-[2px]">
-					<StartTrackValidation />
-				</div>
+				<StartTrackValidation />
 			</Card>
 
 			<Card class="flex flex-col gap-[15px]">
 				<div class="font-headline">Track export</div>
-
 				<div class="text-[0.8em]">Share your track with your friends.</div>
-
-				<div class="pb-[2px]">
-					<SaveTrack />
-				</div>
+				<SaveTrack />
 			</Card>
 		</BlurryCard>
 	</TopBarLayout>

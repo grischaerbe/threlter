@@ -10,12 +10,11 @@
 </script>
 
 <div class="mb-[30px]">
-	<PlainButton
-		href="/menu/main"
+	<div
 		class="font-headline flex flex-row justify-center w-full text-[2.55em] mt-0 text-orange rounded-3xl"
 	>
 		THRELTEMANIA
-	</PlainButton>
+	</div>
 
 	<div class="flex flex-row gap-[5px] justify-between">
 		<SpecialButton

@@ -6,7 +6,7 @@
 	import FormattedTime from './FormattedTime.svelte'
 
 	export let trackData: TrackData
-	export let trackRecord: TrackRecord | undefined
+	export let trackRecord: TrackRecord | undefined = undefined
 
 	let _class = ''
 	export { _class as class }
