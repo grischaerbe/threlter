@@ -4,6 +4,7 @@
 	import { scale } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
 	import CurrentTime from '../../UI/components/CurrentTime.svelte'
+	import { useAudioProvider } from '../../Utilities/AudioProvider.svelte'
 
 	export let time: number
 
@@ -11,12 +12,24 @@
 		countindone: void
 	}>()
 
+	const { playAudio } = useAudioProvider()
+
 	let currentCount = 3
+	playAudio('count-in-beep-low', {
+		volume: 0.34
+	})
 	const interval = setInterval(() => {
 		currentCount--
 		if (currentCount === 0) {
+			playAudio('count-in-beep-high', {
+				volume: 0.34
+			})
 			dispatch('countindone')
 			clearInterval(interval)
+		} else {
+			playAudio('count-in-beep-low', {
+				volume: 0.34
+			})
 		}
 	}, 500)
 

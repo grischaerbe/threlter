@@ -21,6 +21,7 @@
 	import { currentWritable, type CurrentWritable } from '@threlte/core'
 	import { createEventDispatcher, getContext, setContext } from 'svelte'
 	import { useEvent } from '../../hooks/useEvents'
+	import { useAudioProvider } from '../Utilities/AudioProvider.svelte'
 
 	export let trackData: TrackData
 	$: elements = trackData.trackElements
@@ -29,10 +30,15 @@
 		trackcompleted: void
 	}>()
 
+	const { playAudio } = useAudioProvider()
+
 	const checkpointsReached = currentWritable<Set<string>>(new Set())
 	const trackCompleted = currentWritable(false)
 
 	const checkpointReached = (trackElementId: string) => {
+		if (!checkpointsReached.current.has(trackElementId)) {
+			playAudio('success1')
+		}
 		checkpointsReached.update((set) => {
 			set.add(trackElementId)
 			return set
@@ -40,6 +46,12 @@
 	}
 
 	const finishReached = () => {
+		playAudio('success1', {
+			detune: 500
+		})
+		playAudio('crowd-cheering', {
+			volume: 0.3
+		})
 		trackCompleted.set(true)
 		dispatch('trackcompleted')
 	}

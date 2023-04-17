@@ -3,7 +3,12 @@
 	const sounds = {
 		buttonClick: '/sfx/button-click.mp3',
 		buttonHover: '/sfx/button-hover.mp3',
+		success1: '/sfx/success1.mp3',
+		success2: '/sfx/success2.mp3',
 		engine: '/engine6.wav',
+		'crowd-cheering': '/sfx/crowd-cheering.mp3',
+		'count-in-beep-low': '/sfx/count-in-beep-low.wav',
+		'count-in-beep-high': '/sfx/count-in-beep-high.wav',
 	}
 
 	export type Sound = keyof typeof sounds
@@ -69,8 +74,6 @@
 
 	beforeNavigate(() => {
 		clearTimeout(timeout)
-		console.log('Navigating')
-
 		hasNavigated = true
 	})
 

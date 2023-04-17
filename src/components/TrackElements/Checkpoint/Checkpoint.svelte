@@ -13,6 +13,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 	import { useTrackElement } from '../../TrackViewer/TrackElement.svelte'
 	import { useTrackViewer } from '../../TrackViewer/TrackViewer.svelte'
 	import { useRefreshCollider } from '../utils/useRefreshCollider'
+	import { useAudioProvider } from '../../Utilities/AudioProvider.svelte'
 
 	type GLTFResult = {
 		nodes: {
