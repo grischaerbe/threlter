@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { useEvent } from '$hooks/useEvents'
-	import { sunPos } from '$src/config'
 	import { appState } from '$stores/app'
 	import { T, useThrelte } from '@threlte/core'
-	import { Portal } from '@threlte/extras'
 	import { onDestroy } from 'svelte'
 	import { PerspectiveCamera, Quaternion, Vector3 } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
@@ -11,12 +9,12 @@
 	import MuscleCar from './Models/MuscleCar.svelte'
 	import MuscleCarWheel from './Models/MuscleCarWheel.svelte'
 	import RaycastVehicleController from './RaycastVehicleController/RaycastVehicleController.svelte'
+	import Sun from './Sun.svelte'
 
 	let carCam: PerspectiveCamera
 	let freezeCam: PerspectiveCamera
 
 	const { sfx } = appState.options.audio
-	const { shadows } = appState.options.video
 	const { debug } = appState.options
 
 	let respawnCar: (() => void) | undefined = undefined
@@ -41,8 +39,6 @@
 	onDestroy(() => {
 		enable()
 	})
-
-	const { scene } = useThrelte()
 
 	$: if (useCarCamera && freezeCamera && carCam && freezeCam) {
 		carCam.updateMatrix()
@@ -82,11 +78,9 @@
 		makeDefault={camera === 'car'}
 	/>
 
-	<svelte:fragment slot="body" let:carState>
-		<T.Group rotation.y={(-90 * Math.PI) / 180}>
-			<MuscleCar isBraking={carState.isBraking} />
-		</T.Group>
-	</svelte:fragment>
+	<T.Group let:carState slot="body" rotation.y={(-90 * Math.PI) / 180}>
+		<MuscleCar {carState} />
+	</T.Group>
 
 	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-fl">
 		<MuscleCarWheel />
@@ -107,35 +101,6 @@
 	<svelte:fragment let:carState>
 		<slot {carState} />
 
-		{#if $shadows}
-			<T.DirectionalLight
-				intensity={0.4}
-				position.x={carState.worldPosition[0] + sunPos[0] * 10}
-				position.y={carState.worldPosition[1] + sunPos[1] * 10}
-				position.z={carState.worldPosition[2] + sunPos[0] * 10}
-				shadow.camera.left={-10}
-				shadow.camera.right={10}
-				shadow.camera.top={10}
-				shadow.camera.bottom={-10}
-				castShadow
-				let:ref
-			>
-				<Portal object={scene}>
-					<T
-						is={ref.target}
-						position.x={carState.worldPosition[0]}
-						position.y={carState.worldPosition[1]}
-						position.z={carState.worldPosition[2]}
-					/>
-				</Portal>
-			</T.DirectionalLight>
-		{:else}
-			<T.DirectionalLight
-				intensity={0.4}
-				position.x={sunPos[0]}
-				position.y={sunPos[1]}
-				position.z={sunPos[0]}
-			/>
-		{/if}
+		<Sun {carState} />
 	</svelte:fragment>
 </RaycastVehicleController>

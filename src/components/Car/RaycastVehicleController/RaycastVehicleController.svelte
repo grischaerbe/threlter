@@ -4,14 +4,13 @@
 <script lang="ts">
 	import {
 		Collider as RapierCollider,
-		Ray,
 		RigidBody as RapierRigidBody,
+		Ray,
 		type Rotation as RapierRotation,
 		type Vector as RapierVector
 	} from '@dimforge/rapier3d-compat'
-	import { T, useFrame } from '@threlte/core'
+	import { T, currentWritable, useFrame } from '@threlte/core'
 	import { Audio } from '@threlte/extras'
-	// import { Collider, computeBitMask, RigidBody, useRapier } from '@threlte/rapier'
 	import { Collider, RigidBody, useRapier } from '@threlte/rapier'
 	import { spring } from 'svelte/motion'
 	import { Group, Quaternion, Vector3 } from 'three'
@@ -19,8 +18,8 @@
 	import Impulse from './Impulse.svelte'
 	import type { CarState } from './types'
 	import { useArrowKeys } from './useArrowKeys'
-	import { add, fromAToB, length, normalize } from './vectorUtils'
 	import { computeBitMask } from './utils/computeBitMask'
+	import { add, fromAToB, length, normalize } from './vectorUtils'
 
 	export let freeze = false
 	export let active = true
@@ -247,7 +246,7 @@
 	let virtualCenterOfMass = new Vector3(0.02, -0.1, 0)
 
 	// https://ease-everything.vercel.app/?path=%255B%2522Path%2522%252C%257B%2522applyMatrix%2522%253Atrue%252C%2522segments%2522%253A%255B%255B0%252C0%255D%252C%255B25%252C200%255D%252C%255B100%252C400%255D%252C%255B100%252C225%255D%252C%255B200%252C400%255D%252C%255B200%252C275%255D%252C%255B300%252C400%255D%252C%255B300%252C300%255D%252C%255B400%252C400%255D%255D%252C%2522strokeColor%2522%253A%255B0.05882%252C0.38039%252C0.99608%255D%252C%2522strokeWidth%2522%253A2%257D%255D
-	const soundPlaybackMap = (t: number) => {
+	const rpmMap = (t: number) => {
 		if (t < 0.0625) return ((0.5 - 0) / (0.0625 - 0)) * (t - 0) + 0
 		if (t < 0.25) return ((1 - 0.5) / (0.25 - 0.0625)) * (t - 0.0625) + 0.5
 		if (t < 0.25) return ((0.5625 - 1) / (0.25 - 0.25)) * (t - 0.25) + 1
@@ -257,6 +256,8 @@
 		if (t < 0.75) return ((0.75 - 1) / (0.75 - 0.75)) * (t - 0.75) + 1
 		return ((1 - 0.75) / (1 - 0.75)) * (t - 0.75) + 0.75
 	}
+
+	// SOUND
 	const minPlaybackRate = 1
 	let maxPlaybackRate = 3.5
 	let idleVolume = 0.6
@@ -357,13 +358,13 @@
 	const rlWheelState = wheelStates[2]!
 	const rrWheelState = wheelStates[3]!
 
-	export let carState: CarState = {
-		isForward: false,
-		isBraking: false,
-		worldPosition: [0, 0, 0],
-		worldQuaternion: [0, 0, 0, 1],
-		steeringAngle: 0,
-		velocity: 0
+	const carState: CarState = {
+		worldPosition: currentWritable([0, 0, 0]),
+		worldQuaternion: currentWritable([0, 0, 0, 1]),
+		velocity: currentWritable(0),
+		isBraking: currentWritable(false),
+		normalizedRpm: currentWritable(0),
+		steeringAngle: currentWritable(0)
 	}
 
 	let playbackRate = minPlaybackRate
@@ -466,9 +467,23 @@
 
 		// get and set the basics
 		const currentWorldPosition = rigidBody.translation()
+		carState.worldPosition.set([
+			currentWorldPosition.x,
+			currentWorldPosition.y,
+			currentWorldPosition.z
+		])
+
 		const currentWorldRotation = rigidBody.rotation()
+		carState.worldQuaternion.set([
+			currentWorldRotation.x,
+			currentWorldRotation.y,
+			currentWorldRotation.z,
+			currentWorldRotation.w
+		])
+
 		const linearVelocity = rigidBody.linvel()
 		const velocity = length(linearVelocity)
+		carState.velocity.set(velocity)
 		/**
 		 * Velocity from 0 to maxDesiredVelocity
 		 */
@@ -615,6 +630,8 @@
 		 * the car is touching the ground!
 		 */
 		if (wheelStates.some((wheelState) => wheelState.onGround)) {
+			// we're at least a bit on the ground
+
 			/**
 			 * -----------------------------------------
 			 * FORWARD IMPULSE
@@ -657,7 +674,7 @@
 						: backwardImpulseMap
 					: brakeImpulseMap
 
-			carState.isBraking = mode === 'brake'
+			carState.isBraking.set(mode === 'brake')
 
 			const forwardImpulse = threeVectorToRapierVector(
 				tempVectorA
@@ -833,39 +850,53 @@
 			// we're on the ground, so set the linear damping to the default
 			finalLinearDamping = linearDamping
 
+			// calculate the normalized rpm
+			carState.normalizedRpm.set(
+				rpmMap(clamp(mapLinear(carState.velocity.current, 0, maxDesiredVelocity, 0, 1), 0, 1))
+			)
+
 			// set the playback rate according to the ground speed when we're touching the ground
 			const desiredPlaybackRate = mapLinear(
-				soundPlaybackMap(clamp(mapLinear(carState.velocity, 0, maxDesiredVelocity, 0, 1), 0, 1)),
+				carState.normalizedRpm.current,
 				0,
 				1,
 				minPlaybackRate,
 				maxPlaybackRate
 			)
+
 			// we're lerping toward desiredPlaybackRate
 			playbackRate = lerp(playbackRate, desiredPlaybackRate, 0.4)
 		} else {
+			// we're airborne
+
 			if (debug) {
 				clearImpulseVisualisation('forwardImpulse')
 				clearImpulseVisualisation('steeringTorque')
 				clearImpulseVisualisation('sideImpulse')
 				clearImpulseVisualisation('summedSideForwardImpulse')
 			}
-			// if we're not touching the ground, the playback rate is adhering to the forward input
-			const desiredPlaybackRate = mapLinear(
-				soundPlaybackMap(Math.max($axis.y, 0) * (active ? 1 : 0)),
+
+			// if we're not touching the ground, the rpm is adhering to the forward input …
+			const rawNormalizedRpm = rpmMap(Math.max($axis.y, 0) * (active ? 1 : 0))
+
+			// … but we're lerping a bit to smooth it out.
+			carState.normalizedRpm.update((normalizedRpm) => {
+				return lerp(normalizedRpm, rawNormalizedRpm, 0.1)
+			})
+
+			playbackRate = mapLinear(
+				carState.normalizedRpm.current,
 				0,
 				1,
 				minPlaybackRate,
 				maxPlaybackRate
 			)
-			// we're lerping toward desiredPlaybackRate
-			playbackRate = lerp(playbackRate, desiredPlaybackRate, 0.1)
 
 			// we also set carState.isBraking based on the yAxis
-			carState.isBraking = $axis.y < 0
+			carState.isBraking.set($axis.y < 0)
 
 			// if braking mid-air, the car can be stopped rotating and moving slightly
-			if (carState.isBraking) {
+			if (carState.isBraking.current) {
 				finalLinearDamping = linearDampingWhenBrakingInAir
 				finalAngularDamping = angularDampingWhenBrakingInAir
 			} else {
@@ -888,6 +919,7 @@
 		} else {
 			steeringAngle.update((s) => s)
 		}
+		carState.steeringAngle.set($steeringAngle)
 
 		// the volume is set by the "forward" input
 		const desiredVolume =
@@ -904,24 +936,8 @@
 			rigidBody.setLinearDamping(finalLinearDamping)
 		}
 
-		carState.worldPosition = [
-			currentWorldPosition.x,
-			currentWorldPosition.y,
-			currentWorldPosition.z
-		]
-
-		carState.worldQuaternion = [
-			currentWorldRotation.x,
-			currentWorldRotation.y,
-			currentWorldRotation.z,
-			currentWorldRotation.w
-		]
-
-		carState.velocity = velocity
-
 		// tell svelte to update stuff
 		wheelStates = wheelStates
-		carState = carState
 		impulseVisualisations = impulseVisualisations
 
 		if (!debug && impulseVisualisations.length) {
@@ -947,6 +963,8 @@
 {/each}
 
 <T.Group>
+	<slot {carState} />
+
 	<RigidBody canSleep={false} type="dynamic" bind:rigidBody enabled={!freeze}>
 		<Collider
 			restitution={0}
@@ -962,7 +980,7 @@
 			]}
 		>
 			{#if !debug}
-				<slot name="body" {carState} />
+				<slot {carState} name="body" />
 
 				<!-- WHEEL SLOTS -->
 				<T.Group bind:ref={flWheelState.wheelGroup}>
@@ -994,6 +1012,4 @@
 			<slot name="camera" {ref} />
 		</T.Group>
 	</T.Group>
-
-	<slot {carState} />
 </T.Group>

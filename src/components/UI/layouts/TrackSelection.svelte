@@ -11,6 +11,7 @@
 	import PlainButton from '../components/PlainButton.svelte'
 	import SpecialButton from '../components/SpecialButton.svelte'
 	import ButtonGroup from '../components/ButtonGroup/ButtonGroup.svelte'
+	import BlurryCard from '../components/BlurryCard.svelte'
 
 	export let trackDatas: TrackData[]
 
@@ -43,9 +44,7 @@
 	<div class="font-headline text-orange mb-[15px]">{headline}</div>
 {/if}
 
-<div
-	class="grid grid-cols-3 gap-[15px] h-full min-h-0 bg-blue-950/50 p-[15px] rounded-3xl border-2 border-blue-950 overflow-hidden relative"
->
+<BlurryCard class="grid grid-cols-3 gap-[15px] h-full min-h-0">
 	<slot />
 
 	<Card class="h-min !p-0 overflow-hidden border-2 border-blue-950">
@@ -63,10 +62,6 @@
 					>
 						{trackData.trackName.current}
 					</PlainButton>
-
-					<!-- {#if index !== trackDatas.length - 1}
-				<div class="bg-orange w-full h-[3px]" />
-				{/if} -->
 				{/if}
 			{/each}
 		</div>
@@ -87,10 +82,18 @@
 							'!rounded-br-none'
 					)}
 				>
-					<div class="flex flex-row justify-between items-start">
-						<span class="font-headline">
-							{trackData.trackName.current}
-						</span>
+					<div class="flex flex-row justify-between items-start mb-[15px]">
+						<div>
+							<span class="font-headline">
+								{trackData.trackName.current}
+							</span>
+
+							{#if trackData.authorName.current.length && showAuthor}
+								<div class="text-[0.8em]">
+									{trackData.authorName.current}
+								</div>
+							{/if}
+						</div>
 
 						{#if trackData.validated.current}
 							<SpecialButton
@@ -104,12 +107,6 @@
 							</SpecialButton>
 						{/if}
 					</div>
-
-					{#if trackData.authorName.current.length && showAuthor}
-						<div>
-							{trackData.authorName.current}
-						</div>
-					{/if}
 
 					{#if tracksCanBeValidated && !trackData.validated.current}
 						<div class="text-[0.8em]">
@@ -132,7 +129,7 @@
 									on:click={() => {
 										dispatch('validatetrack', { trackId: trackData.trackId })
 									}}
-									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500"
+									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500/80 hover:bg-green-500 focus:bg-green-500"
 								>
 									Validate
 								</PlainButton>
@@ -143,7 +140,7 @@
 									on:click={() => {
 										dispatch('edittrack', { trackId: trackData.trackId })
 									}}
-									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60"
+									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 								>
 									Edit
 								</PlainButton>
@@ -151,7 +148,7 @@
 							{/if}
 							{#if tracksCanBeDuplicated}
 								<PlainButton
-									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60"
+									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 									on:click={() => {
 										dispatch('duplicatetrack', { trackId: trackData.trackId })
 									}}
@@ -162,7 +159,7 @@
 							{/if}
 							{#if tracksCanBeDeleted}
 								<PlainButton
-									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500"
+									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500/80 hover:bg-red-500 focus:bg-red-500"
 									on:click={() => {
 										dispatch('deletetrack', { trackId: trackData.trackId })
 									}}
@@ -176,4 +173,4 @@
 			</div>
 		{/if}
 	{/if}
-</div>
+</BlurryCard>

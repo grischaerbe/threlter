@@ -7,7 +7,9 @@
 	export let time: number
 	export let carState: CarState
 
+	const { worldPosition, worldQuaternion } = carState
+
 	useFrame(() => {
-		ghost.addFrame(carState.worldPosition, carState.worldQuaternion, time)
+		ghost.addFrame($worldPosition, $worldQuaternion, time)
 	})
 </script>

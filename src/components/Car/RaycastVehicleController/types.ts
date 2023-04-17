@@ -1,11 +1,10 @@
+import type { CurrentWritable } from '@threlte/core'
+
 export type CarState = {
-	isForward: boolean
-	isBraking: boolean
-	velocity: number
-	worldPosition: [number, number, number]
-	worldQuaternion: [number, number, number, number]
-	/**
-	 * in radians
-	 */
-	steeringAngle: number
+	worldPosition: CurrentWritable<[number, number, number]>
+	worldQuaternion: CurrentWritable<[number, number, number, number]>
+	steeringAngle: CurrentWritable<number>
+	velocity: CurrentWritable<number>
+	isBraking: CurrentWritable<boolean>
+	normalizedRpm: CurrentWritable<number>
 }

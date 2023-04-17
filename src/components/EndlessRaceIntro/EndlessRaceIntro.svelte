@@ -13,6 +13,7 @@
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
 	import MuscleCarWheel from '../Car/Models/MuscleCarWheel.svelte'
 	import Box from './Box.svelte'
+	import { dummyCarState } from '../Car/carState'
 
 	const { options } = appState
 
@@ -168,7 +169,7 @@
 {/each}
 
 <T.Group position.y={0.7}>
-	<MuscleCar />
+	<MuscleCar carState={dummyCarState} />
 
 	<T.Group position.y={height}>
 		<!-- FRONT WHEELS -->

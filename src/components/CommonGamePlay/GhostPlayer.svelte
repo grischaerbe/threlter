@@ -5,6 +5,7 @@
 	import type { Ghost } from '../../lib/TrackRecord/Ghost'
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
 	import MuscleCarWheel from '../Car/Models/MuscleCarWheel.svelte'
+	import { dummyCarState } from '../Car/carState'
 
 	export let ghost: Ghost
 	export let time: number
@@ -43,7 +44,7 @@
 {#if showGhost}
 	<T.Group bind:ref={group}>
 		<T.Group rotation.y={-90 * DEG2RAD}>
-			<MuscleCar />
+			<MuscleCar carState={dummyCarState} />
 
 			<T.Group position.y={height}>
 				<!-- FRONT WHEELS -->
