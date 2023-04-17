@@ -3,12 +3,19 @@
 	import { page } from '$app/stores'
 	import EndlessRaceIntro from '$components/EndlessRaceIntro/EndlessRaceIntro.svelte'
 	import UiWrapper from '../../../components/UI/UiWrapper.svelte'
+	import { appState } from '../../../stores/app'
 
 	const showIntro = $page.route.id === '/(env)/(endless-race)'
+
+	const { music } = appState.options.audio
 
 	const gradientBaseOpacity = 0.8
 	let cameraFadeOpacity = 0
 </script>
+
+{#if $music}
+	<audio autoplay src="/music/let-the-games-begin-21858.mp3" />
+{/if}
 
 <UiWrapper>
 	<div

@@ -4,10 +4,6 @@
 		buttonClick: '/sfx/button-click.mp3',
 		buttonHover: '/sfx/button-hover.mp3',
 		engine: '/engine6.wav',
-		menuBackground: '/music/Makaih Beats - Reflection.mp3',
-		menuBackground2: '/music/mike-gora-manic-114815.mp3',
-		menuBackground3: '/music/let-the-games-begin-21858.mp3',
-
 	}
 
 	export type Sound = keyof typeof sounds

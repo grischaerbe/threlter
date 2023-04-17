@@ -1,6 +1,5 @@
 <script lang="ts">
 	import CameraFade from '$components//Utilities/CameraFade.svelte'
-	import Sound from '$components/Utilities/Sound.svelte'
 	import { appState } from '$stores/app'
 	import { T, useFrame, useThrelte } from '@threlte/core'
 	import { Float } from '@threlte/extras'
@@ -12,8 +11,8 @@
 	import { introLength } from '../../config'
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
 	import MuscleCarWheel from '../Car/Models/MuscleCarWheel.svelte'
-	import Box from './Box.svelte'
 	import { dummyCarState } from '../Car/carState'
+	import Box from './Box.svelte'
 
 	const { options } = appState
 
@@ -22,7 +21,6 @@
 	}>()
 
 	const { shadows } = options.video
-	const { music } = options.audio
 
 	let camera: PerspectiveCamera
 
@@ -148,10 +146,6 @@
 
 	const { scene } = useThrelte()
 </script>
-
-{#if $music}
-	<Sound sound="menuBackground3" autostop volume={0.5} />
-{/if}
 
 <T.Fog
 	near={30}
