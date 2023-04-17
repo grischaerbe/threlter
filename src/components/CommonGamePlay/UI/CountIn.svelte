@@ -3,6 +3,9 @@
 	import UiWrapper from '$components/UI/UiWrapper.svelte'
 	import { scale } from 'svelte/transition'
 	import { cubicOut } from 'svelte/easing'
+	import CurrentTime from '../../UI/components/CurrentTime.svelte'
+
+	export let time: number
 
 	const dispatch = createEventDispatcher<{
 		countindone: void
@@ -26,6 +29,8 @@
 		clearInterval(interval)
 	})
 </script>
+
+<CurrentTime {time} />
 
 <UiWrapper>
 	<div class="flex flex-row justify-center items-center h-[66%] w-full text-[3em]">

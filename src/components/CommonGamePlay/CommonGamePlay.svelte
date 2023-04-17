@@ -121,7 +121,7 @@
 		<slot name="ui-intro" {proceed} trackRecord={currentTrackRecord} />
 	{:else if $state === 'count-in'}
 		<slot name="ui-count-in" {proceed} trackRecord={currentTrackRecord}>
-			<CountIn on:countindone={proceed} />
+			<CountIn on:countindone={proceed} time={$time} />
 		</slot>
 	{:else if $state === 'playing'}
 		<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord}>
