@@ -33,6 +33,8 @@
 				<div class="text-[0.65em]">
 					Shift + D - Duplicate selected element
 					<br />
+					Alt + Drag Element - Duplicate element
+					<br />
 					Shift + R - Rotate selected element
 					<br />
 					T - Translate controls

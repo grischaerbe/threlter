@@ -10,6 +10,8 @@
 	import { useTrackEditor } from './context'
 	import { onDestroy } from 'svelte'
 	import type { TrackElement } from '$lib/TrackData/TrackData'
+	import { useKeyDown } from '../../hooks/useKeyDown'
+	import { useKeyUp } from '../../hooks/useKeyUp'
 
 	export let trackElement: TrackElement
 
@@ -35,7 +37,18 @@
 		trackData.setTrackElementRotation(trackElement.id, rotation)
 	}
 
+	let altIsDown = false
+	useKeyDown('Alt', () => {
+		altIsDown = true
+	})
+	useKeyUp('Alt', () => {
+		altIsDown = false
+	})
+
 	const onMouseDown = () => {
+		if (altIsDown) {
+			trackData.duplicateTrackElement(trackElement.id)
+		}
 		clearTimeout(isDraggingTimeout)
 		isDragging.set(true)
 	}
