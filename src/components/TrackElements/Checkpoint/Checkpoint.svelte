@@ -67,7 +67,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 {#if $gltf}
 	<T is={ref} dispose={false}>
 		<T.Group position={[0, -0.25, 0]}>
-			<Collider shape="cuboid" args={[5, 0.25, 5]} />
+			<Collider shape="cuboid" args={[5, 0.25, 5]} bind:refresh={refreshFns[0]} />
 		</T.Group>
 
 		<T.Group position={[0, 5, 0]}>
