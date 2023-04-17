@@ -2,7 +2,7 @@
 	import { preloadMuscleCar } from '$components/Car/Models/MuscleCar.svelte'
 	import { preloadMuscleCarWheel } from '$components/Car/Models/MuscleCarWheel.svelte'
 	import { preloadEnv } from '$components/Common/Env.svelte'
-	// import { preloadBarrier } from '$components/TrackElements/Barrier.svelte'
+	import { preloadBarrier } from '$components/TrackElements/Barrier.svelte'
 	import { preloadBarrierEnd } from '$components/TrackElements/BarrierEnd.svelte'
 	import { preloadBarrierTurnLeft } from '$components/TrackElements/BarrierTurnLeft.svelte'
 	import { preloadBasicBox } from '$components/TrackElements/BasicBox.svelte'
@@ -37,7 +37,7 @@
 			preloadBarrierEnd(),
 			preloadBoost(),
 			preloadBarrierTurnLeft(),
-			// preloadBarrier(),
+			preloadBarrier(),
 			preloadSlope(),
 			preloadEnv(),
 			preloadBasicBox(),
