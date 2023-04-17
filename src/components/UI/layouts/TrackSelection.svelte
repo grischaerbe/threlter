@@ -49,25 +49,27 @@
 <BlurryCard class="grid grid-cols-3 gap-[15px] h-full min-h-0">
 	<slot />
 
-	<Card class="h-min !p-0 overflow-hidden border-2 border-blue-950">
-		<div class="flex flex-col col-span-1 h-min overflow-auto text-[0.8em]">
-			{#each trackDatas as trackData, index}
-				{#if trackData}
-					<PlainButton
-						on:click={() => selectTrack(trackData.trackId)}
-						class={c(
-							'text-orange text-left px-[12px] py-[8px] hover:bg-blue-darker focus:bg-blue-darker outline-none',
-							selectedTrackId === trackData.trackId && '!bg-orange !text-blue-darkest',
-							index === 0 && 'pt-[11px]',
-							index === trackDatas.length - 1 && 'pb-[11px]'
-						)}
-					>
-						{trackData.trackName.current}
-					</PlainButton>
-				{/if}
-			{/each}
-		</div>
-	</Card>
+	{#if trackDatas.length}
+		<Card class="h-min !p-0 overflow-hidden border-2 border-blue-950">
+			<div class="flex flex-col col-span-1 h-min overflow-auto text-[0.8em]">
+				{#each trackDatas as trackData, index}
+					{#if trackData}
+						<PlainButton
+							on:click={() => selectTrack(trackData.trackId)}
+							class={c(
+								'text-orange text-left px-[12px] py-[8px] hover:bg-blue-darker focus:bg-blue-darker outline-none',
+								selectedTrackId === trackData.trackId && '!bg-orange !text-blue-darkest',
+								index === 0 && 'pt-[11px]',
+								index === trackDatas.length - 1 && 'pb-[11px]'
+							)}
+						>
+							{trackData.trackName.current}
+						</PlainButton>
+					{/if}
+				{/each}
+			</div>
+		</Card>
+	{/if}
 
 	{#if selectedTrackId}
 		{@const trackData = trackDatas.find((trackData) => trackData.trackId === selectedTrackId)}

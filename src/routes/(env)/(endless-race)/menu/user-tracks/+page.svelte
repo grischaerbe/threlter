@@ -1,20 +1,30 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import UiWrapper from '$components/UI/UiWrapper.svelte'
-	import BackButton from '$components/UI/components/BackButton.svelte'
-	import Button from '$components/UI/components/Button.svelte'
-	import TopBar from '$components/UI/components/TopBar.svelte'
+	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
 	import { TrackData } from '$lib/TrackData/TrackData'
 	import { appState } from '$stores/app'
 	import JSZip from 'jszip'
-	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import TopMenu from '../../../../../components/UI/layouts/TopMenu.svelte'
+	import { onMount } from 'svelte'
 
 	let trackSelected = false
 
 	const localStorageTrackIds = TrackData.localStorageTrackIds
+
+	const createDemoTrack = () => {
+		const trackData = TrackData.createEmpty()
+		trackData.trackName.set(`Demo Track`)
+		trackData.authorName.set(appState.options.player.name.current)
+		trackData.addTrackElement('Box')
+	}
+
+	$: if ($localStorageTrackIds.length === 0) {
+		createDemoTrack()
+		TrackData.updateLocalStorageTrackIds()
+	}
 
 	const filterUndefined = <T>(value: T | undefined): value is T => {
 		return !!value
