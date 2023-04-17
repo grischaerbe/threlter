@@ -8,7 +8,6 @@
 	import JSZip from 'jszip'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import TopMenu from '../../../../../components/UI/layouts/TopMenu.svelte'
-	import { tick } from 'svelte'
 
 	let trackSelected = false
 
@@ -133,7 +132,7 @@
 				<SpecialButton
 					style="inverted"
 					forceFocusOnMount={!userHasTracks}
-					on:click={async () => {
+					on:click={() => {
 						const trackDatas = $localStorageTrackIds
 							.map((userTrackId) => {
 								return TrackData.fromLocalStorage(userTrackId)
@@ -147,8 +146,7 @@
 						trackData.trackName.set(`Unnamed Track ${trackNamesStartingWithUnnamed + 1}`)
 						trackData.authorName.set(appState.options.player.name.current)
 						trackData.addTrackElement('Box')
-
-						await tick()
+						trackData.toLocalStorage(0)
 
 						goto(`/user/${trackData.trackId}/edit`)
 					}}
