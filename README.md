@@ -36,3 +36,33 @@ Threltemania holds many different interesting aspects, technically challenging t
 - DOM UI and Three.js objects side by side: In game development, the management of UI is always a bit of a pain because they normally cannot be co-located. The web provides the ultimate UI-engine: the DOM. Using Svelte [*portals*](https://github.com/grischaerbe/threlter/blob/hackathon/src/components/Utilities/DomPortal.svelte), the UI can be placed next to actual Three.js objects and allows for ultra-transparent game and UI state references.
 
 This outline does not contain the work that has gone into Threlte v6. If you want to learn more about the upcoming version of Threlte, [visit the Documentation](https://next.threlte.xyz) or [join our Discord community](https://discord.gg/EqUBCfCaGm).
+
+## Screenshots
+
+- Main Menu
+
+![hack threltemania xyz_menu_main](https://user-images.githubusercontent.com/46897060/232592157-89ef64dc-e511-444e-a3b9-5cad26401a7b.png)
+
+- Track Selection
+
+![localhost_5173_](https://user-images.githubusercontent.com/46897060/232592204-1b7f39f8-bc69-4b07-8ac7-1690c5401c3d.png)
+
+- On-Track Intro
+
+![localhost_5173_campaign_Track-o5of60o_time-attack](https://user-images.githubusercontent.com/46897060/232592247-61e70a5e-f652-44bd-9575-0fc165535eac.png)
+
+- Track Editor
+
+![localhost_5173_campaign_Track-o5of60o_time-attack (2)](https://user-images.githubusercontent.com/46897060/232592286-e40fd7bd-f9d3-4b9e-ada8-02e2eb71520f.png)
+
+- Track Element Transformation
+
+![localhost_5173_campaign_Track-o5of60o_time-attack (5)](https://user-images.githubusercontent.com/46897060/232592393-fd82909c-4e10-4f31-a5c9-47298fc2e31c.png)
+
+- Track Editor Info
+
+![localhost_5173_campaign_Track-o5of60o_time-attack (3)](https://user-images.githubusercontent.com/46897060/232592329-a9727709-303f-4892-8659-de3be17cc3e5.png)
+
+- Track validation
+
+![localhost_5173_campaign_Track-o5of60o_time-attack (4)](https://user-images.githubusercontent.com/46897060/232592434-a1a48238-6a44-4ce6-90c5-050801c475ff.png)
