@@ -1,4 +1,6 @@
-![OG](https://user-images.githubusercontent.com/46897060/232580867-88e8d414-6b9b-45d1-93cc-5777538a4b11.png)
+[![OG](https://user-images.githubusercontent.com/46897060/232580867-88e8d414-6b9b-45d1-93cc-5777538a4b11.png)](https://hack.threltemania.xyz)
+
+### [**hack.threltemania.xyz**](https://hack.threltemania.xyz)
 
 Threltemania is a racing game that defies physics.
 
@@ -12,8 +14,8 @@ The next version is called "Threlte v6" and what better way is there to celebrat
 
 ## Features
 
-- 👑 **Campaign**: *Official tracks* to race against the clock and win medals.
-- 👤 **User Tracks**: Race on tracks built by other players.
+- 👑 [**Campaign**](https://hack.threltemania.xyz/menu/campaign): *Official tracks* to race against the clock and win medals.
+- 👤 [**User Tracks**](https://hack.threltemania.xyz/menu/user-tracks): Race on tracks built by other players.
 - 🛠️ **Track Editor**: Build and share your own tracks and compete against your friends.
 
 ## "Technical" Features
@@ -33,4 +35,4 @@ Threltemania holds many different interesting aspects, technically challenging t
 - The perfect tool for the job: Svelte components make managing Three.js objects a breeze. Slot props – one of my favorite features – allow truely magical component compositions. The component lifecycle is used to never the disposal of an object.
 - DOM UI and Three.js objects side by side: In game development, the management of UI is always a bit of a pain because they normally cannot be co-located. The web provides the ultimate UI-engine: the DOM. Using Svelte [*portals*](https://github.com/grischaerbe/threlter/blob/hackathon/src/components/Utilities/DomPortal.svelte), the UI can be placed next to actual Three.js objects and allows for ultra-transparent game and UI state references.
 
-This outline does not contain the work that has gone into Threlte v6. If you want to learn more about 
+This outline does not contain the work that has gone into Threlte v6. If you want to learn more about the upcoming version of Threlte, [visit the Documentation](https://next.threlte.xyz) or [join our Discord community](https://discord.gg/EqUBCfCaGm).
