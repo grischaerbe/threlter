@@ -22,6 +22,9 @@
 	import { createEventDispatcher, getContext, setContext } from 'svelte'
 	import { useEvent } from '../../hooks/useEvents'
 	import { useAudioProvider } from '../Utilities/AudioProvider.svelte'
+	import { appState } from '../../stores/app'
+
+	const { sfx } = appState.options.audio
 
 	export let trackData: TrackData
 	$: elements = trackData.trackElements
@@ -36,7 +39,7 @@
 	const trackCompleted = currentWritable(false)
 
 	const checkpointReached = (trackElementId: string) => {
-		if (!checkpointsReached.current.has(trackElementId)) {
+		if (!checkpointsReached.current.has(trackElementId) && $sfx) {
 			playAudio('success1')
 		}
 		checkpointsReached.update((set) => {
@@ -46,12 +49,14 @@
 	}
 
 	const finishReached = () => {
-		playAudio('success1', {
-			detune: 500
-		})
-		playAudio('crowd-cheering', {
-			volume: 0.3
-		})
+		if ($sfx && !trackCompleted.current) {
+			playAudio('success1', {
+				detune: 500 // perfect fifth
+			})
+			playAudio('crowd-cheering', {
+				volume: 0.3
+			})
+		}
 		trackCompleted.set(true)
 		dispatch('trackcompleted')
 	}
