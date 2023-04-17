@@ -9,7 +9,7 @@
 
 <UiWrapper>
 	<div
-		class="absolute -z-10 h-[40vh] w-full top-0 left-0 bg-gradient-to-b from-blue-darkest to-transparent"
+		class="absolute -z-10 h-[30vh] w-full top-0 left-0 bg-gradient-to-b from-blue-darkest to-transparent opacity-80"
 	/>
 </UiWrapper>
 
