@@ -10,7 +10,7 @@ It is a bit of a tradition to celebrate new versions of [Threlte](https://next.t
 
 Threlte 6 is a special release. Threlte is transitioning towards a clear separation of concerns: `@threlte/core` as a way to declaratively use [Three.js](https://threejs.org/) and other packages such as `@threlte/extras` with useful abstractions and `@threlte/rapier` to easily integrate the exceptional [Rapier physics engine](https://rapier.rs/).
 
-The next version is called "Threlte v6" and what better way is there to celebrate that than with a V6? I'll see myself out.
+The next version is called "Threlte v6" and what better way is there to celebrate that than with a V6? – I'll see myself out.
 
 ## Features
 
@@ -82,3 +82,6 @@ This outline does not contain the work that has gone into Threlte v6. If you wan
 - Creation of more owned assets
 - Multiplayer
 - Some game-related mechanics: Auto-reset after falling off, …
+- More campaign tracks
+- A track-making challenge for the release of Threlte v6
+- Maybe add a little bit of storytelling to it
