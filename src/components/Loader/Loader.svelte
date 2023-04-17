@@ -7,7 +7,6 @@
 	import { preloadBarrierTurnLeft } from '$components/TrackElements/BarrierTurnLeft.svelte'
 	import { preloadBasicBox } from '$components/TrackElements/BasicBox.svelte'
 	import { preloadBoost } from '$components/TrackElements/Boost.svelte'
-	import { preloadCheckpoint } from '$components/TrackElements/Checkpoint.svelte'
 	import { preloadDoubleBarrier } from '$components/TrackElements/DoubleBarrier.svelte'
 	import { preloadHalfbox } from '$components/TrackElements/HalfBox.svelte'
 	import { preloadRamp } from '$components/TrackElements/Ramp.svelte'
@@ -24,12 +23,12 @@
 	import { preloadTilttransitionleftlong } from '../TrackElements/Tilts/TiltTransitions/TiltTransitionLeftLong/Tilttransitionleftlong.svelte'
 	import { preloadTilttransitionrightlong } from '../TrackElements/Tilts/TiltTransitions/TiltTransitionRightLong/Tilttransitionrightlong.svelte'
 	import { preloadFinish } from '../TrackElements/Finish/Finish.svelte'
+	import { preloadCheckpoint } from '../TrackElements/Checkpoint/Checkpoint.svelte'
 
 	const preload = () => {
 		return Promise.all([
 			preloadMuscleCar(),
 			preloadMuscleCarWheel(),
-			preloadCheckpoint(),
 			preloadHalfbox(),
 			preloadRamp(),
 			preloadRampInverse(),
@@ -48,7 +47,8 @@
 			preloadTiltfulltightbend(),
 			preloadTilttransitionleftlong(),
 			preloadTilttransitionrightlong(),
-			preloadFinish()
+			preloadFinish(),
+			preloadCheckpoint()
 		])
 	}
 

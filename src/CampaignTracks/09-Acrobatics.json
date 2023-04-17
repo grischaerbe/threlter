@@ -1,0 +1,258 @@
+{
+	"trackId": "Track-o5of60o",
+	"trackName": "Acrobatics",
+	"authorName": "",
+	"trackElements": [
+		{ "id": "ylgzmkt", "type": "Box", "position": [-10, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "hf6khto", "type": "Box", "position": [-20, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{
+			"id": "yesev97",
+			"type": "Box",
+			"position": [-30.01703740711841, 0, 0],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{ "id": "fmm6yub", "type": "Box", "position": [-40, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "pypyc2z", "type": "Box", "position": [-50, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "dkl2x7f", "type": "Box", "position": [-60, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "e9rdxcv", "type": "Box", "position": [-70, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "6in5m9w", "type": "Box", "position": [-80, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "6p56rkc", "type": "Box", "position": [-90, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+		{
+			"id": "7e2kkdf",
+			"type": "TiltFullMediumBend",
+			"position": [-80.00000000000001, 0, -24.999999999999986],
+			"rotation": [-1.5707963267948966, 0, -1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "flo13ia",
+			"type": "TiltFullMediumBend",
+			"position": [-90, -3.552713678800501e-15, -24.999999999999986],
+			"rotation": [-1.5707963267948966, 0, -1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "ht92kc8",
+			"type": "TiltFullMediumBend",
+			"position": [-70.00000000000001, 3.552713678800501e-15, -24.999999999999996],
+			"rotation": [-1.5707963267948966, 0, -1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "8ld4fx7",
+			"type": "TiltFullMediumBend",
+			"position": [-60.000000000000014, 7.105427357601002e-15, -25],
+			"rotation": [-1.5707963267948966, 0, -1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "1frix8i",
+			"type": "TiltFullMediumBend",
+			"position": [-50.000000000000014, 1.0658141036401503e-14, -25],
+			"rotation": [-1.5707963267948966, 0, -1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "3um998u",
+			"type": "TiltFullMediumBend",
+			"position": [-40.000000000000014, 1.4210854715202004e-14, -25.000000000000007],
+			"rotation": [-1.5707963267948966, 0, -1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "12wup41",
+			"type": "Box",
+			"position": [-90, 25.000936302468823, -24.99999999999999],
+			"rotation": [1.5707963267948966, 0, 0, "XYZ"]
+		},
+		{
+			"id": "dr7okcj",
+			"type": "Box",
+			"position": [-80, 24.999999999999993, -24.99999999999999],
+			"rotation": [1.5707963267948966, 0, 0, "XYZ"]
+		},
+		{
+			"id": "oyjq78m",
+			"type": "Box",
+			"position": [-70, 24.999999999999993, -24.99999999999999],
+			"rotation": [1.5707963267948966, 0, 0, "XYZ"]
+		},
+		{
+			"id": "5mxftka",
+			"type": "Box",
+			"position": [-60, 24.999999999999993, -24.99999999999999],
+			"rotation": [1.5707963267948966, 0, 0, "XYZ"]
+		},
+		{
+			"id": "hkf8erm",
+			"type": "Box",
+			"position": [-50, 24.999999999999993, -24.99999999999999],
+			"rotation": [1.5707963267948966, 0, 0, "XYZ"]
+		},
+		{
+			"id": "ahj1gv6",
+			"type": "Box",
+			"position": [-40, 25.017449273750245, -24.99999999999999],
+			"rotation": [1.5707963267948966, 0, 0, "XYZ"]
+		},
+		{
+			"id": "7yrf6gf",
+			"type": "TiltFullMediumBend",
+			"position": [-115, 24.999999999999993, -24.99999999999999],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{
+			"id": "6ve62oj",
+			"type": "HalfBox",
+			"position": [-115, 25, 0],
+			"rotation": [0, 0, -1.5707963267948963, "XYZ"]
+		},
+		{
+			"id": "16d8xi3",
+			"type": "TiltFullMediumBend",
+			"position": [-114.99999999999997, 24.999999999999993, 44.99999999999998],
+			"rotation": [0, 1.5707963267948966, 0, "XYZ"]
+		},
+		{
+			"id": "9d7blfc",
+			"type": "Checkpoint",
+			"position": [-115, 25.000000000000007, 10],
+			"rotation": [0, 0, -1.5707963267948963, "XYZ"]
+		},
+		{
+			"id": "ooas15d",
+			"type": "HalfBox",
+			"position": [-115, 25.000000000000007, 20],
+			"rotation": [0, 0, -1.5707963267948963, "XYZ"]
+		},
+		{
+			"id": "irzslnp",
+			"type": "Box",
+			"position": [-90, 25.000000000000004, 44.99999999999998],
+			"rotation": [-1.5707963267948963, 1.5707963267948966, 0, "XYZ"]
+		},
+		{
+			"id": "6czlix4",
+			"type": "Box",
+			"position": [-80, 25.000000000000007, 44.999999999999986],
+			"rotation": [-1.5707963267948963, 1.5707963267948966, 0, "XYZ"]
+		},
+		{
+			"id": "ueyptu3",
+			"type": "Box",
+			"position": [-70, 25.000000000000004, 44.999999999999986],
+			"rotation": [-1.5707963267948963, 1.5707963267948966, 0, "XYZ"]
+		},
+		{
+			"id": "0tre38z",
+			"type": "Box",
+			"position": [-60, 25.000000000000007, 44.99999999999997],
+			"rotation": [-1.5707963267948963, 1.5707963267948966, 0, "XYZ"]
+		},
+		{
+			"id": "9fmr69b",
+			"type": "BarrierTurnLeft",
+			"position": [-90, 0, 0],
+			"rotation": [-3.141592653589793, 1.2246467991473532e-16, -3.141592653589793, "XYZ"]
+		},
+		{
+			"id": "dzyuak6",
+			"type": "DoubleBarrier",
+			"position": [-30.01703740711841, 0, 0],
+			"rotation": [0.00012790786574780154, 0.00026657212128523296, 0.0002704283756748729, "XYZ"]
+		},
+		{
+			"id": "zne455t",
+			"type": "DoubleBarrier",
+			"position": [-20, 0, 0],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{
+			"id": "awj957c",
+			"type": "DoubleBarrier",
+			"position": [-10, 0, 0],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{
+			"id": "nm9ma0v",
+			"type": "DoubleBarrier",
+			"position": [0, 0, 0],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{
+			"id": "d4i9f4t",
+			"type": "TiltFullTightBend",
+			"position": [-60, 9.999999999999986, 34.999999999999986],
+			"rotation": [-1.5707963267948966, -2.220446049250313e-16, 1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "wavp1fd",
+			"type": "TiltFullTightBend",
+			"position": [-70, 9.999999999999982, 34.999999999999986],
+			"rotation": [-1.5707963267948966, -2.220446049250313e-16, 1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "5vks6jt",
+			"type": "TiltFullTightBend",
+			"position": [-80, 9.999999999999982, 34.999999999999986],
+			"rotation": [-1.5707963267948966, -2.220446049250313e-16, 1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "86dpwbd",
+			"type": "TiltFullTightBend",
+			"position": [-90, 9.999999999999986, 34.99999999999997],
+			"rotation": [-1.5707963267948966, -2.220446049250313e-16, 1.5707963267948966, "XYZ"]
+		},
+		{ "id": "lbwdkag", "type": "HalfBox", "position": [-60, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "jxgo4bl", "type": "HalfBox", "position": [-70, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "0ez5k5d", "type": "HalfBox", "position": [-80, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "uswbrug", "type": "HalfBox", "position": [-50, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "q90gtvk", "type": "HalfBox", "position": [-40, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{ "id": "7u1yr5s", "type": "HalfBox", "position": [-30, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{
+			"id": "csz8lco",
+			"type": "TiltFullTightBend",
+			"position": [-50.000000000000014, 9.999999999999986, 34.99999999999997],
+			"rotation": [-1.5707963267948966, -2.220446049250313e-16, 1.5707963267948966, "XYZ"]
+		},
+		{
+			"id": "kcvx2to",
+			"type": "Box",
+			"position": [-50, 25.000000000000014, 44.99999999999997],
+			"rotation": [-1.5707963267948963, 1.5707963267948966, 0, "XYZ"]
+		},
+		{ "id": "v6sq1jd", "type": "Finish", "position": [-20, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{
+			"id": "cudlvzi",
+			"type": "DoubleBarrier",
+			"position": [-40, 10, 30],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{
+			"id": "l9r4c58",
+			"type": "DoubleBarrier",
+			"position": [-30, 10, 30],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{
+			"id": "9qimo2f",
+			"type": "DoubleBarrier",
+			"position": [-20, 10, 30],
+			"rotation": [0, 0, 0, "XYZ"]
+		},
+		{ "id": "ziw919d", "type": "HalfBox", "position": [-90, 10, 30], "rotation": [0, 0, 0, "XYZ"] },
+		{
+			"id": "pwv5eap",
+			"type": "BarrierTurnLeft",
+			"position": [-80, 10, 30],
+			"rotation": [0.0004099305172995746, 1.570461927257955, 0, "XYZ"]
+		},
+		{
+			"id": "q5phbix",
+			"type": "BarrierEnd",
+			"position": [-85.01169923109524, 9.99796031865796, 34.975675490626095],
+			"rotation": [0.0004099305172995746, 1.570461927257955, 0, "XYZ"]
+		},
+		{ "id": "nqziw3r", "type": "Boost", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] }
+	],
+	"trackTimes": { "author": 7618, "gold": 0, "silver": 0, "bronze": 0 },
+	"trackRespawns": { "author": 0, "gold": 0, "silver": 0, "bronze": 0 },
+	"validated": true,
+	"validationId": "d60414d7b20f3",
+	"checkpointCount": 1,
+	"finishCount": 1
+}

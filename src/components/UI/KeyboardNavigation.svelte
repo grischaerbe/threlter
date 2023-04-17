@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
 	import { getContext, setContext, tick } from 'svelte'
 	import { spring } from 'svelte/motion'
+	import { writable, type Readable } from 'svelte/store'
 	import UiWrapper from './UiWrapper.svelte'
-	import { type Readable, writable } from 'svelte/store'
 
 	type KeyboardNavigationContext = {
 		addNavigationalElement: (element: HTMLElement) => void

@@ -59,6 +59,7 @@
 		preventFocusOnFocusLost: preventFocusOnFocusLost
 	}}
 	on:pointerenter={onPointerEnter}
+	on:focus={onPointerEnter}
 	on:click={onClick}
 	on:click
 	{disabled}

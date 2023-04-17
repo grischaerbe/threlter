@@ -9,7 +9,7 @@
 	export type Sound = keyof typeof sounds
 
   type AudioProviderContext = {
-    playAudio: (src: Sound, options?: { volume?: number, detune?: number }) => AudioBufferSourceNode
+    playAudio: (src: Sound, options?: { volume?: number, detune?: number }) => AudioBufferSourceNode | undefined
   }
 
 	export const useAudioProvider = () => {
@@ -27,6 +27,8 @@
 </script>
 
 <script lang="ts">
+	import { afterNavigate, beforeNavigate } from '$app/navigation'
+
 	import { useLoader } from '@threlte/core'
 	import { useAudioListener } from '@threlte/extras'
 	import { getContext, setContext } from 'svelte'
@@ -62,7 +64,29 @@
 		node.start()
 	}
 
+	let hasNavigated = false
+	let timeout: ReturnType<typeof setTimeout>
+
+	beforeNavigate(() => {
+		clearTimeout(timeout)
+		console.log('Navigating')
+
+		hasNavigated = true
+	})
+
+	afterNavigate(() => {
+		clearTimeout(timeout)
+		timeout = setTimeout(() => {
+			hasNavigated = false
+		}, 100)
+	})
+
 	const playAudio = (sound: Sound, options?: { volume?: number; detune?: number }) => {
+		// we're not playing buttonHover after navigation
+		if ((hasNavigated && sound === 'buttonHover') || sound === 'buttonClick') {
+			return
+		}
+
 		const source = audioContext.createBufferSource()
 		attackBuffer(source, sound, options)
 		return source

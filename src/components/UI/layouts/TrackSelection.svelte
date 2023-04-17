@@ -19,6 +19,7 @@
 	export let tracksCanBeDuplicated = false
 	export let tracksCanBeDeleted = false
 	export let tracksCanBeValidated = false
+	export let tracksCanBeExported = false
 	export let showAuthor = false
 	export let headline: string | undefined = undefined
 
@@ -36,6 +37,7 @@
 		edittrack: { trackId: string }
 		deletetrack: { trackId: string }
 		duplicatetrack: { trackId: string }
+		exporttrack: { trackId: string }
 		validatetrack: { trackId: string }
 	}>()
 </script>
@@ -154,6 +156,17 @@
 									}}
 								>
 									Duplicate
+								</PlainButton>
+								<Divider />
+							{/if}
+							{#if tracksCanBeExported}
+								<PlainButton
+									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
+									on:click={() => {
+										dispatch('exporttrack', { trackId: trackData.trackId })
+									}}
+								>
+									Export
 								</PlainButton>
 								<Divider />
 							{/if}

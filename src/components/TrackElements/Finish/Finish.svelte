@@ -9,6 +9,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 	import type * as THREE from 'three'
 	import { Group } from 'three'
 	import { useTrackViewer } from '../../TrackViewer/TrackViewer.svelte'
+	import { useRefreshCollider } from '../utils/useRefreshCollider'
 
 	type GLTFResult = {
 		nodes: {
@@ -51,6 +52,8 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 	})
 
 	const { finishReached } = useTrackViewer()
+
+	const { refreshFns } = useRefreshCollider()
 </script>
 
 {#if $gltf}
@@ -59,6 +62,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 		<T.Group position.y={1.6}>
 			<CollisionGroups groups={[3]}>
 				<Collider
+					bind:refresh={refreshFns[0]}
 					type="static"
 					shape="cuboid"
 					args={[0.4, 1.5, 4]}
@@ -71,7 +75,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 		</T.Group>
 
 		<T.Group position.y={-0.25}>
-			<Collider shape="cuboid" args={[5, 0.25, 5]} />
+			<Collider shape="cuboid" args={[5, 0.25, 5]} bind:refresh={refreshFns[1]} />
 		</T.Group>
 		<T.Mesh
 			castShadow
@@ -79,7 +83,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 			geometry={$gltf.nodes.Holds.geometry}
 			material={$gltf.materials.Metall}
 		/>
-		<AutoColliders shape="cuboid">
+		<AutoColliders shape="cuboid" bind:refresh={refreshFns[2]}>
 			<T.Mesh
 				castShadow
 				receiveShadow
@@ -102,7 +106,7 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 				geometry={$gltf.nodes.Sign_1.geometry}
 				material={$gltf.materials.FinishSign}
 			/>
-			<AutoColliders shape="cuboid">
+			<AutoColliders shape="cuboid" bind:refresh={refreshFns[3]}>
 				<T.Mesh
 					castShadow
 					receiveShadow
@@ -114,18 +118,18 @@ Command: npx @threlte/gltf@1.0.0-next.2 /Users/grischaerbe/Documents/Projects/20
 
 		<!-- Stand colliders -->
 		<T.Group position.y={2.36278} position.z={4.36758} rotation.x={-0.227438}>
-			<Collider type="dynamic" shape="cuboid" args={[0.2, 1.925, 0.1]} />
+			<Collider bind:refresh={refreshFns[4]} shape="cuboid" args={[0.2, 1.925, 0.1]} />
 		</T.Group>
 		<T.Group position.y={2.36278} position.z={-4.36758} rotation.x={0.227438}>
-			<Collider type="dynamic" shape="cuboid" args={[0.2, 1.925, 0.1]} />
+			<Collider bind:refresh={refreshFns[5]} shape="cuboid" args={[0.2, 1.925, 0.1]} />
 		</T.Group>
 
 		<!-- Stand Base Colliders -->
 		<T.Group position.y={0.22} position.z={4.78}>
-			<Collider type="dynamic" shape="cuboid" args={[1, 0.22, 0.225]} />
+			<Collider bind:refresh={refreshFns[6]} shape="cuboid" args={[1, 0.22, 0.225]} />
 		</T.Group>
 		<T.Group position.y={0.22} position.z={-4.78}>
-			<Collider type="dynamic" shape="cuboid" args={[1, 0.22, 0.225]} />
+			<Collider bind:refresh={refreshFns[7]} shape="cuboid" args={[1, 0.22, 0.225]} />
 		</T.Group>
 
 		<T.Mesh

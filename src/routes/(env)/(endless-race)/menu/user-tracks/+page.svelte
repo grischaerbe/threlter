@@ -56,6 +56,7 @@
 			tracksCanBeDeleted
 			tracksCanBeDuplicated
 			tracksCanBeValidated
+			tracksCanBeExported
 			showAuthor
 			on:playtrack={(e) => {
 				goto(`/user/${e.detail.trackId}/time-attack`)
@@ -75,6 +76,11 @@
 			}}
 			on:validatetrack={(e) => {
 				goto(`/user/${e.detail.trackId}/validate`)
+			}}
+			on:exporttrack={(e) => {
+				const trackData = TrackData.fromLocalStorage(e.detail.trackId)
+				if (!trackData) return
+				trackData.saveTrackToDisk()
 			}}
 		>
 			<div
