@@ -8,7 +8,7 @@ Threltemania is a racing game that defies physics.
 
 It is a bit of a tradition to celebrate new versions of [Threlte](https://next.threlte.xyz) with a small game that not only is superb promotional material, but also is used to test every aspect of all moving parts of the Threlte ecosystem.
 
-Threlte 6 is a special release: Threlte is transitioning towards a clear separation of concerns: `@threlte/core` as a way to declaratively use [Three.js](https://threejs.org/) and other packages such as `@threlte/extras` with useful abstractions and `@threlte/rapier` to easily integrate the exceptional [Rapier physics engine](https://rapier.rs/).
+Threlte 6 is a special release. Threlte is transitioning towards a clear separation of concerns: `@threlte/core` as a way to declaratively use [Three.js](https://threejs.org/) and other packages such as `@threlte/extras` with useful abstractions and `@threlte/rapier` to easily integrate the exceptional [Rapier physics engine](https://rapier.rs/).
 
 The next version is called "Threlte v6" and what better way is there to celebrate that than with a V6? I'll see myself out.
 
@@ -29,7 +29,7 @@ The next version is called "Threlte v6" and what better way is there to celebrat
 
 Threltemania holds many different interesting aspects, technically challenging topics and goodies. Here's a rough outline:
 
-- Raycast Vehicle Controller: As opposed to a vehicle controller that is based on many "rigid bodies" that are connected via "joints", this arcade-style vehicle controller is implemented with an approach that lends concepts from this [implementation overview](https://digitalrune.github.io/DigitalRune-Documentation/html/143af493-329d-408f-975d-e63625646f2f.htm) and this [excellent talk](https://www.youtube.com/watch?v=LG1CtlFRmpU), however it's a mix of the over-simplification of the latter and the close-to-simulation approach of the former. The implementation details can be found [here](https://github.com/grischaerbe/threlter/blob/hackathon/src/components/Car/RaycastVehicleController/RaycastVehicleController.svelte).
+- Raycast Vehicle Controller: As opposed to a vehicle controller that is based on many "rigid bodies" that are connected via "joints", this arcade-style vehicle controller is implemented with an approach that lends concepts from this [implementation overview](https://digitalrune.github.io/DigitalRune-Documentation/html/143af493-329d-408f-975d-e63625646f2f.htm) and this [excellent talk](https://www.youtube.com/watch?v=LG1CtlFRmpU), however it's a mix of the over-simplification of the latter and the close-to-simulation approach of the former. The implementation details can be found [here](https://github.com/grischaerbe/threlter/blob/hackathon/src/components/Car/RaycastVehicleController/RaycastVehicleController.svelte). [Aktivate the debug mode](https://hack.threltemania.xyz/menu/options) to see how the physics are modelled.
 - Keyboard navigation: As it is with many games, the game Threltemania can be controlled with only the keyboard. This makes it feel more like a game and less like a regular website.
 - URL Statemanagement: When a game is started, it typically starts from the very beginning. The web as a platform provides a very powerful statemanagement tool: The URL. SvelteKit's routing is used to determine the current app state. This means that reloading the page will get you where you left off.
 - The perfect tool for the job: Svelte components make managing Three.js objects a breeze. Slot props – one of my favorite features – allow truely magical component compositions. The component lifecycle is used to never miss the disposal of an object.
@@ -66,3 +66,19 @@ This outline does not contain the work that has gone into Threlte v6. If you wan
 - Track validation
 
 ![localhost_5173_campaign_Track-o5of60o_time-attack (4)](https://user-images.githubusercontent.com/46897060/232592434-a1a48238-6a44-4ce6-90c5-050801c475ff.png)
+
+## Known Issues
+
+- The physics are arguably the hardest part to get right. Rapier allows for deterministic physics, but the vehicle controller is not ready for that yet. This means that no two runs are the same (even if the inputs are) and the tracks should not be too fast paced.
+- Responsiveness. This game is best played on a decently-sized screen.
+- Safari sometimes (rarely) hangs on loading without any clear reason.
+
+## Roadmap
+
+- Deterministic physics
+- Responsive UI
+- UI transitions
+- Back-porting the vehicle controller to a Svelte component available at `@threlte/rapier`
+- Creation of more owned assets
+- Multiplayer
+- Some game-related mechanics: Auto-reset after falling off, …
