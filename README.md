@@ -37,6 +37,10 @@ Threltemania holds many different interesting aspects, technically challenging t
 
 This outline does not contain the work that has gone into Threlte v6. If you want to learn more about the upcoming version of Threlte, [visit the Documentation](https://next.threlte.xyz) or [join our Discord community](https://discord.gg/EqUBCfCaGm).
 
+## Demo Video
+
+https://user-images.githubusercontent.com/46897060/232627678-a423de2d-bb05-43f6-82b4-b6be9c2d61e9.mp4
+
 ## Screenshots
 
 - Main Menu
