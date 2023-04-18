@@ -49,6 +49,9 @@
 	}
 
 	const finishReached = () => {
+		// player didn't go through all checkpoints
+		if (checkpointsReached.current.size !== trackData.checkpointCount.current) return
+
 		if ($sfx && !trackCompleted.current) {
 			playAudio('success1', {
 				detune: 500 // perfect fifth
