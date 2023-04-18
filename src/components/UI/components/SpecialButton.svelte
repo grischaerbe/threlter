@@ -64,7 +64,7 @@
 	on:click
 	{disabled}
 	class={c(
-		'text-center uppercase font-headline rounded-xl px-3 pb-1 pt-1.5 leading-none border-[3px] border-current pointer-events-auto outline-none [&_svg]:fill-current [&_svg]:w-[1em] [&_svg]:h-[1em] flex flex-row gap-[10px] justify-center items-center',
+		'text-center uppercase font-headline rounded-xl px-[0.4em] pb-[0.13em] pt-[0.2em] leading-none border-[3px] border-current pointer-events-auto outline-none [&_svg]:fill-current [&_svg]:w-[1em] [&_svg]:h-[1em] flex flex-row gap-[10px] justify-center items-center',
 		styles[style],
 		_class
 	)}
