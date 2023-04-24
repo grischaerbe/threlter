@@ -2,7 +2,7 @@
 	import CameraFade from '$components//Utilities/CameraFade.svelte'
 	import { appState } from '$stores/app'
 	import { T, useFrame, useThrelte } from '@threlte/core'
-	import { Float } from '@threlte/extras'
+	import { Float, onReveal } from '@threlte/extras'
 	import { createEventDispatcher, onDestroy, onMount } from 'svelte'
 	import { cubicInOut, quadOut, sineOut } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
@@ -75,7 +75,7 @@
 
 	let timeouts: ReturnType<typeof setTimeout>[] = []
 
-	onMount(() => {
+	onReveal(() => {
 		if (showIntro) {
 			// wait for things to settle down
 			timeouts.push(

@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
 	import EndlessRaceIntro from '$components/EndlessRaceIntro/EndlessRaceIntro.svelte'
+	import { onReveal } from '@threlte/extras'
 	import UiWrapper from '../../../components/UI/UiWrapper.svelte'
 	import { appState } from '../../../stores/app'
 
@@ -11,9 +12,14 @@
 
 	const gradientBaseOpacity = 0.8
 	let cameraFadeOpacity = 0
+
+	let revealed = false
+	onReveal(() => {
+		revealed = true
+	})
 </script>
 
-{#if $music}
+{#if $music && revealed}
 	<audio autoplay src="/music/let-the-games-begin-21858.mp3" loop />
 {/if}
 

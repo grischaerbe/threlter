@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Loader from '$components/Loader/Loader.svelte'
 	import KeyboardNavigation from '$components/UI/KeyboardNavigation.svelte'
 	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
 	import { appState } from '$stores/app'
