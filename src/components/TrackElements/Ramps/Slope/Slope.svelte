@@ -34,7 +34,9 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 				geometry={$gltf.nodes.Slope.geometry}
 				material={$gltf.materials.Ramps}
 				scale={5}
-			/>
+			>
+				<slot name="selection" />
+			</T.Mesh>
 		</MeshCollider>
 	{/if}
 

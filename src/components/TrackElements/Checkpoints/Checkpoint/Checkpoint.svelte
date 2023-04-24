@@ -7,12 +7,12 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 	import { Group } from 'three'
 	import { T, useFrame } from '@threlte/core'
 	import { useGltf, useSuspense } from '@threlte/extras'
-	import { useTrackViewer } from '../../TrackViewer/TrackViewer.svelte'
-	import { useTrackElement } from '../../TrackViewer/TrackElement.svelte'
 	import { derived } from 'svelte/store'
 	import type { Mesh } from 'three'
-	import { useRefreshCollider } from '../utils/useRefreshCollider'
 	import { Collider, CollisionGroups } from '@threlte/rapier'
+	import { useTrackViewer } from '../../../TrackViewer/TrackViewer.svelte'
+	import { useTrackElement } from '../../../TrackViewer/TrackElement.svelte'
+	import { useRefreshCollider } from '../../utils/useRefreshCollider'
 
 	export const ref = new Group()
 
@@ -113,13 +113,17 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 			receiveShadow
 			geometry={$gltf.nodes.CheckpointFloor_1.geometry}
 			material={$gltf.materials['Metallic Blue']}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 		<T.Mesh
 			castShadow
 			receiveShadow
 			geometry={$gltf.nodes.CheckpointFloor_2.geometry}
 			material={$gltf.materials['Gray Concretelike']}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 	{/if}
 
 	<slot {ref} />

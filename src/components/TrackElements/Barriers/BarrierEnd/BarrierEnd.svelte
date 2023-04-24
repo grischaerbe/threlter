@@ -37,7 +37,9 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 			receiveShadow
 			geometry={$gltf.nodes.BarrierEnd.geometry}
 			material={$gltf.nodes.BarrierEnd.material}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 	{/if}
 
 	<slot {ref} />

@@ -91,13 +91,17 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 			receiveShadow
 			geometry={$gltf.nodes.BoostBottom.geometry}
 			material={$gltf.materials.BoostBottom}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 		<T.Mesh
 			castShadow
 			receiveShadow
 			geometry={$gltf.nodes.BoostTop.geometry}
 			material={$gltf.materials.BoostTop}
-		/>
+		>
+			<slot name="selection" />
+		</T.Mesh>
 	{/if}
 
 	<slot {ref} />

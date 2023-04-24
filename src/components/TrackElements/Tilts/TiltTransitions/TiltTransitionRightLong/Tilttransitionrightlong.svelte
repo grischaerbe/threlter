@@ -33,7 +33,9 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 				receiveShadow
 				geometry={$gltf.nodes.TiltTransitionRightLong.geometry}
 				material={$gltf.materials['Ramps.004']}
-			/>
+			>
+				<slot name="selection" />
+			</T.Mesh>
 		</MeshCollider>
 	{/if}
 

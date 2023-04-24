@@ -34,7 +34,9 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 				geometry={$gltf.nodes.Ramp.geometry}
 				material={$gltf.materials.Ramps}
 				rotation={[Math.PI / 2, 0, 0]}
-			/>
+			>
+				<slot name="selection" />
+			</T.Mesh>
 		</MeshCollider>
 	{/if}
 
