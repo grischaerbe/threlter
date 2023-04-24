@@ -16,6 +16,8 @@
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
+	import { Suspense } from '@threlte/extras'
+	import LoadingUi from '../UI/LoadingUi.svelte'
 
 	export let trackData: TrackData
 
@@ -113,45 +115,51 @@
 	}
 </script>
 
-<!-- UI -->
-<UiWrapper>
-	{#if $paused}
-		<slot name="ui-paused" {proceed} {restart} trackRecord={currentTrackRecord} />
-	{:else if $state === 'intro'}
-		<slot name="ui-intro" {proceed} trackRecord={currentTrackRecord} />
-	{:else if $state === 'count-in'}
-		<slot name="ui-count-in" {proceed} trackRecord={currentTrackRecord}>
-			<CountIn on:countindone={proceed} time={$time} />
-		</slot>
-	{:else if $state === 'playing'}
-		<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord}>
-			<GamePlay time={$time} />
-		</slot>
-	{:else if $state === 'finished'}
-		<slot name="ui-finished" {restart} time={$time} trackRecord={currentTrackRecord} />
-	{/if}
-</UiWrapper>
+<Suspense final let:suspended>
+	<LoadingUi slot="fallback" />
 
-<!-- 3D -->
-{#if trackData}
-	<TrackViewer let:trackElement {trackData} on:trackcompleted={onFinishReached}>
-		<TrackElementTransform {trackElement}>
-			<TrackElement {trackElement} />
-		</TrackElementTransform>
-	</TrackViewer>
-{/if}
-
-<Car
-	active={$carActive}
-	volume={$carVolume}
-	freeze={$carFrozen}
-	freezeCamera={$state === 'finished'}
-	let:carState
->
-	{#if workingTrackRecord.ghost && $state === 'playing'}
-		<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
+	<!-- 3D -->
+	{#if trackData}
+		<TrackViewer let:trackElement {trackData} on:trackcompleted={onFinishReached}>
+			<TrackElementTransform {trackElement}>
+				<TrackElement {trackElement} />
+			</TrackElementTransform>
+		</TrackViewer>
 	{/if}
-</Car>
+
+	<Car
+		active={$carActive}
+		volume={$carVolume}
+		freeze={$carFrozen}
+		freezeCamera={$state === 'finished'}
+		let:carState
+	>
+		{#if workingTrackRecord.ghost && $state === 'playing'}
+			<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
+		{/if}
+	</Car>
+
+	{#if !suspended}
+		<!-- UI -->
+		<UiWrapper>
+			{#if $paused}
+				<slot name="ui-paused" {proceed} {restart} trackRecord={currentTrackRecord} />
+			{:else if $state === 'intro'}
+				<slot name="ui-intro" {proceed} trackRecord={currentTrackRecord} />
+			{:else if $state === 'count-in'}
+				<slot name="ui-count-in" {proceed} trackRecord={currentTrackRecord}>
+					<CountIn on:countindone={proceed} time={$time} />
+				</slot>
+			{:else if $state === 'playing'}
+				<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord}>
+					<GamePlay time={$time} />
+				</slot>
+			{:else if $state === 'finished'}
+				<slot name="ui-finished" {restart} time={$time} trackRecord={currentTrackRecord} />
+			{/if}
+		</UiWrapper>
+	{/if}
+</Suspense>
 
 {#if currentTrackRecord?.ghost && $state === 'playing'}
 	<GhostPlayer ghost={currentTrackRecord.ghost} time={$time} />

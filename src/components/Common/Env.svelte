@@ -44,6 +44,8 @@
 </script>
 
 <script lang="ts">
+	export let background = true
+
 	const { scene } = useThrelte()
 
 	const suspend = useSuspense()
@@ -63,7 +65,7 @@
 	)
 	$: if ($env) {
 		scene.environment = $env
-		scene.background = $env
+		if (background) scene.background = $env
 	}
 	onDestroy(() => {
 		scene.background = previousBackground

@@ -9,6 +9,7 @@
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
 	import Renderer from '../components/Renderer.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
+	import { page } from '$app/stores'
 
 	const { visibility, options } = appState
 	const { debug } = options
@@ -20,17 +21,21 @@
 			visibility.set('visible')
 		}
 	}
+
+	$: isRenderRoute = $page.route.id === '/track-elements/render'
 </script>
 
 <svelte:window on:visibilitychange={onVisibilityChange} />
 
-<div
-	class="absolute top-0 left-0 w-full h-full bg-black md:hidden z-50 text-orange font-headline flex justify-center items-center text-center px-[15px]"
->
-	Play on a desktop device
-	<br />
-	for the best experience
-</div>
+{#if !isRenderRoute}
+	<div
+		class="absolute top-0 left-0 w-full h-full bg-black md:hidden z-50 text-orange font-headline flex justify-center items-center text-center px-[15px]"
+	>
+		Play on a desktop device
+		<br />
+		for the best experience
+	</div>
+{/if}
 
 <div class="w-full h-full absolute bg-black">
 	<Canvas
