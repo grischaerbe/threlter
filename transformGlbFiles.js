@@ -8,7 +8,7 @@ const glbFiles = globSync('./src/**/*.glb', { ignore: 'node_modules/**', absolut
 for (const glbFile of glbFiles) {
 	console.log(`Transforming ${glbFile}...`)
 	const dir = glbFile.split('/').slice(0, -1).join('/')
-	const out = execSync(`cd ${dir} && npx @threlte/gltf@next ${glbFile} -i -P -t -s -T`)
+	const out = execSync(`cd ${dir} && npx @threlte/gltf@next ${glbFile} -u -i -t -s`)
 	console.log(out.toString())
 }
 

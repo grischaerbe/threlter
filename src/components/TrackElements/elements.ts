@@ -1,24 +1,24 @@
 // Elements
-import BarrierEnd from './BarrierEnd.svelte'
-import BarrierTurnLeft from './BarrierTurnLeft.svelte'
-import BasicBox from './BasicBox.svelte'
-import Boost from './Boost.svelte'
+import BarrierEnd from './Barriers/BarrierEnd/BarrierEnd.svelte'
+import BarrierTurnLeft from './Barriers/BarrierTurnLeft/BarrierTurnLeft.svelte'
+import Box from './Boxes/Box/Box.svelte'
+import Boost from './Boosts/Boost/Boost.svelte'
 import Checkpoint from './Checkpoint/Checkpoint.svelte'
 import CheckpointRing from './CheckpointRing.svelte'
-import DoubleBarrier from './DoubleBarrier.svelte'
+import DoubleBarrier from './Barriers/DoubleBarrier/DoubleBarrier.svelte'
 import Finish from './Finish/Finish.svelte'
-import HalfBox from './HalfBox.svelte'
-import Ramp from './Ramp.svelte'
-import RampInverse from './RampInverse.svelte'
-import HalfUnitBox from './HalfUnitBox/HalfUnitBox.svelte'
-import Slope from './Slope.svelte'
+import HalfBox from './Boxes/HalfBox/HalfBox.svelte'
+import Ramp from './Ramps/Ramp/Ramp.svelte'
+import RampInverse from './Ramps/RampInverse/RampInverse.svelte'
+import HalfUnitBox from './Boxes/HalfUnitBox/HalfUnitBox.svelte'
+import Slope from './Ramps/Slope/Slope.svelte'
 import Tiltfullmediumbend from './Tilts/TiltFullMediumBend/Tiltfullmediumbend.svelte'
 import Tiltfulltightbend from './Tilts/TiltFullTightBend/Tiltfulltightbend.svelte'
 import Tilttransitionleft from './Tilts/TiltTransitions/TiltTransitionLeft/Tilttransitionleft.svelte'
 import Tilttransitionleftlong from './Tilts/TiltTransitions/TiltTransitionLeftLong/Tilttransitionleftlong.svelte'
 import Tilttransitionright from './Tilts/TiltTransitions/TiltTransitionRight/Tilttransitionright.svelte'
 import Tilttransitionrightlong from './Tilts/TiltTransitions/TiltTransitionRightLong/Tilttransitionrightlong.svelte'
-// import Barrier from './Barrier.svelte'
+import Barrier from './Barriers/Barrier/Barrier.svelte'
 
 export const elementCategories = {
 	basics: {
@@ -45,8 +45,8 @@ export type TrackElementCategory = keyof typeof elementCategories
 
 export const trackElementPrototypes = {
 	Box: {
-		buttonLabel: 'Box',
-		component: BasicBox,
+		buttonLabel: 'Full Box',
+		component: Box,
 		category: 'basics'
 	},
 
@@ -92,12 +92,11 @@ export const trackElementPrototypes = {
 		category: 'boosts'
 	},
 
-	// WHY WON'T THIS WORK???
-	// Barrier: {
-	// 	buttonLabel: 'Barrier',
-	// 	component: Barrier,
-	// 	category: 'barriers'
-	// },
+	Barrier: {
+		buttonLabel: 'Barrier',
+		component: Barrier,
+		category: 'barriers'
+	},
 
 	DoubleBarrier: {
 		buttonLabel: 'Double Barrier',
