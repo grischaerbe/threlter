@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { preloadMuscleCar } from '$components/Car/Models/MuscleCar.svelte'
-	import { preloadMuscleCarWheel } from '$components/Car/Models/MuscleCarWheel.svelte'
+	// import { preloadMuscleCar } from '$components/Car/Models/MuscleCar.svelte'
+	// import { preloadMuscleCarWheel } from '$components/Car/Models/MuscleCarWheel.svelte'
 	import { preloadEnv } from '$components/Common/Env.svelte'
 	import { preloadBarrier } from '$components/TrackElements/Barrier.svelte'
 	import { preloadBarrierEnd } from '$components/TrackElements/BarrierEnd.svelte'
@@ -12,7 +12,7 @@
 	import { preloadRamp } from '$components/TrackElements/Ramp.svelte'
 	import { preloadRampInverse } from '$components/TrackElements/RampInverse.svelte'
 	import { preloadSlope } from '$components/TrackElements/Slope.svelte'
-	import { preloadSounds } from '$components/Utilities/AudioProvider.svelte'
+	// import { preloadSounds } from '$components/Utilities/AudioProvider.svelte'
 	import { useProgress } from '@threlte/extras'
 
 	import LoadingUi from '$components/UI/LoadingUi.svelte'
@@ -28,20 +28,21 @@
 
 	const preload = () => {
 		return Promise.all([
-			preloadMuscleCar(),
-			preloadMuscleCarWheel(),
+			// preloadMuscleCar(),
+			// preloadMuscleCarWheel(),
 			preloadHalfbox(),
 			preloadRamp(),
 			preloadRampInverse(),
 			preloadDoubleBarrier(),
 			preloadBarrierEnd(),
 			preloadBoost(),
+			preloadEnv(),
+
 			preloadBarrierTurnLeft(),
 			preloadBarrier(),
 			preloadSlope(),
-			preloadEnv(),
 			preloadBasicBox(),
-			preloadSounds(),
+			// preloadSounds(),
 			preloadTilttransitionleft(),
 			preloadTilttransitionright(),
 			preloadTiltfullmediumbend(),
@@ -49,7 +50,7 @@
 			preloadTilttransitionleftlong(),
 			preloadTilttransitionrightlong(),
 			preloadFinish(),
-			preloadCheckpoint(),
+			// preloadCheckpoint()
 			preloadHalfunitbox()
 		])
 	}

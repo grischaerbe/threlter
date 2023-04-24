@@ -5,6 +5,7 @@
 	import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 	import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare'
 	import { sunPos } from '$src/config'
+	import { useSuspense } from '@threlte/extras'
 
 	const loadEnv = () => {
 		const loader = useLoader(RGBELoader)
@@ -43,35 +44,49 @@
 </script>
 
 <script lang="ts">
-	export let background = true
-
 	const { scene } = useThrelte()
 
+	const suspend = useSuspense()
+
+	// ENVIROMENT & BACKGROUND
 	let previousBackground = scene.background
 	let previousEnvironment = scene.environment
-
-	const setEnv = async () => {
-		const texture = await loadEnv()
-		scene.environment = texture
-		if (!background) return
-		scene.background = texture
+	const rgbeLoader = useLoader(RGBELoader)
+	const env = suspend(
+		rgbeLoader.load('/backgrounds/rustig_koppie_puresky_4k.hdr', {
+			transform(result) {
+				result.encoding = sRGBEncoding
+				result.mapping = EquirectangularReflectionMapping
+				return result
+			}
+		})
+	)
+	$: if ($env) {
+		scene.environment = $env
+		scene.background = $env
 	}
-
-	setEnv()
-
 	onDestroy(() => {
 		scene.background = previousBackground
 		scene.environment = previousEnvironment
 	})
+
+	// LENSFLARE
+	const textureLoader = useLoader(TextureLoader)
+	const distances = [0, /*0.4,*/ 0.8]
+	const sizes = [512, /*512,*/ 300]
+	const colors = [new Color('#8A8A8A'), /*new Color('#ADADAD'),*/ new Color('#F9F9F9')]
+	const elementTextures = suspend(
+		textureLoader.load(['/lensflare/lensflare0.png', '/lensflare/lensflare3.png'])
+	)
 </script>
 
 <T.Group position.x={sunPos[0] * 1000} position.y={sunPos[1] * 1000} position.z={sunPos[2] * 1000}>
-	{#await loadLensflareTextures() then elements}
+	{#await elementTextures then textures}
 		<T is={Lensflare} let:ref={lensflare}>
-			{#each elements as element}
+			{#each textures as texture, index}
 				<T
 					is={LensflareElement}
-					args={[element.texture, element.size, element.distance, element.color]}
+					args={[texture, sizes[index], distances[index], colors[index]]}
 					on:create={({ ref }) => {
 						lensflare.addElement(ref)
 					}}

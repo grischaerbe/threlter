@@ -4,11 +4,12 @@
 	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
 	import { appState } from '$stores/app'
 	import { Canvas } from '@threlte/core'
-	import { AudioListener } from '@threlte/extras'
+	import { AudioListener, Suspense } from '@threlte/extras'
 	import { Debug, World } from '@threlte/rapier'
 	import '../app.postcss'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
 	import Renderer from '../components/Renderer.svelte'
+	import LoadingUi from '../components/UI/LoadingUi.svelte'
 
 	const { visibility, options } = appState
 	const { debug } = options
@@ -45,7 +46,9 @@
 				<Debug depthTest={false} depthWrite={false} />
 			{/if}
 
-			<Loader>
+			<Suspense final>
+				<LoadingUi slot="fallback" />
+
 				<AudioListener />
 				<AudioProvider>
 					<KeyboardNavigation>
@@ -54,7 +57,7 @@
 						</StartPrompt>
 					</KeyboardNavigation>
 				</AudioProvider>
-			</Loader>
+			</Suspense>
 		</World>
 
 		<Renderer />

@@ -24,22 +24,19 @@
 		}
 		return context
 	}
-
-	export const preloadSounds = () => {
-		const loader = useLoader(AudioLoader)
-		return Promise.all(Object.values(sounds).map((src) => loader.load(src)))
-	}
 </script>
 
 <script lang="ts">
 	import { afterNavigate, beforeNavigate } from '$app/navigation'
 
 	import { useLoader } from '@threlte/core'
-	import { useAudioListener } from '@threlte/extras'
+	import { useAudioListener, useSuspense } from '@threlte/extras'
 	import { getContext, setContext } from 'svelte'
 	import { AudioLoader } from 'three'
 
+	const suspend = useSuspense()
 	const loader = useLoader(AudioLoader)
+	suspend(Promise.all(Object.values(sounds).map((src) => loader.load(src))))
 
 	const { context: audioContext } = useAudioListener()
 
