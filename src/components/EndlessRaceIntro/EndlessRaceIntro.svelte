@@ -3,7 +3,7 @@
 	import { appState } from '$stores/app'
 	import { T, useFrame, useThrelte } from '@threlte/core'
 	import { Float, onReveal } from '@threlte/extras'
-	import { createEventDispatcher, onDestroy, onMount } from 'svelte'
+	import { createEventDispatcher, onDestroy } from 'svelte'
 	import { cubicInOut, quadOut, sineOut } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
 	import { Color, PerspectiveCamera } from 'three'
@@ -12,7 +12,7 @@
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
 	import MuscleCarWheel from '../Car/Models/MuscleCarWheel.svelte'
 	import { dummyCarState } from '../Car/carState'
-	import Box from './Box.svelte'
+	import HalfBox from './NonPhysicsBox/HalfBox.svelte'
 
 	const { options } = appState
 
@@ -117,7 +117,7 @@
 
 	let offset = 0
 
-	const boxComponents = [Box]
+	const boxComponents = [HalfBox]
 	const boxLength = 5
 	const trackElements = 40
 	const trackLength = trackElements * boxLength
