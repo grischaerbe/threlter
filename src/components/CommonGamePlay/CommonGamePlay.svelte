@@ -21,6 +21,7 @@
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
+	import { spring } from 'svelte/motion'
 
 	export let trackData: TrackData
 
@@ -47,11 +48,13 @@
 		return true
 	})
 
+	const carVolumeSpring = spring(0)
 	const carVolume = derived([paused, state], ([paused, state]) => {
 		if (paused) return 0
 		if (state === 'intro') return 0.3
 		return 1
 	})
+	$: carVolumeSpring.set($carVolume)
 
 	useFrame((_, delta) => {
 		if ($paused || $state !== 'playing') return
@@ -137,14 +140,14 @@
 					<CameraControls
 						autoRotate
 						autoRotateSpeed={0.5}
+						truckSpeed={0}
 						on:create={async ({ ref }) => {
-							const getRef = () => ref
 							await ref.moveTo(center.x, center.y, center.z)
 							await ref.fitToSphere(sphere, false)
 							const currentDist = ref.distance
-							getRef().polarAngle = 75 * DEG2RAD
-							getRef().minDistance = currentDist
-							getRef().maxDistance = currentDist
+							ref.polarAngle = 75 * DEG2RAD
+							ref.minDistance = currentDist
+							ref.maxDistance = currentDist
 						}}
 					/>
 				</T.PerspectiveCamera>
@@ -154,7 +157,7 @@
 
 	<Car
 		active={$carActive}
-		volume={$carVolume}
+		volume={$carVolumeSpring}
 		freeze={$carFrozen}
 		freezeCamera={$state === 'finished'}
 		let:carState
