@@ -1,23 +1,23 @@
 <script lang="ts">
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import type { TrackData } from '$lib/TrackData/TrackData'
+	import { Ghost } from '$lib/TrackRecord/Ghost'
+	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { appState } from '$stores/app'
 	import { currentWritable, useFrame, watch } from '@threlte/core'
+	import { Suspense } from '@threlte/extras'
 	import { derived } from 'svelte/store'
+	import { useEvent } from '../../hooks/useEvents'
 	import Car from '../Car/Car.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
 	import TrackElementTransform from '../TrackViewer/TrackElementTransform.svelte'
 	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
+	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import GhostPlayer from './GhostPlayer.svelte'
-	import { Ghost } from '$lib/TrackRecord/Ghost'
-	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
-	import { useEvent } from '../../hooks/useEvents'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
-	import { Suspense } from '@threlte/extras'
-	import LoadingUi from '../UI/LoadingUi.svelte'
 
 	export let trackData: TrackData
 

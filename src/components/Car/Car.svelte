@@ -10,6 +10,7 @@
 	import MuscleCarWheel from './Models/MuscleCarWheel.svelte'
 	import RaycastVehicleController from './RaycastVehicleController/RaycastVehicleController.svelte'
 	import Sun from './Sun.svelte'
+	import WheelRotation from './WheelRotation.svelte'
 
 	let carCam: PerspectiveCamera
 	let freezeCam: PerspectiveCamera
@@ -69,6 +70,7 @@
 	{volume}
 	useAudio={$sfx}
 	{freeze}
+	let:carState
 >
 	<T.PerspectiveCamera
 		bind:ref={carCam}
@@ -78,24 +80,32 @@
 		makeDefault={camera === 'car'}
 	/>
 
-	<T.Group let:carState slot="body" rotation.y={(-90 * Math.PI) / 180}>
+	<T.Group slot="body" rotation.y={(-90 * Math.PI) / 180}>
 		<MuscleCar {carState} />
 	</T.Group>
 
 	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-fl">
-		<MuscleCarWheel />
+		<WheelRotation {carState}>
+			<MuscleCarWheel />
+		</WheelRotation>
 	</T.Group>
 
 	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-fr">
-		<MuscleCarWheel />
+		<WheelRotation {carState}>
+			<MuscleCarWheel />
+		</WheelRotation>
 	</T.Group>
 
 	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-rl">
-		<MuscleCarWheel />
+		<WheelRotation {carState}>
+			<MuscleCarWheel />
+		</WheelRotation>
 	</T.Group>
 
 	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-rr">
-		<MuscleCarWheel />
+		<WheelRotation {carState}>
+			<MuscleCarWheel />
+		</WheelRotation>
 	</T.Group>
 
 	<svelte:fragment let:carState>

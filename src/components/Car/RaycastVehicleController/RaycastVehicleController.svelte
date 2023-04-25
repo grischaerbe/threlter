@@ -389,7 +389,7 @@
 		const isLeft = wheel === Wheel.FL || wheel === Wheel.RL
 
 		return {
-			x: isFront ? wheelBase / 2 : -wheelBase / 2,
+			x: isFront ? -wheelBase / 2 : wheelBase / 2,
 			y: -carBodyHeight / 2,
 			z: isLeft ? carBodyWidth / 2 : -carBodyWidth / 2
 		}
@@ -483,7 +483,7 @@
 
 		const linearVelocity = rigidBody.linvel()
 		const velocity = length(linearVelocity)
-		carState.velocity.set(velocity)
+
 		/**
 		 * Velocity from 0 to maxDesiredVelocity
 		 */
@@ -493,6 +493,8 @@
 		setFromRapierRotation(currentWorldRotation, tempQuaternionA)
 		const isForward =
 			tempVectorB.set(-1, 0, 0).applyQuaternion(tempQuaternionA).dot(tempVectorA) > 0
+
+		carState.velocity.set(isForward ? velocity : -velocity)
 
 		/**
 		 * We're not setting dampings yet, we decide further down what the actual
@@ -625,103 +627,23 @@
 			}
 		})
 
-		/**
-		 * forward impulse, side impulse and steering torque is only applied when
-		 * the car is touching the ground!
-		 */
-		if (wheelStates.some((wheelState) => wheelState.onGround)) {
-			// we're at least a bit on the ground
+		// We're calculating the average surface normal of all wheels that are on the ground
+		const groundedWheels = wheelStates.filter((wheelState) => wheelState.onGround)
 
-			/**
-			 * -----------------------------------------
-			 * FORWARD IMPULSE
-			 * -----------------------------------------
-			 *
-			 * The "ideal" forward impulse is calculated but later applied as part
-			 * of the sum of forward and side impulse.
-			 * https://digitalrune.github.io/DigitalRune-Documentation/html/143af493-329d-408f-975d-e63625646f2f.htm
-			 */
-
-			// use the direction of currentRotation to apply force
-			const groundedWheels = wheelStates.filter((wheelState) => wheelState.onGround)
-			// calculate average surface normal
-			const averageImpactSurfaceNormal = groundedWheels
-				.reduce((acc, wheelState) => {
-					acc.add(
-						tempVectorA.set(
-							wheelState.surfaceImpactNormal.x,
-							wheelState.surfaceImpactNormal.y,
-							wheelState.surfaceImpactNormal.z
-						)
-					)
-					return acc
-				}, new Vector3(0, 0, 0))
-				.divideScalar(groundedWheels.length)
-
-			let mode: 'accelerate' | 'brake' = 'accelerate'
-			if (isForward && $axis.y < 0) mode = 'brake'
-
-			const multiplier =
-				mode === 'accelerate'
-					? isForward
-						? forwardImpulseMultiplier
-						: backwardImpulseMultiplier
-					: brakeImpulseMultiplier
-			const map =
-				mode === 'accelerate'
-					? isForward
-						? forwardImpulseMap
-						: backwardImpulseMap
-					: brakeImpulseMap
-
-			carState.isBraking.set(mode === 'brake')
-
-			const forwardImpulse = threeVectorToRapierVector(
-				tempVectorA
-					.set(-$axis.y * multiplier * map(velocityNormalized) * correctedDelta, 0, 0)
-					.applyQuaternion(
-						tempQuaternionA.set(
-							currentWorldRotation.x,
-							currentWorldRotation.y,
-							currentWorldRotation.z,
-							currentWorldRotation.w
-						)
-					)
-					.projectOnPlane(averageImpactSurfaceNormal)
+		// calculate average surface normal
+		const averageImpactSurfaceNormal = groundedWheels.reduce((acc, wheelState) => {
+			acc.add(
+				tempVectorA.set(
+					wheelState.surfaceImpactNormal.x,
+					wheelState.surfaceImpactNormal.y,
+					wheelState.surfaceImpactNormal.z
+				)
 			)
+			return acc
+		}, new Vector3(0, 0, 0))
 
-			// the inclination is:
-			// 0 when the car on a vertical surface going down
-			// 0.5 when the car is on a flat surface
-			// 1 when the car is on a vertical surface going up
-			const inclination = mapLinear(
-				setFromRapierVector(forwardImpulse, tempVectorA).normalize().y,
-				-1,
-				1,
-				0,
-				1
-			)
-			const finalForwardImpulse = threeVectorToRapierVector(
-				setFromRapierVector(forwardImpulse, tempVectorA)
-					.multiplyScalar(forwardImpulseInclinationMap(inclination))
-					.multiplyScalar(active ? 1 : 0)
-			)
-
-			const forwardImpulseOrigin = localPositionToWorld(
-				currentWorldPosition,
-				currentWorldRotation,
-				virtualCenterOfMass
-			)
-
-			if (debug) {
-				updateImpulseVisualisation(`forwardImpulse`, {
-					color: 'blue',
-					impulse: finalForwardImpulse,
-					origin: forwardImpulseOrigin,
-					multiplier: 1 / forwardImpulseMultiplier
-				})
-			}
-
+		// Only apply the torque if we're on the ground with at least one front wheel
+		if (flWheelState.onGround || frWheelState.onGround) {
 			/**
 			 * -----------------------------------------
 			 * STEERING TORQUE
@@ -765,6 +687,88 @@
 						origin: currentWorldPosition
 					})
 				}
+			}
+		}
+
+		/**
+		 * forward impulse, side impulse and steering torque is only applied when
+		 * the car is touching the ground!
+		 */
+		if (wheelStates.some((wheelState) => wheelState.onGround)) {
+			// we're at least a bit on the ground
+
+			/**
+			 * -----------------------------------------
+			 * FORWARD IMPULSE
+			 * -----------------------------------------
+			 *
+			 * The "ideal" forward impulse is calculated but later applied as part
+			 * of the sum of forward and side impulse.
+			 * https://digitalrune.github.io/DigitalRune-Documentation/html/143af493-329d-408f-975d-e63625646f2f.htm
+			 */
+
+			let mode: 'accelerate' | 'brake' = 'accelerate'
+			if (isForward && $axis.y < 0) mode = 'brake'
+
+			const multiplier =
+				mode === 'accelerate'
+					? isForward
+						? forwardImpulseMultiplier
+						: backwardImpulseMultiplier
+					: brakeImpulseMultiplier
+			const map =
+				mode === 'accelerate'
+					? isForward
+						? forwardImpulseMap
+						: backwardImpulseMap
+					: brakeImpulseMap
+
+			carState.isBraking.set(mode === 'brake')
+
+			const forwardImpulse = threeVectorToRapierVector(
+				tempVectorA
+					.set(-$axis.y * multiplier * map(velocityNormalized) * correctedDelta, 0, 0)
+					.applyQuaternion(
+						tempQuaternionA.set(
+							currentWorldRotation.x,
+							currentWorldRotation.y,
+							currentWorldRotation.z,
+							currentWorldRotation.w
+						)
+					)
+					.projectOnPlane(averageImpactSurfaceNormal.clone().divideScalar(groundedWheels.length))
+			)
+
+			// the inclination is:
+			// 0 when the car on a vertical surface going down
+			// 0.5 when the car is on a flat surface
+			// 1 when the car is on a vertical surface going up
+			const inclination = mapLinear(
+				setFromRapierVector(forwardImpulse, tempVectorA).normalize().y,
+				-1,
+				1,
+				0,
+				1
+			)
+			const finalForwardImpulse = threeVectorToRapierVector(
+				setFromRapierVector(forwardImpulse, tempVectorA)
+					.multiplyScalar(forwardImpulseInclinationMap(inclination))
+					.multiplyScalar(active ? 1 : 0)
+			)
+
+			const forwardImpulseOrigin = localPositionToWorld(
+				currentWorldPosition,
+				currentWorldRotation,
+				virtualCenterOfMass
+			)
+
+			if (debug) {
+				updateImpulseVisualisation(`forwardImpulse`, {
+					color: 'blue',
+					impulse: finalForwardImpulse,
+					origin: forwardImpulseOrigin,
+					multiplier: 1 / forwardImpulseMultiplier
+				})
 			}
 
 			/**
@@ -852,7 +856,9 @@
 
 			// calculate the normalized rpm
 			carState.normalizedRpm.set(
-				rpmMap(clamp(mapLinear(carState.velocity.current, 0, maxDesiredVelocity, 0, 1), 0, 1))
+				rpmMap(
+					clamp(mapLinear(Math.abs(carState.velocity.current), 0, maxDesiredVelocity, 0, 1), 0, 1)
+				)
 			)
 
 			// set the playback rate according to the ground speed when we're touching the ground
@@ -983,19 +989,19 @@
 				<slot {carState} name="body" />
 
 				<!-- WHEEL SLOTS -->
-				<T.Group bind:ref={flWheelState.wheelGroup}>
+				<T.Group bind:ref={flWheelState.wheelGroup} rotation.y={$steeringAngle}>
 					<slot name="wheel-fl" />
 				</T.Group>
-				<T.Group bind:ref={frWheelState.wheelGroup} rotation.y={(180 * Math.PI) / 180}>
-					<slot name="wheel-fr" />
-				</T.Group>
-				<T.Group bind:ref={rlWheelState.wheelGroup} rotation.y={$steeringAngle}>
-					<slot name="wheel-rl" />
-				</T.Group>
 				<T.Group
-					bind:ref={rrWheelState.wheelGroup}
+					bind:ref={frWheelState.wheelGroup}
 					rotation.y={$steeringAngle + (180 * Math.PI) / 180}
 				>
+					<slot name="wheel-fr" />
+				</T.Group>
+				<T.Group bind:ref={rlWheelState.wheelGroup}>
+					<slot name="wheel-rl" />
+				</T.Group>
+				<T.Group bind:ref={rrWheelState.wheelGroup} rotation.y={(180 * Math.PI) / 180}>
 					<slot name="wheel-rr" />
 				</T.Group>
 			{/if}
