@@ -82,12 +82,16 @@
 					<div>Rotate View</div>
 					<hr />
 
-					<div>Mousewheel + Drag</div>
+					<div>
+						Mousewheel + Drag
+						<br />
+						Shift + Drag
+					</div>
 					<div>Pan View</div>
 					<hr />
 
 					<div>Mousewheel</div>
-					<div>Pan View</div>
+					<div>Zoom View</div>
 					<hr />
 
 					<div>Shift + F</div>

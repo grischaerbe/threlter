@@ -9,6 +9,7 @@
 		if (!$currentlySelectedElement || !cameraControls.current) return
 		cameraControls.current.moveTo(...$currentlySelectedElement.position.current, true)
 		cameraControls.current.dollyTo(50, true)
+		cameraControls.current.setFocalOffset(0, 0, 0, true)
 	}
 </script>
 

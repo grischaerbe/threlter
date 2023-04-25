@@ -18,6 +18,7 @@ import Tilttransitionleft from './Tilts/TiltTransitions/TiltTransitionLeft/Tiltt
 import Tilttransitionleftlong from './Tilts/TiltTransitions/TiltTransitionLeftLong/Tilttransitionleftlong.svelte'
 import Tilttransitionright from './Tilts/TiltTransitions/TiltTransitionRight/Tilttransitionright.svelte'
 import Tilttransitionrightlong from './Tilts/TiltTransitions/TiltTransitionRightLong/Tilttransitionrightlong.svelte'
+import TransitionFullMediumBend from './Tilts/TransitionFullMediumBend/TransitionFullMediumBend.svelte'
 import Barrier from './Barriers/Barrier/Barrier.svelte'
 
 export const elementCategories = {
@@ -161,6 +162,12 @@ export const trackElementPrototypes = {
 	TiltFullMediumBend: {
 		buttonLabel: 'Tilt Full Medium Bend',
 		component: Tiltfullmediumbend,
+		category: 'tilts'
+	},
+
+	TransitionFullMediumBend: {
+		buttonLabel: 'Transition Full Medium Bend',
+		component: TransitionFullMediumBend,
 		category: 'tilts'
 	}
 } satisfies Record<

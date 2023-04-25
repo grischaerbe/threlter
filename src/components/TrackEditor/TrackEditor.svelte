@@ -30,10 +30,19 @@
 	import TrackEditorInfo from './UI/TrackEditorInfo.svelte'
 	import TrackEditorMenu from './UI/TrackEditorMenu.svelte'
 	import { createTrackEditorContext } from './context'
+	import CC from 'camera-controls'
 
 	const { visibility } = appState
 
 	export let trackData: TrackData
+
+	let shiftState = false
+	useKeyDown('Shift', (e) => {
+		shiftState = true
+	})
+	useKeyUp('Shift', (e) => {
+		shiftState = false
+	})
 
 	const showMenu = currentWritable(false)
 	const showInfo = currentWritable(false)
@@ -285,6 +294,7 @@
 	<CameraControls
 		smoothTime={0.1}
 		draggingSmoothTime={0.05}
+		mouseButtons.left={shiftState ? CC.ACTION.TRUCK : CC.ACTION.ROTATE}
 		maxDistance={1000}
 		bind:ref={$cameraControls}
 	/>

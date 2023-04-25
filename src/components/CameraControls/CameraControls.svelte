@@ -3,15 +3,16 @@
 </script>
 
 <script lang="ts">
-	import {
-		T,
-		forwardEventHandlers,
-		useFrame,
-		useParent,
-		useThrelte,
-		type Events,
-		type Props
-	} from '@threlte/core'
+	import { T, forwardEventHandlers, useFrame, useParent, useThrelte } from '@threlte/core'
+	import type {
+		CameraControlsEvents,
+		CameraControlsProps,
+		CameraControlsSlots
+	} from './CameraControls.svelte'
+
+	type $$Props = CameraControlsProps
+	type $$Events = CameraControlsEvents
+	type $$Slots = CameraControlsSlots
 
 	const { orbitControls } = useControlsContext()
 
@@ -47,12 +48,6 @@
 		CameraControls.install({ THREE: subsetOfTHREE })
 		installed = true
 	}
-
-	type $$Props = Props<CameraControls> & {
-		autoRotate?: boolean
-		autoRotateSpeed?: number
-	}
-	type $$Events = Events<CameraControls>
 
 	const parent = useParent()
 
@@ -90,9 +85,12 @@
 
 <T
 	is={ref}
-	on:controlstart={() => {
+	on:controlstart={(e) => {
 		userDragging = true
 		disableAutoRotate = true
+	}}
+	on:zoom={(e) => {
+		console.log('zoomstart', e)
 	}}
 	on:controlend={() => {
 		userDragging = false

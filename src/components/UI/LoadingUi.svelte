@@ -56,6 +56,6 @@
 	}
 
 	#animated-bar {
-		animation: animated-bar 1.5s infinite linear;
+		animation: animated-bar 1.5s infinite;
 	}
 </style>
