@@ -282,5 +282,10 @@
 <Car freeze={carFrozen} active={carActive} useCarCamera={carActive} volume={carActive ? 1 : 0} />
 
 <T.PerspectiveCamera makeDefault={$view === 'orbit'} position={[50, 50, 50]}>
-	<CameraControls maxDistance={1000} bind:ref={$cameraControls} />
+	<CameraControls
+		smoothTime={0.1}
+		draggingSmoothTime={0.05}
+		maxDistance={1000}
+		bind:ref={$cameraControls}
+	/>
 </T.PerspectiveCamera>
