@@ -11,11 +11,12 @@
 	import { useKeyUp } from '$hooks/useKeyUp'
 	import type { TrackData } from '$lib/TrackData/TrackData'
 	import { T, currentWritable } from '@threlte/core'
-	import { OrbitControls, interactivity } from '@threlte/extras'
+	import { interactivity } from '@threlte/extras'
 	import { Euler } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
 	import { appState } from '../../stores/app'
+	import CameraControls from '../CameraControls/CameraControls.svelte'
 	import SpecialButton from '../UI/components/SpecialButton.svelte'
 	import TrackEditorElementSelection from './TrackEditorElementSelection.svelte'
 	import TrackEditorElementSelector from './TrackEditorElementSelector.svelte'
@@ -23,6 +24,7 @@
 	import AddElement from './UI/AddOrReplaceElement.svelte'
 	import DuplicateElement from './UI/DuplicateElement.svelte'
 	import ElementDetails from './UI/ElementDetails.svelte'
+	import FocusElement from './UI/FocusElement.svelte'
 	import RemoveElement from './UI/RemoveElement.svelte'
 	import RotateElement from './UI/RotateElement.svelte'
 	import TrackEditorInfo from './UI/TrackEditorInfo.svelte'
@@ -44,7 +46,7 @@
 
 	interactivity()
 
-	const { currentlySelectedElement, transformMode, transformSpace, transformSnap } =
+	const { currentlySelectedElement, transformMode, transformSpace, transformSnap, cameraControls } =
 		createTrackEditorContext(trackData)
 
 	$: currentlySelectedElementType = $currentlySelectedElement?.type
@@ -87,6 +89,13 @@
 		if (!$currentlySelectedElement) return
 		const newElement = trackData.duplicateTrackElement($currentlySelectedElement.id)
 		currentlySelectedElement.set(newElement)
+	})
+
+	useKeyDown('Shift+F', () => {
+		if ($showMenu) return
+		if (!$currentlySelectedElement || !cameraControls.current) return
+		cameraControls.current.moveTo(...$currentlySelectedElement.position.current, true)
+		cameraControls.current.dollyTo(50, true)
 	})
 
 	useKeyDown('Control+Backspace', () => {
@@ -215,9 +224,10 @@
 							{/key}
 						</div>
 						<div class="flex flex-row justify-between gap-[2px] text-[0.65em] pb-[2px]">
-							<div class="flex flex-row gap-[15px]">
+							<div class="flex flex-row gap-[5px]">
 								<DuplicateElement />
 								<RotateElement />
+								<FocusElement />
 							</div>
 							<RemoveElement />
 						</div>
@@ -271,12 +281,6 @@
 
 <Car freeze={carFrozen} active={carActive} useCarCamera={carActive} volume={carActive ? 1 : 0} />
 
-<T.PerspectiveCamera
-	makeDefault={$view === 'orbit'}
-	on:create={({ ref }) => {
-		ref.position.set(30, 30, 30)
-		ref.lookAt(0, 0, 0)
-	}}
->
-	<OrbitControls />
+<T.PerspectiveCamera makeDefault={$view === 'orbit'} position={[50, 50, 50]}>
+	<CameraControls maxDistance={1000} bind:ref={$cameraControls} />
 </T.PerspectiveCamera>

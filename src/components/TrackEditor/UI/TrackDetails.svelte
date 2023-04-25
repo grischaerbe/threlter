@@ -1,10 +1,9 @@
 <script lang="ts">
-	import Button from '$components/UI/components/Button.svelte'
 	import TextInput from '$components/UI/components/TextInput.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData } = useTrackEditor()
+	const { trackData, cameraControls } = useTrackEditor()
 
 	let trackName = trackData.trackName.current
 </script>

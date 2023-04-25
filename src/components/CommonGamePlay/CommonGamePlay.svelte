@@ -16,7 +16,7 @@
 	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import BoundingSphere from './BoundingSphere.svelte'
-	import CameraControls from './CameraControls.svelte'
+	import CameraControls from '../CameraControls/CameraControls.svelte'
 	import GhostPlayer from './GhostPlayer.svelte'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'

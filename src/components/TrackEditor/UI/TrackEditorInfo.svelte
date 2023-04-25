@@ -82,12 +82,16 @@
 					<div>Rotate View</div>
 					<hr />
 
-					<div>Shift + Drag</div>
+					<div>Mousewheel + Drag</div>
 					<div>Pan View</div>
 					<hr />
 
 					<div>Mousewheel</div>
 					<div>Pan View</div>
+					<hr />
+
+					<div>Shift + F</div>
+					<div>Focus selected element</div>
 					<hr />
 
 					<div class="col-span-2 bg-blue-900/40 px-[5px] !pt-[3px]">

@@ -13,6 +13,8 @@
 		type Props
 	} from '@threlte/core'
 
+	const { orbitControls } = useControlsContext()
+
 	import CameraControls from 'camera-controls'
 	import {
 		Box3,
@@ -27,6 +29,7 @@
 		type PerspectiveCamera
 	} from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
+	import { useControlsContext } from './useControlsContext'
 
 	const subsetOfTHREE = {
 		Vector2,
@@ -62,8 +65,9 @@
 	export let autoRotate = false
 	export let autoRotateSpeed = 1
 
-	const controls = new CameraControls($parent as PerspectiveCamera, renderer?.domElement)
-	const getControls = () => controls
+	export const ref = new CameraControls($parent as PerspectiveCamera, renderer?.domElement)
+	orbitControls.set(ref as any)
+	const getControls = () => ref
 
 	let userDragging = false
 	let disableAutoRotate = false
@@ -85,7 +89,7 @@
 </script>
 
 <T
-	is={controls}
+	is={ref}
 	on:controlstart={() => {
 		userDragging = true
 		disableAutoRotate = true
