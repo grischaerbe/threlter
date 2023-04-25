@@ -13,7 +13,7 @@
 	<TextInput
 		label="Track Name"
 		id="track-name"
-		inputClass="!rounded-r-none !border-r-0"
+		inputClass="!rounded-r-none !border-r-0 h-[46px]"
 		preventFocusOnFocusLost
 		bind:value={trackName}
 	/>

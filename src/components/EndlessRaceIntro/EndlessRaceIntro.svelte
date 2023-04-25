@@ -50,7 +50,6 @@
 	})
 
 	const fadeAnimationValue: AnimationValue<number> = [1, 0]
-	const init = initialValue(fadeAnimationValue)
 	const fade = tweened(initialValue(fadeAnimationValue), {
 		duration: 3e3,
 		easing: cubicInOut
