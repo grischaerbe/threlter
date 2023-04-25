@@ -14,6 +14,9 @@
 	useKeyDown('Escape', () => {
 		proceed()
 	})
+	useKeyDown('p', () => {
+		proceed()
+	})
 </script>
 
 <BottomScreenTrackName title={trackData.trackName.current} />

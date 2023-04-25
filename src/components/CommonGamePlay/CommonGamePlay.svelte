@@ -66,6 +66,11 @@
 			paused.set(true)
 		}
 	})
+	useKeyDown('p', () => {
+		if ($state === 'playing') {
+			paused.set(true)
+		}
+	})
 
 	const proceed = () => {
 		if ($paused) {
