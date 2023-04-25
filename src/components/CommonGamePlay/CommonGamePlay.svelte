@@ -137,6 +137,10 @@
 		{#if workingTrackRecord.ghost && $state === 'playing'}
 			<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
 		{/if}
+
+		{#if currentTrackRecord?.ghost && $state === 'playing'}
+			<GhostPlayer {carState} ghost={currentTrackRecord.ghost} time={$time} />
+		{/if}
 	</Car>
 
 	{#if !suspended}
@@ -160,9 +164,5 @@
 		</UiWrapper>
 	{/if}
 </Suspense>
-
-{#if currentTrackRecord?.ghost && $state === 'playing'}
-	<GhostPlayer ghost={currentTrackRecord.ghost} time={$time} />
-{/if}
 
 <slot {proceed} {restart} time={$time} trackRecord={currentTrackRecord} />

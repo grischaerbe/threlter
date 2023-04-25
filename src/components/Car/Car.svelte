@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useEvent } from '$hooks/useEvents'
 	import { appState } from '$stores/app'
-	import { T, useThrelte } from '@threlte/core'
+	import { T } from '@threlte/core'
 	import { onDestroy } from 'svelte'
 	import { PerspectiveCamera, Quaternion, Vector3 } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
