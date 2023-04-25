@@ -36,6 +36,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.7
     version: 10.4.14(postcss@8.4.21)
+  camera-controls:
+    specifier: ^2.3.4
+    version: 2.3.4(three@0.151.3)
   eslint:
     specifier: ^8.28.0
     version: 8.38.0
@@ -810,6 +813,14 @@ packages:
   /camelcase-css@2.0.1:
     resolution: {integrity: sha512-QOSvevhslijgYwRx6Rv7zKdMF8lbRmx+uQGx2+vDc+KI/eBnsy9kit5aj23AgGu3pa4t9AgwbnXWqS+iOY+2aA==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /camera-controls@2.3.4(three@0.151.3):
+    resolution: {integrity: sha512-swhc87YVHf9te0glBI7Oa/QBgsSCL4ZxtoR4V3vE6l7mEebsYRNL8y7Y2m2E6MrT0UTphM1S7mQqs0Sp7QTZ2g==}
+    peerDependencies:
+      three: '>=0.126.1'
+    dependencies:
+      three: 0.151.3
     dev: true
 
   /caniuse-lite@1.0.30001478:

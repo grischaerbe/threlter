@@ -16,7 +16,7 @@
 
 <UiWrapper>
 	<div
-		class="absolute top-0 left-0 w-full h-full bg-black text-orange flex flex-col items-center justify-center font-headline gap-[10px] pointer-events-auto"
+		class="absolute top-0 left-0 w-full h-full bg-black text-orange flex flex-col items-center justify-center font-headline gap-[10px] pointer-events-auto z-[10000]"
 	>
 		LOADING
 

@@ -4,9 +4,10 @@
 	import { Ghost } from '$lib/TrackRecord/Ghost'
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { appState } from '$stores/app'
-	import { currentWritable, useFrame, watch } from '@threlte/core'
+	import { T, currentWritable, useFrame, watch } from '@threlte/core'
 	import { Suspense } from '@threlte/extras'
 	import { derived } from 'svelte/store'
+	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
 	import Car from '../Car/Car.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
@@ -14,6 +15,8 @@
 	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
 	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
+	import BoundingSphere from './BoundingSphere.svelte'
+	import CameraControls from './CameraControls.svelte'
 	import GhostPlayer from './GhostPlayer.svelte'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
@@ -44,8 +47,10 @@
 		return true
 	})
 
-	const carVolume = derived([paused], ([paused]) => {
-		return paused ? 0 : 1
+	const carVolume = derived([paused, state], ([paused, state]) => {
+		if (paused) return 0
+		if (state === 'intro') return 0.3
+		return 1
 	})
 
 	useFrame((_, delta) => {
@@ -120,11 +125,31 @@
 
 	<!-- 3D -->
 	{#if trackData}
-		<TrackViewer let:trackElement {trackData} on:trackcompleted={onFinishReached}>
-			<TrackElementTransform {trackElement}>
-				<TrackElement {trackElement} />
-			</TrackElementTransform>
-		</TrackViewer>
+		<BoundingSphere let:center let:radius let:sphere>
+			<TrackViewer let:trackElement {trackData} on:trackcompleted={onFinishReached}>
+				<TrackElementTransform {trackElement}>
+					<TrackElement {trackElement} />
+				</TrackElementTransform>
+			</TrackViewer>
+
+			{#if radius > 0 && $state === 'intro'}
+				<T.PerspectiveCamera makeDefault position.x={radius}>
+					<CameraControls
+						autoRotate
+						autoRotateSpeed={0.5}
+						on:create={async ({ ref }) => {
+							const getRef = () => ref
+							await ref.moveTo(center.x, center.y, center.z)
+							await ref.fitToSphere(sphere, false)
+							const currentDist = ref.distance
+							getRef().polarAngle = 75 * DEG2RAD
+							getRef().minDistance = currentDist
+							getRef().maxDistance = currentDist
+						}}
+					/>
+				</T.PerspectiveCamera>
+			{/if}
+		</BoundingSphere>
 	{/if}
 
 	<Car
@@ -133,6 +158,7 @@
 		freeze={$carFrozen}
 		freezeCamera={$state === 'finished'}
 		let:carState
+		useCarCamera={$state !== 'intro'}
 	>
 		{#if workingTrackRecord.ghost && $state === 'playing'}
 			<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
