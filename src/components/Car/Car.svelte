@@ -11,12 +11,19 @@
 	import RaycastVehicleController from './RaycastVehicleController/RaycastVehicleController.svelte'
 	import Sun from './Sun.svelte'
 	import WheelRotation from './WheelRotation.svelte'
+	import { writable } from 'svelte/store'
+	import { onReveal } from '@threlte/extras'
 
 	let carCam: PerspectiveCamera
 	let freezeCam: PerspectiveCamera
 
 	const { sfx } = appState.options.audio
 	const { debug } = appState.options
+
+	const revealed = writable(false)
+	onReveal(() => {
+		revealed.set(true)
+	})
 
 	let respawnCar: (() => void) | undefined = undefined
 
@@ -68,7 +75,7 @@
 	debug={$debug}
 	{active}
 	{volume}
-	useAudio={$sfx}
+	useAudio={$sfx && $revealed}
 	{freeze}
 	let:carState
 >

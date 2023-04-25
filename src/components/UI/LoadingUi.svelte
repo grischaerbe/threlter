@@ -29,6 +29,33 @@
 					class="min-w-[12px] w-full h-[12px] bg-orange rounded-full"
 				/>
 			</div>
+		{:else}
+			<div
+				class="w-[300px] h-[26px] bg-blue-darkest border-[3px] p-[4px] border-orange rounded-full relative flex flex-row items-center justify-start overflow-hidden"
+			>
+				<div class="overflow-hidden rounded-full top-0 left-0 w-full">
+					<div
+						id="animated-bar"
+						style="width: 30%"
+						class="min-w-[12px] w-full h-[12px] bg-orange rounded-full"
+					/>
+				</div>
+			</div>
 		{/if}
 	</div>
 </UiWrapper>
+
+<style>
+	@keyframes animated-bar {
+		0% {
+			transform: translateX(-100%);
+		}
+		100% {
+			transform: translateX(300px) translateX(100%);
+		}
+	}
+
+	#animated-bar {
+		animation: animated-bar 1.5s infinite linear;
+	}
+</style>
