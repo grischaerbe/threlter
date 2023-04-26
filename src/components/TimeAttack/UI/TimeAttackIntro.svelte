@@ -6,7 +6,7 @@
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
-	import Key from './Key.svelte'
+	import Key from '../../UI/components/Key.svelte'
 
 	export let proceed: () => void
 	export let trackRecord: TrackRecord | undefined
