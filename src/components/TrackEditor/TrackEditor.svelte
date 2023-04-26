@@ -166,7 +166,7 @@
 {:else if $view === 'orbit'}
 	<UiWrapper>
 		<TopBarLayout>
-			<div slot="topbar-left" class="flex flex-col gap-[15px] w-fit">
+			<div slot="topbar-left" class="flex flex-row gap-[15px] w-fit">
 				<SpecialButton
 					on:click={() => {
 						showMenu.set(true)
