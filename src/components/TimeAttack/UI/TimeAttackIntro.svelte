@@ -30,26 +30,26 @@
 				class="text-[0.65em] grid grid-cols-[auto_auto] gap-x-[25px] [&_hr]:col-span-2 [&_hr]:border-[1px] [&_hr]:border-orange [&_div]:py-[2px] items-center"
 			>
 				<div><Key>←</Key> <Key>→</Key></div>
-				<div>Steer</div>
+				<div class="text-right">Steer</div>
 
 				<hr />
 				<div><Key>↑</Key></div>
-				<div>Accelerate</div>
+				<div class="text-right">Accelerate</div>
 
 				<hr />
 				<div><Key>↓</Key></div>
-				<div>Brake</div>
+				<div class="text-right">Brake</div>
 
 				<hr />
 				<div><Key>Enter</Key></div>
-				<div>Restart</div>
+				<div class="text-right">Restart</div>
 
 				<hr />
 				<div>
 					<Key>Esc</Key>
 					or <Key>P</Key>
 				</div>
-				<div>Menu</div>
+				<div class="text-right">Menu</div>
 			</div>
 		</Card>
 	</div>
