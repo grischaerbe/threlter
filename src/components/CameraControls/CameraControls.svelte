@@ -14,8 +14,6 @@
 	type $$Events = CameraControlsEvents
 	type $$Slots = CameraControlsSlots
 
-	const { orbitControls } = useControlsContext()
-
 	import CameraControls from 'camera-controls'
 	import {
 		Box3,
@@ -30,7 +28,6 @@
 		type PerspectiveCamera
 	} from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import { useControlsContext } from './useControlsContext'
 
 	const subsetOfTHREE = {
 		Vector2,
@@ -61,7 +58,6 @@
 	export let autoRotateSpeed = 1
 
 	export const ref = new CameraControls($parent as PerspectiveCamera, renderer?.domElement)
-	orbitControls.set(ref as any)
 	const getControls = () => ref
 
 	let userDragging = false

@@ -82,6 +82,8 @@
 			}}
 			on:mouseDown={onMouseDown}
 			on:mouseUp={onMouseUp}
+			on:mouseDown
+			on:mouseUp
 		/>
 	</T.Group>
 {/if}

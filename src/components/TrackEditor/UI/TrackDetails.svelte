@@ -3,7 +3,7 @@
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData, cameraControls } = useTrackEditor()
+	const { trackData } = useTrackEditor()
 
 	let trackName = trackData.trackName.current
 </script>

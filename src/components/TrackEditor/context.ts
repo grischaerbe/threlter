@@ -10,7 +10,7 @@ type TrackEditorContext = {
 	isDragging: CurrentWritable<boolean>
 	trackData: TrackData
 	currentlySelectedElement: CurrentWritable<TrackElement | undefined>
-	cameraControls: CurrentWritable<CameraControls | undefined>
+	cameraControls: CurrentWritable<CameraControls[]>
 }
 
 export const createTrackEditorContext = (trackData: TrackData) => {
@@ -21,7 +21,7 @@ export const createTrackEditorContext = (trackData: TrackData) => {
 		isDragging: currentWritable(false),
 		trackData,
 		currentlySelectedElement: currentWritable(undefined),
-		cameraControls: currentWritable(undefined)
+		cameraControls: currentWritable([])
 	}
 
 	setContext<TrackEditorContext>('track-editor-context', context)
