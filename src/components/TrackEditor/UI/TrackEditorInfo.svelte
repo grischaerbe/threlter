@@ -98,6 +98,26 @@
 					<div>Focus selected element</div>
 					<hr />
 
+					<div>W</div>
+					<div>Wireframe</div>
+					<hr />
+
+					<div>O</div>
+					<div>Orbit View</div>
+					<hr />
+
+					<div>X</div>
+					<div>View on X-axis</div>
+					<hr />
+
+					<div>Y</div>
+					<div>View on Y-axis</div>
+					<hr />
+
+					<div>Z</div>
+					<div>View on Z-axis</div>
+					<hr />
+
 					<div class="col-span-2 bg-blue-900/40 px-[5px] !pt-[3px]">
 						<div class="font-headline">Elements</div>
 					</div>
@@ -125,7 +145,7 @@
 					<div>Control + Backspace</div>
 					<div>Delete selected element</div>
 					<hr />
-					<div>Shift + Drag</div>
+					<div>Shift + Drag Gizmo</div>
 					<div>Snap to grid</div>
 					<hr />
 				</div>
