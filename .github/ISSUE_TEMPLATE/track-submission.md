@@ -7,4 +7,12 @@ assignees: grischaerbe
 
 ---
 
+# Track Submission
 
+## Title
+
+*Insert title here*
+
+## Preview Image
+
+*Insert preview image here*
