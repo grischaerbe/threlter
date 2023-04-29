@@ -29,15 +29,15 @@
 			<div
 				class="text-[0.65em] grid grid-cols-[auto_auto] gap-x-[25px] [&_hr]:col-span-2 [&_hr]:border-[1px] [&_hr]:border-orange [&_div]:py-[2px] items-center"
 			>
-				<div><Key>←</Key> <Key>→</Key></div>
+				<div><Key>←</Key> <Key>→</Key> <Key>A</Key> <Key>D</Key></div>
 				<div class="text-right">Steer</div>
 
 				<hr />
-				<div><Key>↑</Key></div>
+				<div><Key>↑</Key> <Key>W</Key></div>
 				<div class="text-right">Accelerate</div>
 
 				<hr />
-				<div><Key>↓</Key></div>
+				<div><Key>↓</Key> <Key>S</Key></div>
 				<div class="text-right">Brake</div>
 
 				<hr />
