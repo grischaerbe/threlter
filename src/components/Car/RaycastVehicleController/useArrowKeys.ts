@@ -14,20 +14,32 @@ export const useArrowKeys = () => {
 
   const keys = Object.keys(arrowKeys.current) as string[]
 
+  const mapWASDToArrowKeys = (e:KeyboardEvent) => {
+    switch(e.code){
+      case 'KeyW': return 'ArrowUp'
+      case 'KeyA': return 'ArrowLeft'
+      case 'KeyS': return 'ArrowDown'
+      case 'KeyD': return 'ArrowRight'
+    }
+    return e.key;
+  }
+
   const onKeyDown = (e: KeyboardEvent) => {
-    if (!keys.includes(e.key)) return
+    const key = mapWASDToArrowKeys(e);
+    if (!keys.includes(key)) return
     e.preventDefault()
     arrowKeys.update((keys) => {
-      keys[e.key as keyof typeof keys] = true
+      keys[key as keyof typeof keys] = true
       return keys
     })
   }
 
   const onKeyUp = (e: KeyboardEvent) => {
-    if (!keys.includes(e.key)) return
+    const key = mapWASDToArrowKeys(e);
+    if (!keys.includes(key)) return
     e.preventDefault()
     arrowKeys.update((keys) => {
-      keys[e.key as keyof typeof keys] = false
+      keys[key as keyof typeof keys] = false
       return keys
     })
   }
