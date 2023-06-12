@@ -16,17 +16,17 @@ devDependencies:
     specifier: ^1.5.0
     version: 1.15.5(svelte@3.58.0)(vite@4.2.1)
   '@threlte/core':
-    specifier: 6.0.0-next.5
-    version: 6.0.0-next.5
+    specifier: 6.0.0-next.8
+    version: 6.0.0-next.8
   '@threlte/extras':
-    specifier: 5.0.0-next.9
-    version: 5.0.0-next.9(three@0.151.3)
+    specifier: 5.0.0-next.13
+    version: 5.0.0-next.13(three@0.153.0)
   '@threlte/rapier':
-    specifier: 1.0.0-next.1
-    version: 1.0.0-next.1
+    specifier: 1.0.0-next.2
+    version: 1.0.0-next.2
   '@types/three':
-    specifier: ^0.150.1
-    version: 0.150.1
+    specifier: ^0.152.1
+    version: 0.152.1
   '@typescript-eslint/eslint-plugin':
     specifier: ^5.45.0
     version: 5.58.0(@typescript-eslint/parser@5.58.0)(eslint@8.38.0)(typescript@5.0.4)
@@ -38,7 +38,7 @@ devDependencies:
     version: 10.4.14(postcss@8.4.21)
   camera-controls:
     specifier: ^2.3.4
-    version: 2.3.4(three@0.151.3)
+    version: 2.3.4(three@0.153.0)
   eslint:
     specifier: ^8.28.0
     version: 8.38.0
@@ -85,8 +85,8 @@ devDependencies:
     specifier: ^3.1.5
     version: 3.3.1(postcss@8.4.21)
   three:
-    specifier: ^0.151.3
-    version: 0.151.3
+    specifier: ^0.153.0
+    version: 0.153.0
   tslib:
     specifier: ^2.4.1
     version: 2.5.0
@@ -473,21 +473,25 @@ packages:
       - supports-color
     dev: true
 
-  /@threlte/core@6.0.0-next.5:
-    resolution: {integrity: sha512-aUpCjHTfxjAShHR7Qx4+7mhvfDVCOh5cavKYBmwVrOGeMz51XoyV+c2/7gsJde1pyeUwLYc3Hvn1k6KYsgzIpg==}
+  /@threlte/core@6.0.0-next.8:
+    resolution: {integrity: sha512-EBjy6tBoJXtUnog7Y/qle8foIE4whYbKwkbYIC1AVYqxiQRB13Pz+RgKUoq+vnzMq/yFRFZRV5bJ+BEwSX4rIQ==}
     dev: true
 
-  /@threlte/extras@5.0.0-next.9(three@0.151.3):
-    resolution: {integrity: sha512-e4Po2KiQ6VvG1jg+2fCuzSIGG5cYbtjLiM0wiWZ7pyzNsiPdbDHA4k/Ww4NU7W6YbmrCWMUdJBiIgApTUjp7Vg==}
+  /@threlte/extras@5.0.0-next.13(three@0.153.0):
+    resolution: {integrity: sha512-MpjYAO5MHW3lCG9JDQbzEh925od0u+X9xlA6hsVEOlNNOSBvccJVEGRYLC87A88t8AABhLbnF9pDvX/bwvAZOA==}
     dependencies:
       lodash: 4.17.21
-      troika-three-text: 0.46.4(three@0.151.3)
+      troika-three-text: 0.46.4(three@0.153.0)
     transitivePeerDependencies:
       - three
     dev: true
 
-  /@threlte/rapier@1.0.0-next.1:
-    resolution: {integrity: sha512-f5OehYyc0LvNONli7q+K6JUFXxjfNx129EFGfUqmwPdYqDPKBt/vS93bTGF71rpZKjKNRVT3rEGJt5R67CSt+Q==}
+  /@threlte/rapier@1.0.0-next.2:
+    resolution: {integrity: sha512-4jfpqDqS0xR7Qoovef0EzAD/qr+mWxe7VPcOgintdaOxMYflBkwaRtKXA6UDmWEY5PHz8c7jSSGW4RmAQADhNA==}
+    dev: true
+
+  /@tweenjs/tween.js@18.6.4:
+    resolution: {integrity: sha512-lB9lMjuqjtuJrx7/kOkqQBtllspPIN+96OvTCeJ2j5FEzinoAXTdAMFnDAQT1KVPRlnYfBrqxtqP66vDM40xxQ==}
     dev: true
 
   /@types/cookie@0.5.1:
@@ -517,17 +521,18 @@ packages:
     resolution: {integrity: sha512-9w+a7bR8PeB0dCT/HBULU2fMqf6BAzvKbxFboYhmDtDkKPiyXYbjoe2auwsXlEFI7CFNMF1dCv3dFH5Poy9R1w==}
     dev: true
 
-  /@types/three@0.150.1:
-    resolution: {integrity: sha512-ZXS1M3brsfAAbTeeUEt0defPi98yWQuEyPBnvjEYY1dCEYfJnFaww0mYgRpJ9JVfmtwRxqISpVcv/g/0lMl1DQ==}
+  /@types/three@0.152.1:
+    resolution: {integrity: sha512-PMOCQnx9JRmq+2OUGTPoY9h1hTWD2L7/nmuW/SyNq1Vbq3Lwt3MNdl3wYSa4DvLTGv62NmIXD9jYdAOwohwJyw==}
     dependencies:
+      '@tweenjs/tween.js': 18.6.4
       '@types/stats.js': 0.17.0
-      '@types/webxr': 0.5.1
+      '@types/webxr': 0.5.2
       fflate: 0.6.10
       lil-gui: 0.17.0
     dev: true
 
-  /@types/webxr@0.5.1:
-    resolution: {integrity: sha512-xlFXPfgJR5vIuDefhaHuUM9uUgvPaXB6GKdXy2gdEh8gBWQZ2ul24AJz3foUd8NNKlSTQuWYJpCb1/pL81m1KQ==}
+  /@types/webxr@0.5.2:
+    resolution: {integrity: sha512-szL74BnIcok9m7QwYtVmQ+EdIKwbjPANudfuvDrAF8Cljg9MKUlIoc1w5tjj9PMpeSH3U1Xnx//czQybJ0EfSw==}
     dev: true
 
   /@typescript-eslint/eslint-plugin@5.58.0(@typescript-eslint/parser@5.58.0)(eslint@8.38.0)(typescript@5.0.4):
@@ -815,12 +820,12 @@ packages:
     engines: {node: '>= 6'}
     dev: true
 
-  /camera-controls@2.3.4(three@0.151.3):
+  /camera-controls@2.3.4(three@0.153.0):
     resolution: {integrity: sha512-swhc87YVHf9te0glBI7Oa/QBgsSCL4ZxtoR4V3vE6l7mEebsYRNL8y7Y2m2E6MrT0UTphM1S7mQqs0Sp7QTZ2g==}
     peerDependencies:
       three: '>=0.126.1'
     dependencies:
-      three: 0.151.3
+      three: 0.153.0
     dev: true
 
   /caniuse-lite@1.0.30001478:
@@ -2376,8 +2381,8 @@ packages:
       any-promise: 1.3.0
     dev: true
 
-  /three@0.151.3:
-    resolution: {integrity: sha512-+vbuqxFy8kzLeO5MgpBHUvP/EAiecaDwDuOPPDe6SbrZr96kccF0ktLngXc7xA7bzyd3N0t2f6mw3Z9y6JCojQ==}
+  /three@0.153.0:
+    resolution: {integrity: sha512-OCP2/uQR6GcDpSLnJt/3a4mdS0kNWcbfUXIwLoEMgLzEUIVIYsSDwskpmOii/AkDM+BBwrl6+CKgrjX9+E2aWg==}
     dev: true
 
   /through2@4.0.2:
@@ -2412,24 +2417,24 @@ packages:
       nopt: 1.0.10
     dev: true
 
-  /troika-three-text@0.46.4(three@0.151.3):
+  /troika-three-text@0.46.4(three@0.153.0):
     resolution: {integrity: sha512-Qsv0HhUKTZgSmAJs5wvO7YlBoJSP9TGPLmrg+K9pbQq4lseQdcevbno/WI38bwJBZ/qS56hvfqEzY0zUEFzDIw==}
     peerDependencies:
       three: '>=0.103.0'
     dependencies:
       bidi-js: 1.0.2
-      three: 0.151.3
-      troika-three-utils: 0.46.0(three@0.151.3)
+      three: 0.153.0
+      troika-three-utils: 0.46.0(three@0.153.0)
       troika-worker-utils: 0.46.0
       webgl-sdf-generator: 1.1.1
     dev: true
 
-  /troika-three-utils@0.46.0(three@0.151.3):
+  /troika-three-utils@0.46.0(three@0.153.0):
     resolution: {integrity: sha512-llHyrXAcwzr0bpg80GxsIp73N7FuImm4WCrKDJkAqcAsWmE5pfP9+Qzw+oMWK1P/AdHQ79eOrOl9NjyW4aOw0w==}
     peerDependencies:
       three: '>=0.103.0'
     dependencies:
-      three: 0.151.3
+      three: 0.153.0
     dev: true
 
   /troika-worker-utils@0.46.0:
