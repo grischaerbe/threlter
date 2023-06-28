@@ -11,9 +11,6 @@
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
 	import { page } from '$app/stores'
 	import { dev } from '$app/environment'
-	import { inject } from '@vercel/analytics'
-
-	inject({ mode: dev ? 'development' : 'production' })
 
 	const { visibility, options } = appState
 	const { debug } = options
