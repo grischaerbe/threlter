@@ -14,11 +14,11 @@
 			<BottomBar>
 				<SpecialButton
 					style="inverted"
-					href="https://next.threlte.xyz"
+					href="https://legrisch.com"
 					class="text-[0.5em]"
 					slot="right"
 				>
-					Made with Threlte 6
+					Made by Grischa Erbe
 				</SpecialButton>
 			</BottomBar>
 		</div>
