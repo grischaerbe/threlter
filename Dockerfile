@@ -13,4 +13,5 @@ WORKDIR /app/build
 
 ENTRYPOINT node index.js
 
+
 EXPOSE 3000
