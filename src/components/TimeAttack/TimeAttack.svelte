@@ -8,8 +8,33 @@
 	export let trackData: TrackData
 </script>
 
-<CommonGamePlay {trackData} let:proceed let:time let:restart let:trackRecord>
-	<TimeAttackPaused {time} {trackData} slot="ui-paused" {proceed} {restart} />
-	<TimeAttackIntro slot="ui-intro" {proceed} {trackData} {trackRecord} />
-	<TimeAttackFinished {time} slot="ui-finished" {restart} {trackRecord} {trackData} />
+<CommonGamePlay {trackData}>
+	<TimeAttackPaused
+		slot="ui-paused"
+		let:time
+		let:proceed
+		let:restart
+		{time}
+		{trackData}
+		{proceed}
+		{restart}
+	/>
+	<TimeAttackIntro
+		slot="ui-intro"
+		let:proceed
+		let:trackRecord
+		{proceed}
+		{trackData}
+		{trackRecord}
+	/>
+	<TimeAttackFinished
+		slot="ui-finished"
+		let:time
+		let:trackRecord
+		let:restart
+		{time}
+		{restart}
+		{trackRecord}
+		{trackData}
+	/>
 </CommonGamePlay>

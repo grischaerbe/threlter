@@ -990,19 +990,19 @@
 
 				<!-- WHEEL SLOTS -->
 				<T.Group bind:ref={flWheelState.wheelGroup} rotation.y={$steeringAngle}>
-					<slot name="wheel-fl" />
+					<slot {carState} name="wheel-fl" />
 				</T.Group>
 				<T.Group
 					bind:ref={frWheelState.wheelGroup}
 					rotation.y={$steeringAngle + (180 * Math.PI) / 180}
 				>
-					<slot name="wheel-fr" />
+					<slot {carState} name="wheel-fr" />
 				</T.Group>
 				<T.Group bind:ref={rlWheelState.wheelGroup}>
-					<slot name="wheel-rl" />
+					<slot {carState} name="wheel-rl" />
 				</T.Group>
 				<T.Group bind:ref={rrWheelState.wheelGroup} rotation.y={(180 * Math.PI) / 180}>
-					<slot name="wheel-rr" />
+					<slot {carState} name="wheel-rr" />
 				</T.Group>
 			{/if}
 		</Collider>
@@ -1015,7 +1015,7 @@
 			position.y={desiredCameraHeight}
 		/>
 		<T.Group bind:ref={innerGroup}>
-			<slot name="camera" {ref} />
+			<slot name="camera" {ref} {carState} />
 		</T.Group>
 	</T.Group>
 </T.Group>

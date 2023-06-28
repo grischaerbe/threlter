@@ -88,9 +88,9 @@
 
 	const setOrbitPoint = (currentlySelectedElement: typeof $currentlySelectedElement) => {
 		$activeCameraControls?.setOrbitPoint(
-			$currentlySelectedElement!.position.current[0],
-			$currentlySelectedElement!.position.current[1],
-			$currentlySelectedElement!.position.current[2]
+			currentlySelectedElement!.position.current[0],
+			currentlySelectedElement!.position.current[1],
+			currentlySelectedElement!.position.current[2]
 		)
 	}
 

@@ -181,9 +181,9 @@
 		<!-- UI -->
 		<UiWrapper>
 			{#if $paused}
-				<slot name="ui-paused" {proceed} {restart} trackRecord={currentTrackRecord} />
+				<slot time={$time} {proceed} {restart} name="ui-paused" trackRecord={currentTrackRecord} />
 			{:else if $state === 'intro'}
-				<slot name="ui-intro" {proceed} trackRecord={currentTrackRecord} />
+				<slot {proceed} trackRecord={currentTrackRecord} name="ui-intro" />
 			{:else if $state === 'count-in'}
 				<slot name="ui-count-in" {proceed} trackRecord={currentTrackRecord}>
 					<CountIn on:countindone={proceed} time={$time} />

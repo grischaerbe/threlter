@@ -8,8 +8,17 @@
 	export let trackData: TrackData
 </script>
 
-<CommonGamePlay {trackData} let:proceed let:time let:restart>
-	<ValidationPaused {proceed} {restart} slot="ui-paused" {trackData} {time} />
-	<ValidationIntro slot="ui-intro" {proceed} {trackData} />
-	<ValidationFinished {restart} {trackData} slot="ui-finished" {time} />
+<CommonGamePlay {trackData}>
+	<ValidationPaused
+		let:proceed
+		let:time
+		let:restart
+		{proceed}
+		{restart}
+		slot="ui-paused"
+		{trackData}
+		{time}
+	/>
+	<ValidationIntro let:proceed slot="ui-intro" {proceed} {trackData} />
+	<ValidationFinished let:time let:restart {restart} {trackData} slot="ui-finished" {time} />
 </CommonGamePlay>

@@ -77,7 +77,6 @@
 	{volume}
 	useAudio={$sfx && $revealed}
 	{freeze}
-	let:carState
 >
 	<T.PerspectiveCamera
 		bind:ref={carCam}
@@ -87,29 +86,29 @@
 		makeDefault={camera === 'car'}
 	/>
 
-	<T.Group slot="body" rotation.y={(-90 * Math.PI) / 180}>
+	<T.Group let:carState slot="body" rotation.y={(-90 * Math.PI) / 180}>
 		<MuscleCar {carState} />
 	</T.Group>
 
-	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-fl">
+	<T.Group let:carState rotation.y={(90 * Math.PI) / 180} slot="wheel-fl">
 		<WheelRotation {carState}>
 			<MuscleCarWheel />
 		</WheelRotation>
 	</T.Group>
 
-	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-fr">
+	<T.Group let:carState rotation.y={(90 * Math.PI) / 180} slot="wheel-fr">
 		<WheelRotation {carState}>
 			<MuscleCarWheel />
 		</WheelRotation>
 	</T.Group>
 
-	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-rl">
+	<T.Group let:carState rotation.y={(90 * Math.PI) / 180} slot="wheel-rl">
 		<WheelRotation {carState}>
 			<MuscleCarWheel />
 		</WheelRotation>
 	</T.Group>
 
-	<T.Group rotation.y={(90 * Math.PI) / 180} slot="wheel-rr">
+	<T.Group let:carState rotation.y={(90 * Math.PI) / 180} slot="wheel-rr">
 		<WheelRotation {carState}>
 			<MuscleCarWheel />
 		</WheelRotation>
