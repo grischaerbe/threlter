@@ -11,10 +11,12 @@
 		RenderPass,
 		ToneMappingEffect,
 		ToneMappingMode,
-		NoiseEffect
+		NoiseEffect,
+		KernelSize
 	} from 'postprocessing'
 	import { onDestroy } from 'svelte'
 	import { appState } from '../stores/app'
+	import { HalfFloatType } from 'three'
 
 	const { postprocessing } = appState.options.video
 
@@ -49,22 +51,24 @@
 	 * Brightness/Contrast
 	 */
 	const bcEffect = new BrightnessContrastEffect()
-	bcEffect.contrast = 0.1
-	bcEffect.brightness = 0.05
+	bcEffect.contrast = 0.05
+	bcEffect.brightness = 0.03
 
 	/**
 	 * Bloom
 	 */
 	const bloomEffect = new BloomEffect({
 		luminanceThreshold: 0.7,
-		radius: 0.9,
+		radius: 0.6,
 		mipmapBlur: true,
-		intensity: 0.9
+		intensity: 0.3
 	})
 
 	const { renderer, scene, camera } = useThrelte()
 
-	const composer = new EffectComposer(renderer)
+	const composer = new EffectComposer(renderer, {
+		frameBufferType: HalfFloatType
+	})
 
 	const setup = () => {
 		composer.removeAllPasses()
