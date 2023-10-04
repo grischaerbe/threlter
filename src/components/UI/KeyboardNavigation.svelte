@@ -3,6 +3,8 @@
 	import { spring } from 'svelte/motion'
 	import { writable, type Readable } from 'svelte/store'
 	import UiWrapper from './UiWrapper.svelte'
+	import { useGamepad } from '@threlte/extras'
+	import { useFrame } from '@threlte/core'
 
 	type KeyboardNavigationContext = {
 		addNavigationalElement: (element: HTMLElement) => void
@@ -65,7 +67,7 @@
 	}
 
 	const focusElement = async (element: HTMLElement) => {
-		if (focusedElement === element) return
+		// if (focusedElement === element) return
 		focusedElement?.blur()
 		focusedElement = element
 		await tick()
@@ -113,6 +115,8 @@
 	}
 
 	const removeNavigationalElement = async (element: HTMLElement) => {
+		await tick()
+
 		const navigationalElement = Array.from(navigationalElements).find((e) => e.element === element)
 		if (navigationalElement) {
 			navigationalElements.delete(navigationalElement)
@@ -195,19 +199,59 @@
 		}
 	}
 
-	const onKeyDown = (event: KeyboardEvent) => {
-		if (disabled) return
+	const gamepad = useGamepad()
 
-		// if an arrow key is pressed, focus the closest navigational element.
-		// if no element is focused, assume, that the currently selected element is in the center of the viewport and select the closest element.
+	let stickNavigationThreshold = 0.5
+	let isNavigatingWithStick = false
 
-		// first check if the button pressed is an arrow key, return otherwise
-		if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return
+	useFrame(
+		() => {
+			// check if the left stick is above the threshold on x or -x
+			if (Math.abs(gamepad.leftStick.x) > stickNavigationThreshold) {
+				if (isNavigatingWithStick) return
+				isNavigatingWithStick = true
 
-		const direction: 'up' | 'down' | 'left' | 'right' = event.key
-			.replace('Arrow', '')
-			.toLowerCase() as any
+				if (gamepad.leftStick.x > 0) {
+					handleNavigation('right')
+				} else {
+					handleNavigation('left')
+				}
+			} else if (Math.abs(gamepad.leftStick.y) > stickNavigationThreshold) {
+				if (isNavigatingWithStick) return
+				isNavigatingWithStick = true
 
+				if (gamepad.leftStick.y < 0) {
+					handleNavigation('up')
+				} else {
+					handleNavigation('down')
+				}
+			} else {
+				isNavigatingWithStick = false
+			}
+		},
+		{
+			invalidate: false
+		}
+	)
+
+	gamepad.on('press', (e) => {
+		if (e.target === 'directionalLeft') {
+			handleNavigation('left')
+		} else if (e.target === 'directionalRight') {
+			handleNavigation('right')
+		} else if (e.target === 'directionalTop') {
+			handleNavigation('up')
+		} else if (e.target === 'directionalBottom') {
+			handleNavigation('down')
+		} else if (e.target === 'clusterBottom') {
+			// click the focused element
+			if (document.activeElement instanceof HTMLElement) {
+				document.activeElement.click()
+			}
+		}
+	})
+
+	const handleNavigation = (direction: 'up' | 'down' | 'left' | 'right') => {
 		const currentlySeletedElementCenter: { x: number; y: number } = focusedElement
 			? getCenterOfElement(focusedElement)
 			: focusedElementCenter
@@ -256,9 +300,6 @@
 			}
 		}
 
-		// at this point we can prevent the default behavior of the arrow keys
-		event.preventDefault()
-
 		// get the closest element
 		const closestElement = getClosestElement(currentlySeletedElementCenter, filteredElements)
 
@@ -267,6 +308,24 @@
 		// focus the closest element
 		focusElement(closestElement)
 		navigationType = 'keyboard'
+	}
+
+	const onKeyDown = (event: KeyboardEvent) => {
+		if (disabled) return
+
+		// if an arrow key is pressed, focus the closest navigational element.
+		// if no element is focused, assume, that the currently selected element is in the center of the viewport and select the closest element.
+
+		// first check if the button pressed is an arrow key, return otherwise
+		if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) return
+
+		const direction: 'up' | 'down' | 'left' | 'right' = event.key
+			.replace('Arrow', '')
+			.toLowerCase() as any
+
+		handleNavigation(direction)
+
+		event.preventDefault()
 	}
 
 	const resetByPointerEvent = (e: PointerEvent) => {

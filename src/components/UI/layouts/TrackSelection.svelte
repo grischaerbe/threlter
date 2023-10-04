@@ -1,17 +1,14 @@
 <script lang="ts">
-	import { useKeyDown } from '$hooks/useKeyDown'
+	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 	import type { TrackData } from '$lib/TrackData/TrackData'
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
-	import { formatTime } from '$lib/utils/formatters'
 	import { createEventDispatcher } from 'svelte'
-	import Button from '../components/Button.svelte'
-	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
+	import BlurryCard from '../components/BlurryCard.svelte'
+	import ButtonGroup from '../components/ButtonGroup/ButtonGroup.svelte'
 	import Card from '../components/Card.svelte'
 	import PlainButton from '../components/PlainButton.svelte'
 	import SpecialButton from '../components/SpecialButton.svelte'
-	import ButtonGroup from '../components/ButtonGroup/ButtonGroup.svelte'
-	import BlurryCard from '../components/BlurryCard.svelte'
 
 	export let trackDatas: TrackData[]
 

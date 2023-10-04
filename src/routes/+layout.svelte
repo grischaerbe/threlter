@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import KeyboardNavigation from '$components/UI/KeyboardNavigation.svelte'
 	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
 	import { appState } from '$stores/app'
@@ -6,11 +7,9 @@
 	import { AudioListener, Suspense } from '@threlte/extras'
 	import { Debug, World } from '@threlte/rapier'
 	import '../app.postcss'
-	import StartPrompt from '../components/UI/StartPrompt.svelte'
 	import Renderer from '../components/Renderer.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
-	import { page } from '$app/stores'
-	import { dev } from '$app/environment'
+	import StartPrompt from '../components/UI/StartPrompt.svelte'
 
 	const { visibility, options } = appState
 	const { debug } = options

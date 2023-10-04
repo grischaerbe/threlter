@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { useGamepad } from '@threlte/extras'
 	import { useKeyDown } from '../../../hooks/useKeyDown'
 	import type { TrackData } from '../../../lib/TrackData/TrackData'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
@@ -11,12 +12,11 @@
 	export let trackData: TrackData
 	export let time: number
 
-	useKeyDown('Escape', () => {
-		proceed()
-	})
-	useKeyDown('p', () => {
-		proceed()
-	})
+	const gamepad = useGamepad()
+
+	gamepad.start.on('press', proceed)
+	useKeyDown('Escape', proceed)
+	useKeyDown('p', proceed)
 </script>
 
 <BottomScreenTrackName title={trackData.trackName.current} />

@@ -5,7 +5,7 @@
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { appState } from '$stores/app'
 	import { T, currentWritable, useFrame, watch } from '@threlte/core'
-	import { Suspense } from '@threlte/extras'
+	import { Suspense, useGamepad } from '@threlte/extras'
 	import { derived } from 'svelte/store'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
@@ -17,6 +17,7 @@
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import BoundingSphere from './BoundingSphere.svelte'
 	import CameraControls from '../CameraControls/CameraControls.svelte'
+	import CC from 'camera-controls'
 	import GhostPlayer from './GhostPlayer.svelte'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
@@ -61,16 +62,17 @@
 		time.update((t) => t + delta * 1000)
 	})
 
-	useKeyDown('Escape', () => {
+	const gamepad = useGamepad()
+
+	const pauseGame = () => {
 		if ($state === 'playing') {
 			paused.set(true)
 		}
-	})
-	useKeyDown('p', () => {
-		if ($state === 'playing') {
-			paused.set(true)
-		}
-	})
+	}
+
+	gamepad.start.on('press', pauseGame)
+	useKeyDown('Escape', pauseGame)
+	useKeyDown('p', pauseGame)
 
 	const proceed = () => {
 		if ($paused) {
@@ -109,11 +111,14 @@
 		time.set(0)
 	}
 
-	useKeyDown('Enter', () => {
+	const softResetGame = () => {
 		if ($state === 'playing' && !$paused) {
 			softReset()
 		}
-	})
+	}
+
+	gamepad.clusterBottom.on('press', softResetGame)
+	useKeyDown('Enter', softResetGame)
 
 	const onFinishReached = () => {
 		state.set('finished')
@@ -126,6 +131,15 @@
 			currentTrackRecord = workingTrackRecord
 		}
 	}
+
+	let cc: CC
+	let autoRotate = true
+	useFrame(() => {
+		if (cc && (gamepad.leftStick.x !== 0 || gamepad.leftStick.y !== 0)) {
+			cc.rotate(gamepad.leftStick.x * 0.02, gamepad.leftStick.y * 0.02, true)
+			autoRotate = false
+		}
+	})
 </script>
 
 <Suspense final let:suspended>
@@ -143,9 +157,10 @@
 			{#if radius > 0 && $state === 'intro'}
 				<T.PerspectiveCamera makeDefault position.x={radius}>
 					<CameraControls
-						autoRotate
+						{autoRotate}
 						autoRotateSpeed={0.5}
 						truckSpeed={0}
+						bind:ref={cc}
 						on:create={async ({ ref }) => {
 							await ref.moveTo(center.x, center.y, center.z)
 							await ref.fitToSphere(sphere, false)

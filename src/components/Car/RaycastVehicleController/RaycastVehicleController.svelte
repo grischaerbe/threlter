@@ -10,7 +10,7 @@
 		type Vector as RapierVector
 	} from '@dimforge/rapier3d-compat'
 	import { T, currentWritable, useFrame } from '@threlte/core'
-	import { Audio } from '@threlte/extras'
+	import { Audio, useGamepad } from '@threlte/extras'
 	import { Collider, RigidBody, useRapier } from '@threlte/rapier'
 	import { spring } from 'svelte/motion'
 	import { Group, Quaternion, Vector3 } from 'three'
@@ -20,6 +20,7 @@
 	import { useArrowKeys } from './useArrowKeys'
 	import { computeBitMask } from './utils/computeBitMask'
 	import { add, fromAToB, length, normalize } from './vectorUtils'
+	import { writable } from 'svelte/store'
 
 	export let freeze = false
 	export let active = true
@@ -111,7 +112,72 @@
 		)
 	}
 
-	const { axis } = useArrowKeys()
+	const axis = writable({
+		x: 0,
+		y: 0
+	})
+
+	const gamepad = useGamepad()
+
+	// left stick for steering
+	gamepad.leftStick.on('change', (e) => {
+		axis.update((axis) => {
+			if (typeof e.value === 'object') {
+				axis.x = -e.value.x
+			}
+			return axis
+		})
+	})
+
+	let directionalLeftValue = 0
+	gamepad.directionalLeft.on('change', (e) => {
+		if (typeof e.value === 'number') {
+			directionalLeftValue = e.value
+		}
+	})
+	let directionalRightValue = 0
+	gamepad.directionalRight.on('change', (e) => {
+		if (typeof e.value === 'number') {
+			directionalRightValue = e.value
+		}
+	})
+	$: axis.update((axis) => {
+		axis.x = directionalLeftValue - directionalRightValue
+		return axis
+	})
+
+	let accelerationValue = 0
+	// right trigger for acceleration
+	gamepad.rightTrigger.on('change', (e) => {
+		if (typeof e.value === 'number') {
+			accelerationValue = e.value
+		}
+	})
+	gamepad.rightBumper.on('change', (e) => {
+		if (typeof e.value === 'number') {
+			accelerationValue = e.value
+		}
+	})
+
+	let brakeValue = 0
+	// left trigger for braking
+	gamepad.leftTrigger.on('change', (e) => {
+		if (typeof e.value === 'number') {
+			brakeValue = e.value
+		}
+	})
+	gamepad.leftBumper.on('change', (e) => {
+		if (typeof e.value === 'number') {
+			brakeValue = e.value
+		}
+	})
+	$: axis.update((axis) => {
+		axis.y = accelerationValue - brakeValue
+		return axis
+	})
+
+	const { axis: keyboardAxis } = useArrowKeys()
+	$: axis.set($keyboardAxis)
 
 	enum Wheel {
 		'FL' = 'FL',

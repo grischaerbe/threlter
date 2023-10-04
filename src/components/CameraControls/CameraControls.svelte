@@ -60,7 +60,6 @@
 	export const ref = new CameraControls($parent as PerspectiveCamera, renderer?.domElement)
 	const getControls = () => ref
 
-	let userDragging = false
 	let disableAutoRotate = false
 
 	useFrame(
@@ -82,16 +81,16 @@
 <T
 	is={ref}
 	on:controlstart={(e) => {
-		userDragging = true
 		disableAutoRotate = true
 	}}
 	on:zoom={(e) => {
 		console.log('zoomstart', e)
 	}}
 	on:controlend={() => {
-		userDragging = false
 		disableAutoRotate = false
 	}}
 	{...$$restProps}
 	bind:this={$forwardingComponent}
-/>
+>
+	<slot {ref} />
+</T>

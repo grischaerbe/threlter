@@ -51,8 +51,10 @@
 	const { keyboardNavigationAction } = useKeyboardNavigation()
 </script>
 
+<!-- svelte-ignore a11y-interactive-supports-focus -->
 <svelte:element
 	this={href ? 'a' : 'button'}
+	role="button"
 	{href}
 	use:keyboardNavigationAction={{
 		forceFocus: forceFocusOnMount,
