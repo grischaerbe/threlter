@@ -1,12 +1,12 @@
 <script lang="ts">
 	import CameraFade from '$components//Utilities/CameraFade.svelte'
 	import { appState } from '$stores/app'
-	import { T, useFrame, useThrelte } from '@threlte/core'
+	import { T, useFrame } from '@threlte/core'
 	import { Float, onReveal } from '@threlte/extras'
 	import { createEventDispatcher, onDestroy } from 'svelte'
 	import { cubicInOut, quadOut, sineOut } from 'svelte/easing'
 	import { tweened } from 'svelte/motion'
-	import { Color, PerspectiveCamera } from 'three'
+	import type { PerspectiveCamera } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { introLength } from '../../config'
 	import MuscleCar from '../Car/Models/MuscleCar.svelte'
@@ -142,21 +142,7 @@
 			return (absolutePosition % trackLength) + trackLength / 2
 		})
 	})
-
-	const { scene } = useThrelte()
 </script>
-
-<T.Fog
-	near={30}
-	far={90}
-	color={new Color('#454a5e').convertLinearToSRGB()}
-	on:create={({ ref, cleanup }) => {
-		scene.fog = ref
-		cleanup(() => {
-			scene.fog = null
-		})
-	}}
-/>
 
 {#each elementComponents as element, index (index)}
 	<T.Group position.z={currentPositions[index]} scale={0.5}>

@@ -3,9 +3,9 @@
 	import { page } from '$app/stores'
 	import EndlessRaceIntro from '$components/EndlessRaceIntro/EndlessRaceIntro.svelte'
 	import { Suspense, onReveal } from '@threlte/extras'
+	import LoadingUi from '../../../components/UI/LoadingUi.svelte'
 	import UiWrapper from '../../../components/UI/UiWrapper.svelte'
 	import { appState } from '../../../stores/app'
-	import LoadingUi from '../../../components/UI/LoadingUi.svelte'
 
 	const showIntro = $page.route.id === '/(env)/(endless-race)'
 

@@ -10,6 +10,7 @@
 	import Renderer from '../components/Renderer.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
+	import { NoToneMapping } from 'three'
 
 	const { visibility, options } = appState
 	const { debug } = options
@@ -39,6 +40,7 @@
 
 <div class="w-full h-full absolute bg-black">
 	<Canvas
+		toneMapping={NoToneMapping}
 		rendererParameters={{
 			powerPreference: 'high-performance',
 			antialias: false,

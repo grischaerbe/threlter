@@ -38,7 +38,7 @@
 	const noiseEffect = new NoiseEffect({
 		blendFunction: BlendFunction.COLOR_DODGE
 	})
-	noiseEffect.blendMode.opacity.value = 0.05
+	noiseEffect.blendMode.opacity.value = 0.025
 
 	/**
 	 * Anti-aliasing
@@ -59,7 +59,7 @@
 		luminanceThreshold: 0.7,
 		radius: 0.9,
 		mipmapBlur: true,
-		intensity: 1
+		intensity: 0.9
 	})
 
 	const { renderer, scene, camera } = useThrelte()
