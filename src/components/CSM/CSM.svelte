@@ -65,6 +65,8 @@
 			csm = transform?.(csm) ?? csm
 			for (const material of allMaterials) {
 				setupMaterial(material)
+				// if a material is set up here, we can safely remove it from the queue
+				materialsQueue.delete(material)
 			}
 		}
 	})
