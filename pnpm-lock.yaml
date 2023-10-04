@@ -65,6 +65,9 @@ devDependencies:
   postcss-load-config:
     specifier: ^4.0.1
     version: 4.0.1(postcss@8.4.24)
+  postprocessing:
+    specifier: ^6.33.2
+    version: 6.33.2(three@0.157.0)
   prettier:
     specifier: ^2.8.0
     version: 2.8.7
@@ -2101,6 +2104,15 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: true
+
+  /postprocessing@6.33.2(three@0.157.0):
+    resolution: {integrity: sha512-xGirHyjArISGVfmjCwXyvuhZm9JpLxEkjdE+ZOSq+7SmSetqFfdpaGfkEjbbFxWShwgwXWmgtcPxvrg9BP+r8g==}
+    engines: {node: '>= 0.13.2'}
+    peerDependencies:
+      three: '>= 0.138.0 < 0.158.0'
+    dependencies:
+      three: 0.157.0
     dev: true
 
   /prelude-ls@1.2.1:

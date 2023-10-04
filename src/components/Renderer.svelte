@@ -1,7 +1,102 @@
 <script lang="ts">
-	import { useRender } from '@threlte/core'
+	import { useRender, useThrelte } from '@threlte/core'
+	import {
+		BlendFunction,
+		BloomEffect,
+		BrightnessContrastEffect,
+		ChromaticAberrationEffect,
+		EffectComposer,
+		EffectPass,
+		FXAAEffect,
+		RenderPass,
+		ToneMappingEffect,
+		ToneMappingMode,
+		NoiseEffect
+	} from 'postprocessing'
+	import { onDestroy } from 'svelte'
+	import { appState } from '../stores/app'
 
-	useRender(async ({ camera, renderer, scene }) => {
-		renderer?.render(scene, camera.current)
+	const { postprocessing } = appState.options.video
+
+	/**
+	 * Chromatic Aberration
+	 */
+	const chromaticAberrationEffect = new ChromaticAberrationEffect()
+	chromaticAberrationEffect.offset.x = 0.0004
+	chromaticAberrationEffect.offset.y = 0.0004
+
+	/**
+	 * Tone Mapping
+	 */
+	const toneMappingEffect = new ToneMappingEffect({
+		mode: ToneMappingMode.ACES_FILMIC
 	})
+
+	/**
+	 * Noise
+	 */
+	const noiseEffect = new NoiseEffect({
+		blendFunction: BlendFunction.COLOR_DODGE
+	})
+	noiseEffect.blendMode.opacity.value = 0.05
+
+	/**
+	 * Anti-aliasing
+	 */
+	const fxaaEffect = new FXAAEffect()
+
+	/**
+	 * Brightness/Contrast
+	 */
+	const bcEffect = new BrightnessContrastEffect()
+	bcEffect.contrast = 0.1
+	bcEffect.brightness = 0.05
+
+	/**
+	 * Bloom
+	 */
+	const bloomEffect = new BloomEffect({
+		luminanceThreshold: 0.7,
+		radius: 0.9,
+		mipmapBlur: true,
+		intensity: 1
+	})
+
+	const { renderer, scene, camera } = useThrelte()
+
+	const composer = new EffectComposer(renderer)
+
+	const setup = () => {
+		composer.removeAllPasses()
+		composer.addPass(new RenderPass(scene, camera.current))
+		composer.addPass(new EffectPass(camera.current, fxaaEffect))
+
+		if ($postprocessing) {
+			composer.addPass(
+				new EffectPass(
+					camera.current,
+					chromaticAberrationEffect,
+					bloomEffect,
+					noiseEffect,
+					toneMappingEffect,
+					bcEffect
+				)
+			)
+		} else {
+			composer.addPass(new EffectPass(camera.current, toneMappingEffect))
+		}
+	}
+
+	$: $postprocessing, $camera, setup()
+
+	useRender(() => {
+		composer.render()
+	})
+
+	onDestroy(() => {
+		composer.dispose()
+	})
+
+	const { size } = useThrelte()
+	$: composer.setSize($size.width, $size.height)
 </script>

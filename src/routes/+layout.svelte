@@ -41,7 +41,9 @@
 	<Canvas
 		rendererParameters={{
 			powerPreference: 'high-performance',
-			alpha: true,
+			antialias: false,
+			stencil: false,
+			depth: false,
 			preserveDrawingBuffer: true
 		}}
 	>
