@@ -2,17 +2,16 @@
 	import { useEvent } from '$hooks/useEvents'
 	import { appState } from '$stores/app'
 	import { T } from '@threlte/core'
+	import { onReveal } from '@threlte/extras'
 	import { onDestroy } from 'svelte'
+	import { writable } from 'svelte/store'
 	import { PerspectiveCamera, Quaternion, Vector3 } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useKeyboardNavigation } from '../UI/KeyboardNavigation.svelte'
 	import MuscleCar from './Models/MuscleCar.svelte'
 	import MuscleCarWheel from './Models/MuscleCarWheel.svelte'
 	import RaycastVehicleController from './RaycastVehicleController/RaycastVehicleController.svelte'
-	import Sun from './Sun.svelte'
 	import WheelRotation from './WheelRotation.svelte'
-	import { writable } from 'svelte/store'
-	import { onReveal } from '@threlte/extras'
 
 	let carCam: PerspectiveCamera
 	let freezeCam: PerspectiveCamera
@@ -113,10 +112,4 @@
 			<MuscleCarWheel />
 		</WheelRotation>
 	</T.Group>
-
-	<svelte:fragment let:carState>
-		<slot {carState} />
-
-		<Sun {carState} />
-	</svelte:fragment>
 </RaycastVehicleController>

@@ -182,8 +182,6 @@
 	</T.Group>
 </T.Group>
 
-<T.DirectionalLight position={[5, 5, 5]} intensity={1} castShadow={$shadows} />
-
 <T.Group rotation.y={$rotationY}>
 	<Float floatIntensity={1} speed={3}>
 		<T.PerspectiveCamera makeDefault bind:ref={camera} fov={$fov} position={[-10, $cameraPosY, 10]}>
