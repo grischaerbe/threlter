@@ -1,5 +1,3 @@
-import { Track } from '../lib/TrackData/Track'
-
 const filterUndefined = <T>(value: T | undefined): value is T => {
 	return value !== undefined
 }

@@ -9,7 +9,7 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import { useKeyUp } from '$hooks/useKeyUp'
-	import type { Track } from '$lib/TrackData/Track'
+	import type { Track } from '$lib/Track/Track'
 	import { T, currentWritable } from '@threlte/core'
 	import { interactivity } from '@threlte/extras'
 	import CC from 'camera-controls'

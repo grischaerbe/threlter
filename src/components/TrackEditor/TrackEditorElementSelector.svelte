@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { T } from '@threlte/core'
-	import type { TrackElement } from '../../lib/TrackData/TrackElement'
+	import type { TrackElement } from '../../lib/Track/TrackElement'
 	import { useTrackEditor } from './context'
 
 	export let trackElement: TrackElement

@@ -17,7 +17,7 @@
 </script>
 
 <script lang="ts">
-	import type { Track } from '$lib/TrackData/Track'
+	import type { Track } from '$lib/Track/Track'
 	import { currentWritable, type CurrentWritable } from '@threlte/core'
 	import { createEventDispatcher, getContext, setContext } from 'svelte'
 	import { useEvent } from '../../hooks/useEvents'

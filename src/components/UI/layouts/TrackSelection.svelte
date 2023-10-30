@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
-	import type { Track } from '$lib/TrackData/Track'
+	import type { Track } from '$lib/Track/Track'
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
 	import { createEventDispatcher } from 'svelte'

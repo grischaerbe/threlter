@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Track } from '$lib/TrackData/Track'
+	import type { Track } from '$lib/Track/Track'
 	import CommonGamePlay from '../CommonGamePlay/CommonGamePlay.svelte'
 	import TimeAttackFinished from './UI/TimeAttackFinished.svelte'
 	import TimeAttackIntro from './UI/TimeAttackIntro.svelte'

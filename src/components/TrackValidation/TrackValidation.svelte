@@ -1,6 +1,6 @@
 <script lang="ts">
 	import CommonGamePlay from '$components/CommonGamePlay/CommonGamePlay.svelte'
-	import type { Track } from '$lib/TrackData/Track'
+	import type { Track } from '$lib/Track/Track'
 	import ValidationFinished from './UI/ValidationFinished.svelte'
 	import ValidationIntro from './UI/ValidationIntro.svelte'
 	import ValidationPaused from './UI/ValidationPaused.svelte'

@@ -2,7 +2,7 @@
 	import Card from '$components/UI/components/Card.svelte'
 	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import type { Track } from '$lib/TrackData/Track'
+	import type { Track } from '$lib/Track/Track'
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'

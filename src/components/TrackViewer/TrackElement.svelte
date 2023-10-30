@@ -7,7 +7,7 @@
 <script lang="ts">
 	import { getContext, setContext } from 'svelte'
 
-	import type { TrackElement } from '$lib/TrackData/TrackElement'
+	import type { TrackElement } from '$lib/Track/TrackElement'
 	import { trackElementPrototypes } from '../TrackElements/elements'
 
 	export let trackElement: TrackElement

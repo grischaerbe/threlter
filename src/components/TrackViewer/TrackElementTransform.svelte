@@ -1,5 +1,5 @@
 <!--
-	This component is used to transform the track element to its cimport type { TrackElement } from '$lib/TrackData/TrackElement';
+	This component is used to transform the track element to its cimport type { TrackElement } from '$lib/Track/TrackElement';
 ot. If it is not reactive, it will only set the position and rotation
 	once, when the component is created. This is useful for the actual gameplay, where the position and
 	rotation of the track elements should not change. If it is reactive, it will update the position
@@ -8,7 +8,7 @@ ot. If it is not reactive, it will only set the position and rotation
 -->
 <script lang="ts">
 	import { T } from '@threlte/core'
-	import type { TrackElement } from '$lib/TrackData/TrackElement'
+	import type { TrackElement } from '$lib/Track/TrackElement'
 
 	export let trackElement: TrackElement
 	export let reactive = false

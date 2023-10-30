@@ -9,7 +9,7 @@
 	import type { Group } from 'three'
 	import { useTrackEditor } from './context'
 	import { onDestroy } from 'svelte'
-	import type { TrackElement } from '$lib/TrackData/TrackElement'
+	import type { TrackElement } from '$lib/Track/TrackElement'
 	import { useKeyDown } from '../../hooks/useKeyDown'
 	import { useKeyUp } from '../../hooks/useKeyUp'
 
