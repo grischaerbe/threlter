@@ -1,4 +1,4 @@
-import { TrackManager } from '../../../../../lib/TrackData/TrackDataManager'
+import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
 import type { PageLoad } from './$types'
 
 export const load = (async ({ depends }) => {

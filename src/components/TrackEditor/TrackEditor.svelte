@@ -36,7 +36,7 @@
 	import { createTrackEditorContext } from './context'
 	import ToolTip from './ToolTip.svelte'
 	import { onMount } from 'svelte'
-	import { TrackManager } from '../../lib/TrackData/TrackDataManager'
+	import { TrackManager } from '../../lib/TrackManager/TrackManager'
 
 	const { visibility } = appState
 

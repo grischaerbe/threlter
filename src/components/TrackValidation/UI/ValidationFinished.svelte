@@ -3,7 +3,7 @@
 	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import type { Track } from '$lib/TrackData/Track'
-	import { TrackManager } from '../../../lib/TrackData/TrackDataManager'
+	import { TrackManager } from '../../../lib/TrackManager/TrackManager'
 	import { nakama } from '../../../lib/nakama'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'

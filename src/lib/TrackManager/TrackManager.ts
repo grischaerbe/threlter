@@ -1,7 +1,7 @@
 import type { Client } from '@heroiclabs/nakama-js'
 import { debounce } from 'lodash-es'
 import { nakama } from '../nakama'
-import { Track } from './Track'
+import { Track } from '../TrackData/Track'
 
 const filterUndefined = <T>(d: T | undefined): d is T => {
 	return !!d

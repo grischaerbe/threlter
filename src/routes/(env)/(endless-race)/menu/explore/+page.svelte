@@ -4,7 +4,7 @@
 	import { Track } from '$lib/TrackData/Track'
 	import { appState } from '$stores/app'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
-	import { TrackManager } from '../../../../../lib/TrackData/TrackDataManager'
+	import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
 	import { nakama } from '../../../../../lib/nakama'
 
 	export let data
