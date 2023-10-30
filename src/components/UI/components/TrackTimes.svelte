@@ -1,10 +1,10 @@
 <script lang="ts">
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
 	import FormattedTime from './FormattedTime.svelte'
 
-	export let trackData: TrackData
+	export let trackData: Track
 	export let trackRecord: TrackRecord | undefined = undefined
 	export let time: number | undefined = undefined
 

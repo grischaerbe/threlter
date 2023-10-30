@@ -1,6 +1,6 @@
 import { type CurrentWritable, currentWritable } from '@threlte/core'
 import { getContext, setContext } from 'svelte'
-import type { TrackData } from '$lib/TrackData/TrackData'
+import type { Track } from '$lib/TrackData/TrackData'
 import type { TrackElement } from '$lib/TrackData/TrackElement'
 import type CameraControls from 'camera-controls'
 
@@ -9,13 +9,13 @@ type TrackEditorContext = {
 	transformSpace: CurrentWritable<'local' | 'world'>
 	transformSnap: CurrentWritable<boolean>
 	isDragging: CurrentWritable<boolean>
-	trackData: TrackData
+	trackData: Track
 	currentlySelectedElement: CurrentWritable<TrackElement | undefined>
 	cameraControls: CurrentWritable<CameraControls[]>
 	activeCameraControls: CurrentWritable<CameraControls | undefined>
 }
 
-export const createTrackEditorContext = (trackData: TrackData) => {
+export const createTrackEditorContext = (trackData: Track) => {
 	const context: TrackEditorContext = {
 		transformMode: currentWritable('translate'),
 		transformSpace: currentWritable('local'),

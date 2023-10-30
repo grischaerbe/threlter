@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	type TrackViewerContext = {
-		trackData: TrackData
+		trackData: Track
 		checkpointReached: (trackElementId: string) => void
 		finishReached: () => void
 		checkpointsReached: CurrentWritable<Set<string>>
@@ -17,7 +17,7 @@
 </script>
 
 <script lang="ts">
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import { currentWritable, type CurrentWritable } from '@threlte/core'
 	import { createEventDispatcher, getContext, setContext } from 'svelte'
 	import { useEvent } from '../../hooks/useEvents'
@@ -26,7 +26,7 @@
 
 	const { sfx } = appState.options.audio
 
-	export let trackData: TrackData
+	export let trackData: Track
 	$: elements = trackData.track.trackElements
 
 	const dispatch = createEventDispatcher<{

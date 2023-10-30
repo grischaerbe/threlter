@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useKeyDown } from '$hooks/useKeyDown'
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import { Ghost } from '$lib/TrackRecord/Ghost'
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { appState } from '$stores/app'
@@ -24,7 +24,7 @@
 	import GamePlay from './UI/GamePlay.svelte'
 	import { spring } from 'svelte/motion'
 
-	export let trackData: TrackData
+	export let trackData: Track
 
 	let currentTrackRecord = TrackRecord.fromLocalStorage(trackData)
 	let workingTrackRecord = TrackRecord.fromTrackData(trackData, new Ghost())

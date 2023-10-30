@@ -9,7 +9,7 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import { useKeyUp } from '$hooks/useKeyUp'
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import { T, currentWritable } from '@threlte/core'
 	import { interactivity } from '@threlte/extras'
 	import CC from 'camera-controls'
@@ -40,7 +40,7 @@
 
 	const { visibility } = appState
 
-	export let trackData: TrackData
+	export let trackData: Track
 
 	// update the trackData remotely whenever it changes
 	const onTrackDataChanged = () => {

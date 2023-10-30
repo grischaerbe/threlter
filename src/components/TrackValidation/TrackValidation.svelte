@@ -1,11 +1,11 @@
 <script lang="ts">
 	import CommonGamePlay from '$components/CommonGamePlay/CommonGamePlay.svelte'
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import ValidationFinished from './UI/ValidationFinished.svelte'
 	import ValidationIntro from './UI/ValidationIntro.svelte'
 	import ValidationPaused from './UI/ValidationPaused.svelte'
 
-	export let trackData: TrackData
+	export let trackData: Track
 </script>
 
 <CommonGamePlay {trackData}>

@@ -1,11 +1,11 @@
 <script lang="ts">
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import CommonGamePlay from '../CommonGamePlay/CommonGamePlay.svelte'
 	import TimeAttackFinished from './UI/TimeAttackFinished.svelte'
 	import TimeAttackIntro from './UI/TimeAttackIntro.svelte'
 	import TimeAttackPaused from './UI/TimeAttackPaused.svelte'
 
-	export let trackData: TrackData
+	export let trackData: Track
 </script>
 
 <CommonGamePlay {trackData}>

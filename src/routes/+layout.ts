@@ -1,4 +1,4 @@
-import { TrackData } from '../lib/TrackData/TrackData'
+import { Track } from '../lib/TrackData/TrackData'
 
 const filterUndefined = <T>(value: T | undefined): value is T => {
 	return value !== undefined

@@ -1,5 +1,5 @@
 import { derived } from 'svelte/store'
-import type { TrackData } from '../TrackData/TrackData'
+import type { Track } from '../TrackData/TrackData'
 import { jsonCurrentWritable } from '../utils/jsonCurrentWritable'
 import { Ghost } from './Ghost'
 import { formatTime } from '../utils/formatters'
@@ -28,7 +28,7 @@ export class TrackRecord {
 		this.ghost = ghost
 	}
 
-	public static fromTrackData(trackData: TrackData, ghost?: Ghost) {
+	public static fromTrackData(trackData: Track, ghost?: Ghost) {
 		return new TrackRecord(trackData.trackId, trackData.validationId, ghost)
 	}
 
@@ -50,12 +50,9 @@ export class TrackRecord {
 		localStorage.setItem(this.trackRecordId, JSON.stringify(this))
 	}
 
-	public static makeTrackRecordId(trackData: TrackData): string
+	public static makeTrackRecordId(trackData: Track): string
 	public static makeTrackRecordId(trackId: string, trackValidationId: string): string
-	public static makeTrackRecordId(
-		trackIdOrTrackData: string | TrackData,
-		trackValidationId?: string
-	) {
+	public static makeTrackRecordId(trackIdOrTrackData: string | Track, trackValidationId?: string) {
 		if (typeof trackIdOrTrackData === 'string') {
 			return `Record-${trackIdOrTrackData}-${trackValidationId}`
 		} else {
@@ -63,7 +60,7 @@ export class TrackRecord {
 		}
 	}
 
-	public static fromLocalStorage(trackData: TrackData) {
+	public static fromLocalStorage(trackData: Track) {
 		/**
 		 * Only return a record for a track if the track is validated
 		 */

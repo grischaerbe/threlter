@@ -2,13 +2,13 @@
 	import Card from '$components/UI/components/Card.svelte'
 	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import { TrackManager } from '../../../lib/TrackData/TrackDataManager'
 	import { nakama } from '../../../lib/nakama'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
-	export let trackData: TrackData
+	export let trackData: Track
 	export let time: number
 
 	const timeIsBetter =

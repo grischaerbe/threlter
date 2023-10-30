@@ -62,12 +62,12 @@ const TrackDataSchema = z.object({
 })
 
 type Events = {
-	validate: TrackData
-	invalidate: TrackData
-	change: TrackData
+	validate: Track
+	invalidate: Track
+	change: Track
 }
 
-export class TrackData implements Omit<Emitter<Events>, 'emit'> {
+export class Track implements Omit<Emitter<Events>, 'emit'> {
 	track = new TrackD()
 
 	trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
@@ -153,7 +153,7 @@ export class TrackData implements Omit<Emitter<Events>, 'emit'> {
 	public static async fromServer(trackId: string) {
 		const text = await import(`../../CampaignTracks/${trackId}.json?raw`)
 		if (!text.default) throw new Error('Track not found')
-		const trackData = TrackData.fromString(text.default)
+		const trackData = Track.fromString(text.default)
 		if (!trackData) throw new Error('Track not found')
 		return trackData
 	}
@@ -161,7 +161,7 @@ export class TrackData implements Omit<Emitter<Events>, 'emit'> {
 	public static fromString(json: string) {
 		try {
 			const data = JSON.parse(json)
-			return TrackData.fromJSON(data)
+			return Track.fromJSON(data)
 		} catch (error) {
 			console.error(error)
 			return undefined
@@ -171,7 +171,7 @@ export class TrackData implements Omit<Emitter<Events>, 'emit'> {
 	public static fromJSON(data: any) {
 		const parsed = TrackDataSchema.parse(data)
 
-		const trackData = new TrackData(parsed.userId)
+		const trackData = new Track(parsed.userId)
 
 		trackData.trackId = parsed.trackId
 		trackData.setTrackName(parsed.trackName)
@@ -198,7 +198,7 @@ export class TrackData implements Omit<Emitter<Events>, 'emit'> {
 	public clone() {
 		const json = JSON.stringify(this)
 		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-		const trackData = TrackData.fromString(json)!
+		const trackData = Track.fromString(json)!
 		trackData.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
 		return trackData
 	}
@@ -206,19 +206,19 @@ export class TrackData implements Omit<Emitter<Events>, 'emit'> {
 	public static fromLocalStorage(trackId: string) {
 		const json = localStorage.getItem(trackId)
 		if (json) {
-			return TrackData.fromString(json)
+			return Track.fromString(json)
 		}
 		return undefined
 	}
 
 	public static removeFromLocalStorage(trackId: string) {
 		localStorage.removeItem(trackId)
-		TrackData.#localStorageTrackIdsNeedUpdate.set(true)
+		Track.#localStorageTrackIdsNeedUpdate.set(true)
 	}
 
 	public removeFromLocalStorage() {
 		localStorage.removeItem(this.trackId)
-		TrackData.#localStorageTrackIdsNeedUpdate.set(true)
+		Track.#localStorageTrackIdsNeedUpdate.set(true)
 	}
 
 	#timeout: ReturnType<typeof setTimeout> | undefined

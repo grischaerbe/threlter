@@ -1,6 +1,6 @@
 <script lang="ts">
 	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
-	import type { TrackData } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/TrackData'
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
 	import { createEventDispatcher } from 'svelte'
@@ -10,7 +10,7 @@
 	import PlainButton from '../components/PlainButton.svelte'
 	import SpecialButton from '../components/SpecialButton.svelte'
 
-	export let trackDatas: TrackData[]
+	export let trackDatas: Track[]
 
 	export let tracksCanBeEdited = false
 	export let tracksCanBeDuplicated = false

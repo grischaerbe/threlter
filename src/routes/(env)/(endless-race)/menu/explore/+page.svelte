@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
-	import { TrackData } from '$lib/TrackData/TrackData'
+	import { Track } from '$lib/TrackData/TrackData'
 	import { appState } from '$stores/app'
 	import { onMount } from 'svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
@@ -30,7 +30,7 @@
 			style="inverted"
 			on:click={async () => {
 				if (!$userId) return
-				const trackData = new TrackData($userId)
+				const trackData = new Track($userId)
 				trackData.setTrackName(`Unnamed Track`)
 				trackData.setAuthorName(appState.options.player.name.current)
 				trackData.addTrackElement('Box')

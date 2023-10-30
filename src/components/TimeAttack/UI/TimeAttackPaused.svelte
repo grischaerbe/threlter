@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useGamepad } from '@threlte/extras'
 	import { useKeyDown } from '../../../hooks/useKeyDown'
-	import type { TrackData } from '../../../lib/TrackData/TrackData'
+	import type { Track } from '../../../lib/TrackData/TrackData'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import CurrentTime from '../../UI/components/CurrentTime.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
@@ -9,7 +9,7 @@
 
 	export let proceed: () => void
 	export let restart: () => void
-	export let trackData: TrackData
+	export let trackData: Track
 	export let time: number
 
 	const gamepad = useGamepad()
