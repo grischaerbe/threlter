@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
-	import { Track } from '$lib/TrackData/TrackData'
+	import { Track } from '$lib/TrackData/Track'
 	import { appState } from '$stores/app'
-	import { onMount } from 'svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { TrackManager } from '../../../../../lib/TrackData/TrackDataManager'
 	import { nakama } from '../../../../../lib/nakama'

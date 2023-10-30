@@ -10,7 +10,7 @@
 	import TrackElementPositionHelper from './TrackElementPositionHelper.svelte'
 	import type { Sphere } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import { Track } from '$lib/TrackData/TrackData'
+	import { Track } from '$lib/TrackData/Track'
 	import type { TrackElement as TE } from '$lib/TrackData/TrackElement'
 	import { nakama } from '../../lib/nakama'
 

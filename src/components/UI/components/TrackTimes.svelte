@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Track } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/Track'
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
 	import FormattedTime from './FormattedTime.svelte'

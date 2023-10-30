@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Card from '$components/UI/components/Card.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import type { Track } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/Track'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 

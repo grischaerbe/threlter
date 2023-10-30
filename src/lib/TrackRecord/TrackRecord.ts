@@ -1,5 +1,5 @@
 import { derived } from 'svelte/store'
-import type { Track } from '../TrackData/TrackData'
+import type { Track } from '../TrackData/Track'
 import { jsonCurrentWritable } from '../utils/jsonCurrentWritable'
 import { Ghost } from './Ghost'
 import { formatTime } from '../utils/formatters'

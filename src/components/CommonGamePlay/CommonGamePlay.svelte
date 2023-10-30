@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { useKeyDown } from '$hooks/useKeyDown'
-	import type { Track } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/Track'
 	import { Ghost } from '$lib/TrackRecord/Ghost'
 	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { appState } from '$stores/app'

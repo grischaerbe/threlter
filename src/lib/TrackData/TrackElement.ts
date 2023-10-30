@@ -1,6 +1,6 @@
 import type { EulerOrder, Vector3Tuple } from 'three'
 import { type JsonCurrentWritable, jsonCurrentWritable } from '../utils/jsonCurrentWritable'
-import { type TrackElementType, type JsonCurrentReadable, jsonCurrentReadable } from './TrackData'
+import { type TrackElementType, type JsonCurrentReadable, jsonCurrentReadable } from './Track'
 
 export class TrackElement {
 	public id: string = Math.random().toString(36).substring(2, 9)

@@ -9,7 +9,7 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import { useKeyUp } from '$hooks/useKeyUp'
-	import type { Track } from '$lib/TrackData/TrackData'
+	import type { Track } from '$lib/TrackData/Track'
 	import { T, currentWritable } from '@threlte/core'
 	import { interactivity } from '@threlte/extras'
 	import CC from 'camera-controls'
@@ -35,8 +35,8 @@
 	import TrackEditorMenu from './UI/TrackEditorMenu.svelte'
 	import { createTrackEditorContext } from './context'
 	import ToolTip from './ToolTip.svelte'
-	import { TrackManager } from '../../lib/TrackData/TrackDataManager'
 	import { onMount } from 'svelte'
+	import { TrackManager } from '../../lib/TrackData/TrackDataManager'
 
 	const { visibility } = appState
 
