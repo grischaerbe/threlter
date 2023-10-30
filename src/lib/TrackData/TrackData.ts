@@ -6,7 +6,7 @@ import type { EulerOrder, Vector3Tuple } from 'three'
 import z from 'zod'
 import { cyrb53 } from '../utils/hash'
 import { jsonCurrentWritable, type JsonCurrentWritable } from '../utils/jsonCurrentWritable'
-import { TrackD, TrackSchema } from './Track'
+import { TrackData, TrackSchema } from './Track'
 import mitt, { type Emitter } from 'mitt'
 
 export type JsonCurrentReadable<T> = Readable<T> & {
@@ -68,7 +68,7 @@ type Events = {
 }
 
 export class Track implements Omit<Emitter<Events>, 'emit'> {
-	track = new TrackD()
+	track = new TrackData()
 
 	trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
 
@@ -177,7 +177,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 		trackData.setTrackName(parsed.trackName)
 		trackData.setAuthorName(parsed.authorName)
 
-		trackData.track = TrackD.fromJSON(parsed.track)
+		trackData.track = TrackData.fromJSON(parsed.track)
 
 		trackData.trackTimes.author.set(parsed.trackTimes.author)
 		trackData.trackTimes.gold.set(parsed.trackTimes.gold)
