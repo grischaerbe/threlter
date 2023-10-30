@@ -17,7 +17,7 @@ export const TrackSchema = z.object({
 	finishCount: z.number()
 })
 
-export class Track {
+export class TrackD {
 	#trackElements: JsonCurrentWritable<TrackElement[]> = jsonCurrentWritable([])
 	trackElements: JsonCurrentReadable<TrackElement[]> = jsonCurrentReadable(this.#trackElements)
 
@@ -29,12 +29,12 @@ export class Track {
 
 	public static fromString(json: string) {
 		const data = JSON.parse(json)
-		return Track.fromJSON(data)
+		return TrackD.fromJSON(data)
 	}
 
 	public static fromJSON(data: any) {
 		const parsed = TrackSchema.parse(data)
-		const track = new Track()
+		const track = new TrackD()
 		track.#trackElements.set(
 			parsed.trackElements.map((trackElement: any) => TrackElement.fromJSON(trackElement))
 		)
