@@ -10,9 +10,11 @@
 	import TrackElementPositionHelper from './TrackElementPositionHelper.svelte'
 	import type { Sphere } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import { TrackData, TrackElement as TE } from '$lib/TrackData/TrackData'
+	import { TrackData } from '$lib/TrackData/TrackData'
+	import type { TrackElement as TE } from '$lib/TrackData/TrackElement'
+	import { nakama } from '../../lib/nakama'
 
-	const trackData = TrackData.createEmpty()
+	const trackData = new TrackData('000')
 
 	let queue: (keyof typeof trackElementPrototypes)[] = []
 	let currentTrackElement: TE | undefined = undefined

@@ -10,7 +10,7 @@
 	let radius = 0
 	let sphere = new Sphere()
 
-	onReveal(async () => {
+	const r = async () => {
 		await tick()
 		// calculate bounding sphere of group and children
 		group.updateWorldMatrix(true, true)
@@ -18,6 +18,10 @@
 		sphere = bbox.getBoundingSphere(new Sphere())
 		center = sphere.center
 		radius = sphere.radius
+	}
+
+	onReveal(() => {
+		r()
 	})
 </script>
 

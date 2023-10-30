@@ -1,12 +1,16 @@
 <script lang="ts">
 	import { page } from '$app/stores'
+	import { nakama } from '../../../lib/nakama'
 	import { c } from '../../../lib/utils/classes'
 	import PlainButton from '../components/PlainButton.svelte'
 	import SpecialButton from '../components/SpecialButton.svelte'
 
 	$: isCampaign = $page.route.id?.includes('campaign') ?? false
-	$: isUserTracks = $page.route.id?.includes('user-tracks') ?? false
+	$: isExplore = $page.route.id?.includes('explore') ?? false
+	$: isMyTracks = $page.route.id?.includes('my-tracks') ?? false
 	$: isOptions = $page.route.id?.includes('options') ?? false
+
+	const { session } = nakama
 </script>
 
 <div class="mb-[30px]">
@@ -20,24 +24,36 @@
 		TEMANIA
 	</div>
 
-	<div class="flex flex-row gap-[5px] justify-between">
+	<div class="grid grid-cols-2 gap-[5px] justify-stretch">
 		<SpecialButton
 			href={isCampaign ? '/menu/main' : '/menu/campaign'}
-			class={c(isCampaign && '!bg-blue-dark')}
+			class={c('flex-1', isCampaign && '!bg-blue-dark')}
 		>
 			Campaign
 		</SpecialButton>
 		<SpecialButton
-			href={isUserTracks ? '/menu/main' : '/menu/user-tracks'}
-			class={c(isUserTracks && '!bg-blue-dark')}
+			href={isExplore ? '/menu/main' : '/menu/explore'}
+			class={c('flex-1', isExplore && '!bg-blue-dark')}
 		>
-			Your Tracks
+			Explore
+		</SpecialButton>
+		<SpecialButton
+			href={isMyTracks ? '/menu/main' : '/menu/my-tracks'}
+			class={c('flex-1', isMyTracks && '!bg-blue-dark')}
+		>
+			My Tracks
 		</SpecialButton>
 		<SpecialButton
 			href={isOptions ? '/menu/main' : '/menu/options'}
-			class={c(isOptions && '!bg-blue-dark')}
+			class={c('flex-1', isOptions && '!bg-blue-dark')}
 		>
 			Options
 		</SpecialButton>
 	</div>
 </div>
+
+{#if !isCampaign && !isMyTracks && !isOptions}
+	<div class="text-xs fixed bottom-[15px] left-[15px] text-white/30">
+		{$session?.user_id}
+	</div>
+{/if}

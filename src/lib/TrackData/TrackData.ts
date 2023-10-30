@@ -1,12 +1,15 @@
-import { type Readable, derived } from 'svelte/store'
-import type { EulerOrder, Vector3Tuple } from 'three'
-import { type JsonCurrentWritable, jsonCurrentWritable } from '../utils/jsonCurrentWritable'
-import { type CurrentWritable, currentWritable } from '@threlte/core'
-import { cyrb53 } from '../utils/hash'
-import JSZip from 'jszip'
 import type { trackElementPrototypes } from '$components/TrackElements/elements'
+import { currentWritable, type CurrentWritable } from '@threlte/core'
+import JSZip from 'jszip'
+import { derived, type Readable } from 'svelte/store'
+import type { EulerOrder, Vector3Tuple } from 'three'
+import z from 'zod'
+import { cyrb53 } from '../utils/hash'
+import { jsonCurrentWritable, type JsonCurrentWritable } from '../utils/jsonCurrentWritable'
+import { Track, TrackSchema } from './Track'
+import mitt, { type Emitter } from 'mitt'
 
-type JsonCurrentReadable<T> = Readable<T> & {
+export type JsonCurrentReadable<T> = Readable<T> & {
 	current: T
 	toJSON: () => T
 }
@@ -16,61 +19,10 @@ export type TrackElementType = keyof typeof trackElementPrototypes
 /**
  * This provides only type-safety and will not complain if the store is actually set!
  */
-const jsonCurrentReadable = <T>(
+export const jsonCurrentReadable = <T>(
 	jsonCurrentWritable: JsonCurrentWritable<T>
 ): JsonCurrentReadable<T> => {
 	return jsonCurrentWritable
-}
-
-export class TrackElement {
-	public id: string = Math.random().toString(36).substring(2, 9)
-	#type: JsonCurrentWritable<TrackElementType>
-	type: JsonCurrentReadable<TrackElementType>
-	#position: JsonCurrentWritable<Vector3Tuple>
-	position: JsonCurrentReadable<Vector3Tuple>
-	#rotation: JsonCurrentWritable<[x: number, y: number, z: number, order: EulerOrder]>
-	rotation: JsonCurrentReadable<[x: number, y: number, z: number, order: EulerOrder]>
-
-	constructor(
-		type: TrackElementType,
-		position: Vector3Tuple,
-		rotation: [x: number, y: number, z: number, order: EulerOrder]
-	) {
-		this.#type = jsonCurrentWritable(type)
-		this.type = jsonCurrentReadable(this.#type)
-		this.#position = jsonCurrentWritable(position)
-		this.position = jsonCurrentReadable(this.#position)
-		this.#rotation = jsonCurrentWritable(rotation)
-		this.rotation = jsonCurrentReadable(this.#rotation)
-	}
-
-	public static fromType(type: TrackElementType) {
-		return new TrackElement(type, [0, 0, 0], [0, 0, 0, 'XYZ'])
-	}
-
-	public static fromTrackElement(trackElement: TrackElement) {
-		return new TrackElement(
-			trackElement.type.current,
-			trackElement.position.current,
-			trackElement.rotation.current
-		)
-	}
-
-	public static fromJSON(json: any) {
-		return new TrackElement(json.type, json.position, json.rotation)
-	}
-
-	public setType(type: TrackElementType) {
-		this.#type.set(type)
-	}
-
-	public setPosition(position: Vector3Tuple) {
-		this.#position.set(position)
-	}
-
-	public setRotation(rotation: [x: number, y: number, z: number, order: EulerOrder]) {
-		this.#rotation.set(rotation)
-	}
 }
 
 class TrackTimes {
@@ -87,13 +39,46 @@ class TrackRespawns {
 	public bronze: JsonCurrentWritable<number> = jsonCurrentWritable(0)
 }
 
-export class TrackData {
-	trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
-	trackName: JsonCurrentWritable<string> = jsonCurrentWritable('')
-	authorName: JsonCurrentWritable<string> = jsonCurrentWritable('')
+const TrackDataSchema = z.object({
+	trackId: z.string(),
+	trackName: z.string(),
+	authorName: z.string(),
+	userId: z.string(),
+	track: TrackSchema,
+	trackTimes: z.object({
+		author: z.number(),
+		gold: z.number(),
+		silver: z.number(),
+		bronze: z.number()
+	}),
+	trackRespawns: z.object({
+		author: z.number(),
+		gold: z.number(),
+		silver: z.number(),
+		bronze: z.number()
+	}),
+	validated: z.boolean(),
+	validationId: z.string()
+})
 
-	#trackElements: JsonCurrentWritable<TrackElement[]> = jsonCurrentWritable([])
-	trackElements: JsonCurrentReadable<TrackElement[]> = jsonCurrentReadable(this.#trackElements)
+type Events = {
+	validate: TrackData
+	invalidate: TrackData
+	change: TrackData
+}
+
+export class TrackData implements Omit<Emitter<Events>, 'emit'> {
+	track = new Track()
+
+	trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+
+	userId: string
+
+	#trackName: JsonCurrentWritable<string> = jsonCurrentWritable('')
+	trackName: JsonCurrentReadable<string> = jsonCurrentReadable(this.#trackName)
+
+	#authorName: JsonCurrentWritable<string> = jsonCurrentWritable('')
+	authorName: JsonCurrentReadable<string> = jsonCurrentReadable(this.#authorName)
 
 	trackTimes = new TrackTimes()
 	trackRespawns = new TrackRespawns()
@@ -106,6 +91,16 @@ export class TrackData {
 	 */
 	validationId = ''
 
+	#emitter = mitt<Events>()
+
+	public on = this.#emitter.on
+	public off = this.#emitter.off
+	public all = this.#emitter.all
+
+	constructor(userId: string) {
+		this.userId = userId
+	}
+
 	/**
 	 * The validation id is a hash of all track elements. It is used to invalidate
 	 * track records when the track changed. The elements are sorted by
@@ -115,7 +110,7 @@ export class TrackData {
 		const numbersToString = (args: (number | string)[]) => {
 			return args.map((arg) => (typeof arg === 'number' ? arg.toFixed(8) : arg)).join(':')
 		}
-		const trackElementsStringRepresentation = this.trackElements.current
+		const trackElementsStringRepresentation = this.track.trackElements.current
 			.map((trackElement) => {
 				const position = numbersToString(trackElement.position.current)
 				const rotation = numbersToString(trackElement.rotation.current)
@@ -132,7 +127,8 @@ export class TrackData {
 		this.validationId = this.calculateValidationId()
 		this.trackTimes.author.set(authorTime)
 		this.#validated.set(true)
-		if (save) this.toLocalStorage()
+		this.#emitter.emit('validate', this)
+		this.#emitter.emit('change', this)
 	}
 
 	public invalidate(save = true) {
@@ -140,17 +136,18 @@ export class TrackData {
 		this.validationId = ''
 		this.trackTimes.author.set(0)
 		this.trackRespawns.author.set(0)
-		if (save) this.toLocalStorage()
+		this.#emitter.emit('invalidate', this)
+		this.#emitter.emit('change', this)
 	}
 
-	#checkpointCount = jsonCurrentWritable(0)
-	checkpointCount = jsonCurrentReadable(this.#checkpointCount)
+	public setTrackName(trackName: string) {
+		this.#trackName.set(trackName)
+		this.#emitter.emit('change', this)
+	}
 
-	#finishCount = jsonCurrentWritable(0)
-	finishCount = jsonCurrentReadable(this.#finishCount)
-
-	public static createEmpty() {
-		return new TrackData()
+	public setAuthorName(authorName: string) {
+		this.#authorName.set(authorName)
+		this.#emitter.emit('change', this)
 	}
 
 	public static async fromServer(trackId: string) {
@@ -172,37 +169,30 @@ export class TrackData {
 	}
 
 	public static fromJSON(data: any) {
-		try {
-			const trackData = new TrackData()
+		const parsed = TrackDataSchema.parse(data)
 
-			trackData.trackId = data.trackId
-			trackData.trackName.set(data.trackName)
-			trackData.authorName.set(data.authorName)
+		const trackData = new TrackData(parsed.userId)
 
-			trackData.#trackElements.set(
-				data.trackElements.map((trackElement: any) => TrackElement.fromJSON(trackElement))
-			)
+		trackData.trackId = parsed.trackId
+		trackData.setTrackName(parsed.trackName)
+		trackData.setAuthorName(parsed.authorName)
 
-			trackData.trackTimes.author.set(data.trackTimes.author)
-			trackData.trackTimes.gold.set(data.trackTimes.gold)
-			trackData.trackTimes.silver.set(data.trackTimes.silver)
-			trackData.trackTimes.bronze.set(data.trackTimes.bronze)
+		trackData.track = Track.fromJSON(parsed.track)
 
-			trackData.trackRespawns.author.set(data.trackRespawns.author)
-			trackData.trackRespawns.gold.set(data.trackRespawns.gold)
-			trackData.trackRespawns.silver.set(data.trackRespawns.silver)
-			trackData.trackRespawns.bronze.set(data.trackRespawns.bronze)
+		trackData.trackTimes.author.set(parsed.trackTimes.author)
+		trackData.trackTimes.gold.set(parsed.trackTimes.gold)
+		trackData.trackTimes.silver.set(parsed.trackTimes.silver)
+		trackData.trackTimes.bronze.set(parsed.trackTimes.bronze)
 
-			trackData.#validated.set(data.validated)
-			trackData.validationId = data.validationId
+		trackData.trackRespawns.author.set(parsed.trackRespawns.author)
+		trackData.trackRespawns.gold.set(parsed.trackRespawns.gold)
+		trackData.trackRespawns.silver.set(parsed.trackRespawns.silver)
+		trackData.trackRespawns.bronze.set(parsed.trackRespawns.bronze)
 
-			trackData.updateCheckpointCount()
+		trackData.#validated.set(parsed.validated)
+		trackData.validationId = parsed.validationId
 
-			return trackData
-		} catch (error) {
-			console.error(error)
-			return undefined
-		}
+		return trackData
 	}
 
 	public clone() {
@@ -211,17 +201,6 @@ export class TrackData {
 		const trackData = TrackData.fromString(json)!
 		trackData.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
 		return trackData
-	}
-
-	private updateCheckpointCount() {
-		const checkpointCount = this.#trackElements.current.filter((trackElement) => {
-			return trackElement.type.current.startsWith('Checkpoint')
-		}).length
-		const finishCount = this.#trackElements.current.filter((trackElement) => {
-			return trackElement.type.current.startsWith('Finish')
-		}).length
-		this.#checkpointCount.set(checkpointCount)
-		this.#finishCount.set(finishCount)
 	}
 
 	public static fromLocalStorage(trackId: string) {
@@ -248,10 +227,10 @@ export class TrackData {
 			clearTimeout(this.#timeout)
 		}
 		if (!debounce) {
-			localStorage.setItem(this.trackId, this.stringify())
+			localStorage.setItem(this.trackId, JSON.stringify(this))
 		} else {
 			this.#timeout = setTimeout(() => {
-				localStorage.setItem(this.trackId, this.stringify())
+				localStorage.setItem(this.trackId, JSON.stringify(this))
 			})
 		}
 	}
@@ -274,7 +253,7 @@ export class TrackData {
 	}
 
 	public async saveTrackToDisk() {
-		const json = this.stringify()
+		const json = JSON.stringify(this)
 		const zip = new JSZip()
 		zip.file('track.json', json)
 		const blob = await zip.generateAsync({
@@ -287,23 +266,14 @@ export class TrackData {
 		link.click()
 	}
 
-	public stringify() {
-		return JSON.stringify(this)
-	}
-
 	public addTrackElement(type: TrackElementType, save = true) {
 		if (this.#validated.current) {
 			console.warn('Cannot add track element to validated track!')
 			return
 		}
-		const newTrackElement = TrackElement.fromType(type)
-		this.#trackElements.update((trackElements) => {
-			trackElements.push(newTrackElement)
-			return trackElements
-		})
-		this.updateCheckpointCount()
-		if (save) this.toLocalStorage()
-		return newTrackElement
+		const trackElement = this.track.addTrackElement(type)
+		this.#emitter.emit('change', this)
+		return trackElement
 	}
 
 	public removeTrackElement(id: string, save = true) {
@@ -311,11 +281,8 @@ export class TrackData {
 			console.warn('Cannot remove track element from validated track!')
 			return
 		}
-		this.#trackElements.update((trackElements) => {
-			return trackElements.filter((trackElement) => trackElement.id !== id)
-		})
-		this.updateCheckpointCount()
-		if (save) this.toLocalStorage()
+		this.track.removeTrackElement(id)
+		this.#emitter.emit('change', this)
 	}
 
 	public duplicateTrackElement(id: string, save = true) {
@@ -323,21 +290,9 @@ export class TrackData {
 			console.warn('Cannot duplicate track element of validated track!')
 			return
 		}
-		const trackElementToDuplicate = this.#trackElements.current.find(
-			(trackElement) => trackElement.id === id
-		)
-		if (!trackElementToDuplicate) {
-			console.warn('Cannot duplicate track element that does not exist!')
-			return
-		}
-		const newTrackElement = TrackElement.fromTrackElement(trackElementToDuplicate)
-		this.#trackElements.update((trackElements) => {
-			trackElements.push(newTrackElement)
-			return trackElements
-		})
-		this.updateCheckpointCount()
-		if (save) this.toLocalStorage()
-		return newTrackElement
+		const trackElement = this.track.duplicateTrackElement(id)
+		this.#emitter.emit('change', this)
+		return trackElement
 	}
 
 	public setTrackElementType = (id: string, type: TrackElementType, save = true) => {
@@ -345,15 +300,8 @@ export class TrackData {
 			console.warn('Cannot set track element type of validated track!')
 			return
 		}
-		this.#trackElements.update((trackElements) => {
-			const trackElement = trackElements.find((trackElement) => trackElement.id === id)
-			if (trackElement) {
-				trackElement.setType(type)
-			}
-			return trackElements
-		})
-		this.updateCheckpointCount()
-		if (save) this.toLocalStorage()
+		this.track.setTrackElementType(id, type)
+		this.#emitter.emit('change', this)
 	}
 
 	public setTrackElementPosition = (id: string, position: Vector3Tuple, save = true) => {
@@ -361,14 +309,8 @@ export class TrackData {
 			console.warn('Cannot set track element position of validated track!')
 			return
 		}
-		this.#trackElements.update((trackElements) => {
-			const trackElement = trackElements.find((trackElement) => trackElement.id === id)
-			if (trackElement) {
-				trackElement.setPosition(position)
-			}
-			return trackElements
-		})
-		if (save) this.toLocalStorage()
+		this.track.setTrackElementPosition(id, position)
+		this.#emitter.emit('change', this)
 	}
 
 	public setTrackElementRotation = (
@@ -380,13 +322,7 @@ export class TrackData {
 			console.warn('Cannot set track element rotation of validated track!')
 			return
 		}
-		this.#trackElements.update((trackElements) => {
-			const trackElement = trackElements.find((trackElement) => trackElement.id === id)
-			if (trackElement) {
-				trackElement.setRotation(rotation)
-			}
-			return trackElements
-		})
-		if (save) this.toLocalStorage()
+		this.track.setTrackElementRotation(id, rotation)
+		this.#emitter.emit('change', this)
 	}
 }

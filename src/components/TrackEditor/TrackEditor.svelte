@@ -35,10 +35,22 @@
 	import TrackEditorMenu from './UI/TrackEditorMenu.svelte'
 	import { createTrackEditorContext } from './context'
 	import ToolTip from './ToolTip.svelte'
+	import { TrackManager } from '../../lib/TrackData/TrackDataManager'
+	import { onMount } from 'svelte'
 
 	const { visibility } = appState
 
 	export let trackData: TrackData
+
+	// update the trackData remotely whenever it changes
+	const onTrackDataChanged = () => {
+		TrackManager.saveUserTrackDataDebounced(trackData)
+	}
+
+	onMount(() => {
+		trackData.on('change', onTrackDataChanged)
+		return () => trackData.off('change', onTrackDataChanged)
+	})
 
 	let shiftState = false
 	useKeyDown('Shift', (e) => {

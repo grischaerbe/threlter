@@ -27,7 +27,7 @@
 	const { sfx } = appState.options.audio
 
 	export let trackData: TrackData
-	$: elements = trackData.trackElements
+	$: elements = trackData.track.trackElements
 
 	const dispatch = createEventDispatcher<{
 		trackcompleted: void
@@ -50,7 +50,7 @@
 
 	const finishReached = () => {
 		// player didn't go through all checkpoints
-		if (checkpointsReached.current.size !== trackData.checkpointCount.current) return
+		if (checkpointsReached.current.size !== trackData.track.checkpointCount.current) return
 
 		if ($sfx && !trackCompleted.current) {
 			playAudio('success1', {

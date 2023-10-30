@@ -15,7 +15,7 @@ The next version is called "Threlte v6" and what better way is there to celebrat
 ## Features
 
 - 👑 [**Campaign**](https://threltemania.xyz/menu/campaign): _Official tracks_ to race against the clock and win medals.
-- 👤 [**User Tracks**](https://threltemania.xyz/menu/user-tracks): Race on tracks built by other players.
+- 👤 [**User Tracks**](https://threltemania.xyz/menu/explore): Race on tracks built by other players.
 - 🛠️ **Track Editor**: Build and share your own tracks and compete against your friends.
 
 ## "Technical" Features

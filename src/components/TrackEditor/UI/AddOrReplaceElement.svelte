@@ -1,13 +1,12 @@
 <script lang="ts">
-	import { c } from '$lib/utils/classes'
 	import {
+		trackElementPrototypes,
 		type TrackElementCategory,
-		type TrackElementPrototypeType,
-		trackElementPrototypes
+		type TrackElementPrototypeType
 	} from '$components/TrackElements/elements'
-	import Button from '$components/UI/components/Button.svelte'
-	import { useTrackEditor } from '../context'
+	import { c } from '$lib/utils/classes'
 	import PlainButton from '../../UI/components/PlainButton.svelte'
+	import { useTrackEditor } from '../context'
 
 	const { trackData, currentlySelectedElement } = useTrackEditor()
 	const validated = trackData.validated
@@ -44,7 +43,6 @@
 			{#if isSelected && !$validated}
 				{#each category.elements as element, index}
 					{@const isFirst = index === 0}
-					{@const isLast = index === category.elements.length - 1}
 					<PlainButton
 						class={c(
 							'border-orange border-x-2 border-b-2 p-[6px] bg-blue-950',

@@ -1,6 +1,7 @@
 import { type CurrentWritable, currentWritable } from '@threlte/core'
 import { getContext, setContext } from 'svelte'
-import type { TrackData, TrackElement } from '$lib/TrackData/TrackData'
+import type { TrackData } from '$lib/TrackData/TrackData'
+import type { TrackElement } from '$lib/TrackData/TrackElement'
 import type CameraControls from 'camera-controls'
 
 type TrackEditorContext = {

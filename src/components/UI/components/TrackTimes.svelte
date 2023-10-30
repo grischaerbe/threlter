@@ -2,7 +2,6 @@
 	import type { TrackData } from '$lib/TrackData/TrackData'
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
-	import { formatTime } from '$lib/utils/formatters'
 	import FormattedTime from './FormattedTime.svelte'
 
 	export let trackData: TrackData

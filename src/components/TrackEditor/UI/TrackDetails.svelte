@@ -22,7 +22,7 @@
 		class="h-[46px] !rounded-l-none"
 		on:click={() => {
 			if (!trackName.length) return
-			trackData.trackName.set(trackName)
+			trackData.setTrackName(trackName)
 			trackData.toLocalStorage(0)
 		}}
 	>

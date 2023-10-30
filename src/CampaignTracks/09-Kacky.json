@@ -2,43 +2,46 @@
 	"trackId": "Track-1ol45dm",
 	"trackName": "Kacky",
 	"authorName": "legrisch",
-	"trackElements": [
-		{ "id": "i0tfc14", "type": "Box", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
-		{
-			"id": "frrkkav",
-			"type": "RampInverse",
-			"position": [-10, -5, 0],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "4os7vo3",
-			"type": "RampInverse",
-			"position": [-20, -10, 0],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "w6o808z",
-			"type": "RampInverse",
-			"position": [-30, -15, 0],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "fa06386",
-			"type": "TiltTransitionLeftLong",
-			"position": [-49.13161986263867, -29.131619862638665, 0],
-			"rotation": [0, 0, 0.7853981633974484, "XYZ"]
-		},
-		{
-			"id": "lajxx1n",
-			"type": "Finish",
-			"position": [-95.12216830591024, -119.21466780505557, 6],
-			"rotation": [0, 0, 1.2640109096433363, "XYZ"]
-		}
-	],
+	"userId": "00000000-0000-0000-0000-000000000000",
+	"track": {
+		"trackElements": [
+			{ "id": "i0tfc14", "type": "Box", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+			{
+				"id": "frrkkav",
+				"type": "RampInverse",
+				"position": [-10, -5, 0],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "4os7vo3",
+				"type": "RampInverse",
+				"position": [-20, -10, 0],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "w6o808z",
+				"type": "RampInverse",
+				"position": [-30, -15, 0],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "fa06386",
+				"type": "TiltTransitionLeftLong",
+				"position": [-49.13161986263867, -29.131619862638665, 0],
+				"rotation": [0, 0, 0.7853981633974484, "XYZ"]
+			},
+			{
+				"id": "lajxx1n",
+				"type": "Finish",
+				"position": [-95.12216830591024, -119.21466780505557, 6],
+				"rotation": [0, 0, 1.2640109096433363, "XYZ"]
+			}
+		],
+		"checkpointCount": 0,
+		"finishCount": 1
+	},
 	"trackTimes": { "author": 7080.5, "gold": 7300, "silver": 8500, "bronze": 10000 },
 	"trackRespawns": { "author": 0, "gold": 0, "silver": 0, "bronze": 0 },
 	"validated": true,
-	"validationId": "ba7d541a9e208",
-	"checkpointCount": 0,
-	"finishCount": 1
+	"validationId": "ba7d541a9e208"
 }

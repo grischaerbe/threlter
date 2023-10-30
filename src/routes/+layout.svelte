@@ -8,12 +8,12 @@
 	import { Debug, World } from '@threlte/rapier'
 	import { NoToneMapping } from 'three'
 	import '../app.postcss'
-	import Csm from '../components/CSM/CSM.svelte'
 	import Renderer from '../components/Renderer.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
 	import { sunPos } from '../config'
 	import { Vector3 } from 'three'
+	import { CSM } from '@threlte/extras'
 
 	const {
 		visibility,
@@ -69,13 +69,16 @@
 				<AudioProvider>
 					<KeyboardNavigation>
 						<StartPrompt>
-							<Csm
+							<CSM
 								enabled={$shadows}
-								params={{
+								args={{
 									maxFar: 100,
-									lightDirection: new Vector3(...sunPos).multiplyScalar(-1),
-									lightIntensity: 1.2,
 									cascades: 3
+								}}
+								lightDirection={new Vector3(...sunPos).multiplyScalar(-1).toArray()}
+								lightIntensity={1.2 * Math.PI}
+								configure={(csm) => {
+									csm.fade = true
 								}}
 							>
 								<slot />
@@ -83,7 +86,7 @@
 								<svelte:fragment slot="disabled">
 									<T.DirectionalLight position={sunPos} intensity={1.2} />
 								</svelte:fragment>
-							</Csm>
+							</CSM>
 						</StartPrompt>
 					</KeyboardNavigation>
 				</AudioProvider>

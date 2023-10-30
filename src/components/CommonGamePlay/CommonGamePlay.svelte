@@ -180,16 +180,16 @@
 		volume={$carVolumeSpring}
 		freeze={$carFrozen}
 		freezeCamera={$state === 'finished'}
-		let:carState
 		useCarCamera={$state !== 'intro'}
 	>
-		{#if workingTrackRecord.ghost && $state === 'playing'}
+		<!-- let:carState -->
+		<!-- {#if workingTrackRecord.ghost && $state === 'playing'}
 			<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
 		{/if}
 
 		{#if currentTrackRecord?.ghost && $state === 'playing'}
 			<GhostPlayer {carState} ghost={currentTrackRecord.ghost} time={$time} />
-		{/if}
+		{/if} -->
 	</Car>
 
 	{#if !suspended}

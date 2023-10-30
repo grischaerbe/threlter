@@ -9,7 +9,7 @@
 	import type { Group } from 'three'
 	import { useTrackEditor } from './context'
 	import { onDestroy } from 'svelte'
-	import type { TrackElement } from '$lib/TrackData/TrackData'
+	import type { TrackElement } from '$lib/TrackData/TrackElement'
 	import { useKeyDown } from '../../hooks/useKeyDown'
 	import { useKeyUp } from '../../hooks/useKeyUp'
 
@@ -77,7 +77,7 @@
 			mode={$transformMode}
 			translationSnap={$transformSnap ? 1 : null}
 			rotationSnap={$transformSnap ? (5 * Math.PI) / 180 : null}
-			on:change={() => {
+			on:objectChange={() => {
 				onChange(ref)
 			}}
 			on:mouseDown={onMouseDown}

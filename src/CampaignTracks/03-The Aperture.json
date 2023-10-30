@@ -2,299 +2,302 @@
 	"trackId": "Track-kex7wtv",
 	"trackName": "The Aperture",
 	"authorName": "legrisch",
-	"trackElements": [
-		{ "id": "naezi6k", "type": "Box", "position": [-10, 0, -10], "rotation": [0, 0, 0, "XYZ"] },
-		{ "id": "0l5gzre", "type": "Box", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
-		{ "id": "f5k77xk", "type": "Box", "position": [-10, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
-		{
-			"id": "i1dg70t",
-			"type": "BarrierTurnLeft",
-			"position": [-20, 0, 0],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "uqp7qez",
-			"type": "BarrierTurnLeft",
-			"position": [-10, 0, -10],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "krosvip",
-			"type": "HalfUnitBox",
-			"position": [-30, 0, -10],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "e89pmtb",
-			"type": "HalfUnitBox",
-			"position": [-20, 0, -20],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{ "id": "emudfcf", "type": "Box", "position": [-30, 0, -20], "rotation": [0, 0, 0, "XYZ"] },
-		{
-			"id": "91n098b",
-			"type": "DoubleBarrier",
-			"position": [-30, 0, -10.005386115091092],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "e3zadzl",
-			"type": "DoubleBarrier",
-			"position": [-30, 0, -20],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "vdxmgaw",
-			"type": "BarrierEnd",
-			"position": [-25, 0, -15],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "w4dbdfc",
-			"type": "TiltTransitionLeftLong",
-			"position": [-55, 0, -10],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "3qfrxsf",
-			"type": "TiltTransitionRightLong",
-			"position": [-55, 0, -20],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "abobfjw",
-			"type": "HalfUnitBox",
-			"position": [-80, -5, -15],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "1buu82j",
-			"type": "DoubleBarrier",
-			"position": [-80, -5, -15],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "69hcvmj",
-			"type": "HalfUnitBox",
-			"position": [-90, -5, -15],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "ckkug0p",
-			"type": "Box",
-			"position": [-90, -4.984647700720799, -25],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "3v3eekh",
-			"type": "Checkpoint",
-			"position": [-100, -5, -25],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{ "id": "3j72lix", "type": "Box", "position": [-100, -5, -15], "rotation": [0, 0, 0, "XYZ"] },
-		{
-			"id": "p57xbnv",
-			"type": "BarrierTurnLeft",
-			"position": [-90, -5, -25],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "oksdiv7",
-			"type": "BarrierTurnLeft",
-			"position": [-100, -5, -25],
-			"rotation": [0, 1.5707963267948966, 0, "XYZ"]
-		},
-		{
-			"id": "8e8277l",
-			"type": "BarrierTurnLeft",
-			"position": [-100, -5, -15.000000000000021],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "4nwkz0d",
-			"type": "RampInverse",
-			"position": [-70, -10, -15],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "mlxuwll",
-			"type": "Slope",
-			"position": [-60, -15, -5.000000000000007],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "t553tla",
-			"type": "HalfBox",
-			"position": [-70, -15, 4.999999999999991],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "bnbkzd2",
-			"type": "HalfBox",
-			"position": [-70, -10, -15],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "yzqcv5h",
-			"type": "Slope",
-			"position": [-60, -15, -15.000000000000007],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "xcr186n",
-			"type": "Slope",
-			"position": [-60, -15, 4.999999999999993],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "i3berjn",
-			"type": "HalfBox",
-			"position": [-60, -20, -15.000000000000007],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "8lq06y4",
-			"type": "HalfBox",
-			"position": [-70, -10, -5.000000000000009],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "3skicwt",
-			"type": "Ramp",
-			"position": [-50, -25, 4.999999999999994],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "0v8boev",
-			"type": "HalfBox",
-			"position": [-70, -9.992071933518833, 4.999999999999992],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "skplnxt",
-			"type": "HalfBox",
-			"position": [-60, -20, 4.999999999999993],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "alcfxfi",
-			"type": "HalfBox",
-			"position": [-60, -20, -5.000000000000007],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "6q7idp4",
-			"type": "HalfBox",
-			"position": [-70, -15, -15],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "d0c2808",
-			"type": "HalfBox",
-			"position": [-70, -15, -5.000000000000009],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "tkngdun",
-			"type": "BarrierTurnLeft",
-			"position": [-20, 0, -20],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "vbhxepw",
-			"type": "BarrierEnd",
-			"position": [-15, 0, -15],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "binwsro",
-			"type": "BarrierEnd",
-			"position": [-25, 0, -5],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "nx8cpsh",
-			"type": "DoubleBarrier",
-			"position": [0, 0, 0],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "gixo582",
-			"type": "BarrierEnd",
-			"position": [-5, 0, -5],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "dpm72y4",
-			"type": "HalfUnitBox",
-			"position": [-20, 0, -10],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "y9jqhri",
-			"type": "HalfUnitBox",
-			"position": [-20, 0, -0.01341427672469564],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "47284gi",
-			"type": "Ramp",
-			"position": [-30, -25, 4.999999999999996],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "mf9eonx",
-			"type": "HalfUnitBox",
-			"position": [-30, -25, 4.999999999999996],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "crsnnz5",
-			"type": "Finish",
-			"position": [-40, -25, 4.999999999999996],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "bzehpfd",
-			"type": "HalfUnitBox",
-			"position": [-50, -25, 4.999999999999996],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "b3dv1k3",
-			"type": "HalfUnitBox",
-			"position": [-60, -25, 4.999999999999996],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "qmdxty8",
-			"type": "HalfUnitBox",
-			"position": [-60, -25, -5],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "8gxoam7",
-			"type": "HalfUnitBox",
-			"position": [-60, -25, -15],
-			"rotation": [0, 0, 0, "XYZ"]
-		},
-		{
-			"id": "3by28vh",
-			"type": "BarrierEnd",
-			"position": [-70, -9.992071933518833, 4.999999999999992],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		},
-		{
-			"id": "fr1rqrg",
-			"type": "BarrierEnd",
-			"position": [-70, -10, -5.000000000000009],
-			"rotation": [0, 3.141592653589793, 0, "XYZ"]
-		}
-	],
+	"userId": "00000000-0000-0000-0000-000000000000",
+	"track": {
+		"trackElements": [
+			{ "id": "naezi6k", "type": "Box", "position": [-10, 0, -10], "rotation": [0, 0, 0, "XYZ"] },
+			{ "id": "0l5gzre", "type": "Box", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+			{ "id": "f5k77xk", "type": "Box", "position": [-10, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
+			{
+				"id": "i1dg70t",
+				"type": "BarrierTurnLeft",
+				"position": [-20, 0, 0],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "uqp7qez",
+				"type": "BarrierTurnLeft",
+				"position": [-10, 0, -10],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "krosvip",
+				"type": "HalfUnitBox",
+				"position": [-30, 0, -10],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "e89pmtb",
+				"type": "HalfUnitBox",
+				"position": [-20, 0, -20],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{ "id": "emudfcf", "type": "Box", "position": [-30, 0, -20], "rotation": [0, 0, 0, "XYZ"] },
+			{
+				"id": "91n098b",
+				"type": "DoubleBarrier",
+				"position": [-30, 0, -10.005386115091092],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "e3zadzl",
+				"type": "DoubleBarrier",
+				"position": [-30, 0, -20],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "vdxmgaw",
+				"type": "BarrierEnd",
+				"position": [-25, 0, -15],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "w4dbdfc",
+				"type": "TiltTransitionLeftLong",
+				"position": [-55, 0, -10],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "3qfrxsf",
+				"type": "TiltTransitionRightLong",
+				"position": [-55, 0, -20],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "abobfjw",
+				"type": "HalfUnitBox",
+				"position": [-80, -5, -15],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "1buu82j",
+				"type": "DoubleBarrier",
+				"position": [-80, -5, -15],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "69hcvmj",
+				"type": "HalfUnitBox",
+				"position": [-90, -5, -15],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "ckkug0p",
+				"type": "Box",
+				"position": [-90, -4.984647700720799, -25],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "3v3eekh",
+				"type": "Checkpoint",
+				"position": [-100, -5, -25],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{ "id": "3j72lix", "type": "Box", "position": [-100, -5, -15], "rotation": [0, 0, 0, "XYZ"] },
+			{
+				"id": "p57xbnv",
+				"type": "BarrierTurnLeft",
+				"position": [-90, -5, -25],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "oksdiv7",
+				"type": "BarrierTurnLeft",
+				"position": [-100, -5, -25],
+				"rotation": [0, 1.5707963267948966, 0, "XYZ"]
+			},
+			{
+				"id": "8e8277l",
+				"type": "BarrierTurnLeft",
+				"position": [-100, -5, -15.000000000000021],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "4nwkz0d",
+				"type": "RampInverse",
+				"position": [-70, -10, -15],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "mlxuwll",
+				"type": "Slope",
+				"position": [-60, -15, -5.000000000000007],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "t553tla",
+				"type": "HalfBox",
+				"position": [-70, -15, 4.999999999999991],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "bnbkzd2",
+				"type": "HalfBox",
+				"position": [-70, -10, -15],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "yzqcv5h",
+				"type": "Slope",
+				"position": [-60, -15, -15.000000000000007],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "xcr186n",
+				"type": "Slope",
+				"position": [-60, -15, 4.999999999999993],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "i3berjn",
+				"type": "HalfBox",
+				"position": [-60, -20, -15.000000000000007],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "8lq06y4",
+				"type": "HalfBox",
+				"position": [-70, -10, -5.000000000000009],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "3skicwt",
+				"type": "Ramp",
+				"position": [-50, -25, 4.999999999999994],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "0v8boev",
+				"type": "HalfBox",
+				"position": [-70, -9.992071933518833, 4.999999999999992],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "skplnxt",
+				"type": "HalfBox",
+				"position": [-60, -20, 4.999999999999993],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "alcfxfi",
+				"type": "HalfBox",
+				"position": [-60, -20, -5.000000000000007],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "6q7idp4",
+				"type": "HalfBox",
+				"position": [-70, -15, -15],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "d0c2808",
+				"type": "HalfBox",
+				"position": [-70, -15, -5.000000000000009],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "tkngdun",
+				"type": "BarrierTurnLeft",
+				"position": [-20, 0, -20],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "vbhxepw",
+				"type": "BarrierEnd",
+				"position": [-15, 0, -15],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "binwsro",
+				"type": "BarrierEnd",
+				"position": [-25, 0, -5],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "nx8cpsh",
+				"type": "DoubleBarrier",
+				"position": [0, 0, 0],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "gixo582",
+				"type": "BarrierEnd",
+				"position": [-5, 0, -5],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "dpm72y4",
+				"type": "HalfUnitBox",
+				"position": [-20, 0, -10],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "y9jqhri",
+				"type": "HalfUnitBox",
+				"position": [-20, 0, -0.01341427672469564],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "47284gi",
+				"type": "Ramp",
+				"position": [-30, -25, 4.999999999999996],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "mf9eonx",
+				"type": "HalfUnitBox",
+				"position": [-30, -25, 4.999999999999996],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "crsnnz5",
+				"type": "Finish",
+				"position": [-40, -25, 4.999999999999996],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "bzehpfd",
+				"type": "HalfUnitBox",
+				"position": [-50, -25, 4.999999999999996],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "b3dv1k3",
+				"type": "HalfUnitBox",
+				"position": [-60, -25, 4.999999999999996],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "qmdxty8",
+				"type": "HalfUnitBox",
+				"position": [-60, -25, -5],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "8gxoam7",
+				"type": "HalfUnitBox",
+				"position": [-60, -25, -15],
+				"rotation": [0, 0, 0, "XYZ"]
+			},
+			{
+				"id": "3by28vh",
+				"type": "BarrierEnd",
+				"position": [-70, -9.992071933518833, 4.999999999999992],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			},
+			{
+				"id": "fr1rqrg",
+				"type": "BarrierEnd",
+				"position": [-70, -10, -5.000000000000009],
+				"rotation": [0, 3.141592653589793, 0, "XYZ"]
+			}
+		],
+		"checkpointCount": 1,
+		"finishCount": 1
+	},
 	"trackTimes": { "author": 11616.699999988079, "gold": 12000, "silver": 13000, "bronze": 14000 },
 	"trackRespawns": { "author": 0, "gold": 0, "silver": 0, "bronze": 0 },
 	"validated": true,
-	"validationId": "3a10ba17d755d",
-	"checkpointCount": 1,
-	"finishCount": 1
+	"validationId": "3a10ba17d755d"
 }

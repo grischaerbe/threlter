@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from '$components/UI/components/Button.svelte'
 	import Card from '$components/UI/components/Card.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import type { TrackData } from '$lib/TrackData/TrackData'
