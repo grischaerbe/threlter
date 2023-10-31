@@ -2,7 +2,8 @@
 	"trackId": "Track-6i3pgd9",
 	"trackName": "Walls and Birds",
 	"authorName": "",
-	"track": {
+	"userId": "00000000-0000-0000-0000-000000000000",
+	"trackData": {
 		"trackElements": [
 			{ "id": "f5d557h", "type": "Box", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
 			{

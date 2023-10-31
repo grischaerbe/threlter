@@ -2,7 +2,8 @@
 	"trackId": "Track-b5sognn",
 	"trackName": "Jump!",
 	"authorName": "",
-	"track": {
+	"userId": "00000000-0000-0000-0000-000000000000",
+	"trackData": {
 		"trackElements": [
 			{ "id": "yijn5i6", "type": "Boost", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
 			{ "id": "cio26gk", "type": "Boost", "position": [-10, 0, 0], "rotation": [0, 0, 0, "XYZ"] },
