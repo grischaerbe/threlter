@@ -40,16 +40,16 @@
 
 	const { visibility } = appState
 
-	export let trackData: Track
+	export let track: Track
 
-	// update the trackData remotely whenever it changes
-	const onTrackDataChanged = () => {
-		TrackManager.saveUserTrackDataDebounced(trackData)
+	// update the track remotely whenever it changes
+	const onTrackChanged = () => {
+		TrackManager.saveUserTrackDebounced(track)
 	}
 
 	onMount(() => {
-		trackData.on('change', onTrackDataChanged)
-		return () => trackData.off('change', onTrackDataChanged)
+		track.on('change', onTrackChanged)
+		return () => track.off('change', onTrackChanged)
 	})
 
 	let shiftState = false
@@ -82,7 +82,7 @@
 
 	let wireframe = false
 
-	const validated = trackData.validated
+	const validated = track.validated
 
 	interactivity()
 
@@ -93,7 +93,7 @@
 		transformSnap,
 		cameraControls,
 		activeCameraControls
-	} = createTrackEditorContext(trackData)
+	} = createTrackEditorContext(track)
 
 	$: $activeCameraControls = useOrthoCam ? $cameraControls[1] : $cameraControls[0]
 	$: currentlySelectedElementType = $currentlySelectedElement?.type
@@ -146,7 +146,7 @@
 		// modulo 360
 		euler.y = euler.y % (Math.PI * 2)
 		const newRotation = euler.toArray()
-		trackData.setTrackElementRotation($currentlySelectedElement.id, newRotation as any)
+		track.setTrackElementRotation($currentlySelectedElement.id, newRotation as any)
 	})
 
 	useKeyDown('g', () => {
@@ -163,7 +163,7 @@
 	useKeyDown('Shift+D', () => {
 		if ($showMenu) return
 		if (!$currentlySelectedElement) return
-		const newElement = trackData.duplicateTrackElement($currentlySelectedElement.id)
+		const newElement = track.duplicateTrackElement($currentlySelectedElement.id)
 		currentlySelectedElement.set(newElement)
 	})
 
@@ -181,7 +181,7 @@
 	useKeyDown('Control+Backspace', () => {
 		if ($showMenu) return
 		if (!$currentlySelectedElement) return
-		trackData.removeTrackElement($currentlySelectedElement.id)
+		track.removeTrackElement($currentlySelectedElement.id)
 		currentlySelectedElement.set(undefined)
 	})
 
@@ -446,7 +446,7 @@
 						<SpecialButton
 							style="red-inverted"
 							on:click={() => {
-								trackData.invalidate()
+								track.invalidate()
 							}}
 						>
 							Unlock
@@ -511,7 +511,7 @@
 {/if}
 
 <!-- 3D -->
-<TrackViewer {trackData} let:trackElement>
+<TrackViewer {track} let:trackElement>
 	<TrackEditorElementTransformControls
 		{trackElement}
 		on:mouseDown={() => (cameraControlsActive = false)}

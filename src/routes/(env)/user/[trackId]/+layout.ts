@@ -7,20 +7,20 @@ export const load = (async ({ params, parent, route }) => {
 	// need to wait for it
 	await parent()
 
-	const trackData = await TrackManager.getUserTrackData(params.trackId)
+	const track = await TrackManager.getUserTracks(params.trackId)
 
 	// if the track doesn't exist, redirect to the main menu
-	if (!trackData) {
+	if (!track) {
 		throw redirect(307, '/menu/main')
 	}
 
 	// if the track is not owned by the current user, redirect to the main menu if
 	// the user is trying to edit it
-	if (route.id.includes('edit') && trackData.userId !== TrackManager.session.current?.user_id) {
+	if (route.id.includes('edit') && track.userId !== TrackManager.session.current?.user_id) {
 		throw redirect(307, '/menu/main')
 	}
 
 	return {
-		trackData
+		track
 	}
 }) satisfies LayoutLoad

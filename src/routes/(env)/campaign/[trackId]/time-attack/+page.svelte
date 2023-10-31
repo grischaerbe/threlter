@@ -4,4 +4,4 @@
 	export let data
 </script>
 
-<TimeAttack trackData={data.trackData} />
+<TimeAttack track={data.track} />

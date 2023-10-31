@@ -8,24 +8,23 @@
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
-	export let trackData: Track
+	export let track: Track
 	export let time: number
 
 	const timeIsBetter =
-		trackData.trackTimes.author.current === 0 ||
-		(trackData.trackTimes.author.current ?? Infinity) > time
+		track.trackTimes.author.current === 0 || (track.trackTimes.author.current ?? Infinity) > time
 
-	if (timeIsBetter) trackData.validate(time)
+	if (timeIsBetter) track.validate(time)
 
 	export let restart: () => void
 
 	const upload = async () => {
 		if (!nakama.session.current) return
-		TrackManager.saveUserTrackData(trackData)
+		TrackManager.saveUserTrack(track)
 	}
 </script>
 
-<BottomScreenTrackName title={trackData.trackName.current} />
+<BottomScreenTrackName title={track.trackName.current} />
 
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
@@ -34,6 +33,6 @@
 		<SpecialButton on:click={upload}>Upload</SpecialButton>
 	</slot>
 	<Card class="inline-block text-[0.9em]">
-		<TrackTimes {trackData} />
+		<TrackTimes {track} />
 	</Card>
 </TopbarLayout>

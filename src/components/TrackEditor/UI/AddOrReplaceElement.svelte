@@ -8,8 +8,8 @@
 	import PlainButton from '../../UI/components/PlainButton.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData, currentlySelectedElement } = useTrackEditor()
-	const validated = trackData.validated
+	const { track, currentlySelectedElement } = useTrackEditor()
+	const validated = track.validated
 
 	type Category = {
 		name: TrackElementCategory
@@ -52,9 +52,9 @@
 						forceFocusOnMount={index === category.elements.length - 1 && !$validated}
 						on:click={() => {
 							if ($currentlySelectedElement) {
-								trackData.setTrackElementType($currentlySelectedElement.id, element)
+								track.setTrackElementType($currentlySelectedElement.id, element)
 							} else {
-								const newTrackElement = trackData.addTrackElement(element)
+								const newTrackElement = track.addTrackElement(element)
 								currentlySelectedElement.set(newTrackElement)
 							}
 						}}

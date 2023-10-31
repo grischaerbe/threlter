@@ -16,7 +16,7 @@
 
 <TrackSelection
 	bind:trackSelected
-	trackDatas={data.trackDatas}
+	tracks={data.tracks}
 	showAuthor
 	on:playtrack={(e) => {
 		goto(`/user/${e.detail.trackId}/time-attack`)
@@ -29,12 +29,12 @@
 			style="inverted"
 			on:click={async () => {
 				if (!$userId) return
-				const trackData = new Track($userId)
-				trackData.setTrackName(`Unnamed Track`)
-				trackData.setAuthorName(appState.options.player.name.current)
-				trackData.addTrackElement('Box')
-				await TrackManager.saveUserTrackData(trackData)
-				goto(`/user/${trackData.trackId}/edit`)
+				const track = new Track($userId)
+				track.setTrackName(`Unnamed Track`)
+				track.setAuthorName(appState.options.player.name.current)
+				track.addTrackElement('Box')
+				await TrackManager.saveUserTrack(track)
+				goto(`/user/${track.trackId}/edit`)
 			}}
 		>
 			<svg

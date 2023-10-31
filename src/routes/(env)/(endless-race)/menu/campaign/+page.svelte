@@ -9,7 +9,7 @@
 
 <TrackSelection
 	bind:trackSelected
-	trackDatas={data.campaign.tracks}
+	tracks={data.campaign.tracks}
 	on:playtrack={(e) => {
 		goto(`/campaign/${e.detail.trackId}/time-attack`)
 	}}

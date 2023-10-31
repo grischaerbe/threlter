@@ -3,9 +3,9 @@
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData } = useTrackEditor()
+	const { track } = useTrackEditor()
 
-	let trackName = trackData.trackName.current
+	let trackName = track.trackName.current
 </script>
 
 <div class="flex flex-row items-end text-[0.8em]">
@@ -22,8 +22,8 @@
 		class="h-[46px] !rounded-l-none"
 		on:click={() => {
 			if (!trackName.length) return
-			trackData.setTrackName(trackName)
-			trackData.toLocalStorage(0)
+			track.setTrackName(trackName)
+			track.toLocalStorage(0)
 		}}
 	>
 		Save

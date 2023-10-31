@@ -10,7 +10,7 @@
 	import PlainButton from '../components/PlainButton.svelte'
 	import SpecialButton from '../components/SpecialButton.svelte'
 
-	export let trackDatas: Track[]
+	export let tracks: Track[]
 
 	export let tracksCanBeEdited = false
 	export let tracksCanBeDuplicated = false
@@ -46,21 +46,21 @@
 <BlurryCard class="grid grid-cols-3 gap-[15px] h-full min-h-0">
 	<slot />
 
-	{#if trackDatas.length}
+	{#if tracks.length}
 		<Card class="h-min !p-0 overflow-hidden border-2 border-blue-950">
 			<div class="flex flex-col col-span-1 h-min overflow-auto text-[0.8em]">
-				{#each trackDatas as trackData, index}
-					{#if trackData}
+				{#each tracks as track, index}
+					{#if track}
 						<PlainButton
-							on:click={() => selectTrack(trackData.trackId)}
+							on:click={() => selectTrack(track.trackId)}
 							class={c(
 								'text-orange text-left px-[12px] py-[8px] hover:bg-blue-darker focus:bg-blue-darker outline-none',
-								selectedTrackId === trackData.trackId && '!bg-orange !text-blue-darkest',
+								selectedTrackId === track.trackId && '!bg-orange !text-blue-darkest',
 								index === 0 && 'pt-[11px]',
-								index === trackDatas.length - 1 && 'pb-[11px]'
+								index === tracks.length - 1 && 'pb-[11px]'
 							)}
 						>
-							{trackData.trackName.current}
+							{track.trackName.current}
 						</PlainButton>
 					{/if}
 				{/each}
@@ -69,9 +69,9 @@
 	{/if}
 
 	{#if selectedTrackId}
-		{@const trackData = trackDatas.find((trackData) => trackData.trackId === selectedTrackId)}
-		{#if trackData}
-			{@const trackRecord = TrackRecord.fromLocalStorage(trackData)}
+		{@const track = tracks.find((track) => track.trackId === selectedTrackId)}
+		{#if track}
+			{@const trackRecord = TrackRecord.fromLocalStorage(track)}
 			<div class="col-span-2">
 				<Card
 					class={c(
@@ -86,21 +86,21 @@
 					<div class="flex flex-row justify-between items-start mb-[15px]">
 						<div>
 							<span class="font-headline">
-								{trackData.trackName.current}
+								{track.trackName.current}
 							</span>
 
-							{#if trackData.authorName.current.length && showAuthor}
+							{#if track.authorName.current.length && showAuthor}
 								<div class="text-[0.8em]">
-									{trackData.authorName.current}
+									{track.authorName.current}
 								</div>
 							{/if}
 						</div>
 
-						{#if trackData.validated.current}
+						{#if track.validated.current}
 							<SpecialButton
 								style="green-inverted"
 								on:click={() => {
-									dispatch('playtrack', { trackId: trackData.trackId })
+									dispatch('playtrack', { trackId: track.trackId })
 								}}
 							>
 								Play
@@ -108,7 +108,7 @@
 						{/if}
 					</div>
 
-					{#if tracksCanBeValidated && !trackData.validated.current}
+					{#if tracksCanBeValidated && !track.validated.current}
 						<div class="text-[0.8em]">
 							Track is not validated yet.
 							<br />
@@ -116,18 +116,18 @@
 						</div>
 					{/if}
 
-					{#if trackData.validated.current}
-						<TrackTimes class="w-[27ch] text-[0.8em]" {trackData} {trackRecord} />
+					{#if track.validated.current}
+						<TrackTimes class="w-[27ch] text-[0.8em]" {track} {trackRecord} />
 					{/if}
 				</Card>
 
 				{#if tracksCanBeDeleted || tracksCanBeDuplicated || tracksCanBeEdited || tracksCanBeValidated}
 					<div class="flex flex-row justify-end items-stretch mb-[2px]">
 						<ButtonGroup let:divider={Divider} class="text-[0.7em] !rounded-t-none !border-t-0">
-							{#if !trackData.validated.current && tracksCanBeValidated}
+							{#if !track.validated.current && tracksCanBeValidated}
 								<PlainButton
 									on:click={() => {
-										dispatch('validatetrack', { trackId: trackData.trackId })
+										dispatch('validatetrack', { trackId: track.trackId })
 									}}
 									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500/80 hover:bg-green-500 focus:bg-green-500"
 								>
@@ -138,7 +138,7 @@
 							{#if tracksCanBeEdited}
 								<PlainButton
 									on:click={() => {
-										dispatch('edittrack', { trackId: trackData.trackId })
+										dispatch('edittrack', { trackId: track.trackId })
 									}}
 									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 								>
@@ -150,7 +150,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 									on:click={() => {
-										dispatch('duplicatetrack', { trackId: trackData.trackId })
+										dispatch('duplicatetrack', { trackId: track.trackId })
 									}}
 								>
 									Duplicate
@@ -161,7 +161,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 									on:click={() => {
-										dispatch('exporttrack', { trackId: trackData.trackId })
+										dispatch('exporttrack', { trackId: track.trackId })
 									}}
 								>
 									Export
@@ -172,7 +172,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500/80 hover:bg-red-500 focus:bg-red-500"
 									on:click={() => {
-										dispatch('deletetrack', { trackId: trackData.trackId })
+										dispatch('deletetrack', { trackId: track.trackId })
 									}}
 								>
 									Delete

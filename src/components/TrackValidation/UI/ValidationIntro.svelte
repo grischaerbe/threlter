@@ -6,10 +6,10 @@
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
 	export let proceed: () => void
-	export let trackData: Track
+	export let track: Track
 </script>
 
-<BottomScreenTrackName title={trackData.trackName.current} />
+<BottomScreenTrackName title={track.trackName.current} />
 
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>

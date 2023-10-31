@@ -3,9 +3,9 @@
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData } = useTrackEditor()
+	const { track } = useTrackEditor()
 
-	const { validated } = trackData
+	const { validated } = track
 </script>
 
 {#if $validated}
@@ -13,13 +13,13 @@
 		class="w-max"
 		style="red-inverted"
 		on:click={() => {
-			trackData.invalidate()
+			track.invalidate()
 		}}
 	>
 		Unlock Track
 	</SpecialButton>
 {:else}
-	<SpecialButton class="w-max" style="green-inverted" href={`/user/${trackData.trackId}/validate`}>
+	<SpecialButton class="w-max" style="green-inverted" href={`/user/${track.trackId}/validate`}>
 		Validate Track
 	</SpecialButton>
 {/if}

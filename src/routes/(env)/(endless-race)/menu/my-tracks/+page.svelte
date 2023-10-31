@@ -13,12 +13,12 @@
 
 	let trackSelected = false
 
-	$: userHasTracks = data.trackDatas.length > 0
+	$: userHasTracks = data.tracks.length > 0
 </script>
 
 <TrackSelection
 	bind:trackSelected
-	trackDatas={data.trackDatas}
+	tracks={data.tracks}
 	tracksCanBeEdited
 	tracksCanBeDeleted
 	tracksCanBeDuplicated
@@ -30,7 +30,7 @@
 	}}
 	on:deletetrack={async (e) => {
 		if (!nakama.session.current) return
-		await TrackManager.deleteUserTrackData(e.detail.trackId)
+		await TrackManager.deleteUserTrack(e.detail.trackId)
 		invalidate('user:my-tracks')
 	}}
 	on:edittrack={(e) => {
@@ -38,20 +38,20 @@
 	}}
 	on:duplicatetrack={async (e) => {
 		if (!nakama.session.current) return
-		const trackData = data.trackDatas.find((trackData) => {
-			return trackData.trackId === e.detail.trackId
+		const track = data.tracks.find((track) => {
+			return track.trackId === e.detail.trackId
 		})
-		if (!trackData) return
-		const newTrackData = trackData.clone()
-		await TrackManager.saveUserTrackData(newTrackData)
+		if (!track) return
+		const newTrack = track.clone()
+		await TrackManager.saveUserTrack(newTrack)
 	}}
 	on:validatetrack={(e) => {
 		goto(`/user/${e.detail.trackId}/validate`)
 	}}
 	on:exporttrack={(e) => {
-		const trackData = Track.fromLocalStorage(e.detail.trackId)
-		if (!trackData) return
-		trackData.saveTrackToDisk()
+		const track = Track.fromLocalStorage(e.detail.trackId)
+		if (!track) return
+		track.saveTrackToDisk()
 	}}
 >
 	<div
@@ -62,12 +62,12 @@
 			forceFocusOnMount={!userHasTracks}
 			on:click={async () => {
 				if (!$userId) return
-				const trackData = new Track($userId)
-				trackData.setTrackName(`Unnamed Track`)
-				trackData.setAuthorName(appState.options.player.name.current)
-				trackData.addTrackElement('Box')
-				await TrackManager.saveUserTrackData(trackData)
-				goto(`/user/${trackData.trackId}/edit`)
+				const track = new Track($userId)
+				track.setTrackName(`Unnamed Track`)
+				track.setAuthorName(appState.options.player.name.current)
+				track.addTrackElement('Box')
+				await TrackManager.saveUserTrack(track)
+				goto(`/user/${track.trackId}/edit`)
 			}}
 		>
 			<svg

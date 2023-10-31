@@ -17,7 +17,7 @@
 
 	const {
 		currentlySelectedElement,
-		trackData,
+		track,
 		transformMode,
 		transformSpace,
 		transformSnap,
@@ -32,9 +32,9 @@
 	})
 
 	const onChange = (ref: Group) => {
-		trackData.setTrackElementPosition(trackElement.id, ref.position.toArray())
+		track.setTrackElementPosition(trackElement.id, ref.position.toArray())
 		const rotation = ref.rotation.toArray() as TrackElement['rotation']['current']
-		trackData.setTrackElementRotation(trackElement.id, rotation)
+		track.setTrackElementRotation(trackElement.id, rotation)
 	}
 
 	let altIsDown = false
@@ -47,7 +47,7 @@
 
 	const onMouseDown = () => {
 		if (altIsDown) {
-			trackData.duplicateTrackElement(trackElement.id)
+			track.duplicateTrackElement(trackElement.id)
 		}
 		clearTimeout(isDraggingTimeout)
 		isDragging.set(true)

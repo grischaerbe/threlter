@@ -4,7 +4,7 @@ import { jsonCurrentReadable, type JsonCurrentReadable, type TrackElementType } 
 import { TrackElement } from './TrackElement'
 import z, { type TypeOf } from 'zod'
 
-export const TrackSchema = z.object({
+export const TrackDataSchema = z.object({
 	trackElements: z.array(
 		z.object({
 			id: z.string(),
@@ -33,7 +33,7 @@ export class TrackData {
 	}
 
 	public static fromJSON(data: any) {
-		const parsed = TrackSchema.parse(data)
+		const parsed = TrackDataSchema.parse(data)
 		const track = new TrackData()
 		track.#trackElements.set(
 			parsed.trackElements.map((trackElement: any) => TrackElement.fromJSON(trackElement))

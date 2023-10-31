@@ -9,7 +9,7 @@
 
 	export let proceed: () => void
 	export let restart: () => void
-	export let trackData: Track
+	export let track: Track
 	export let time: number
 
 	const gamepad = useGamepad()
@@ -18,7 +18,7 @@
 	useKeyDown('p', proceed)
 </script>
 
-<BottomScreenTrackName title={trackData.trackName.current} />
+<BottomScreenTrackName title={track.trackName.current} />
 
 <CurrentTime {time} />
 

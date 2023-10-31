@@ -1,13 +1,12 @@
 <script lang="ts">
-	import Button from '$components/UI/components/Button.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData } = useTrackEditor()
+	const { track } = useTrackEditor()
 
-	// export trackData
+	// export track
 	const onClick = () => {
-		trackData.saveTrackToDisk()
+		track.saveTrackToDisk()
 	}
 </script>
 

@@ -10,10 +10,10 @@
 
 	export let proceed: () => void
 	export let trackRecord: TrackRecord | undefined
-	export let trackData: Track
+	export let track: Track
 </script>
 
-<BottomScreenTrackName title={trackData.trackName.current} />
+<BottomScreenTrackName title={track.trackName.current} />
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
 
@@ -21,7 +21,7 @@
 
 	<div class="flex flex-col gap-[15px] items-start">
 		<Card class="inline-block text-[0.9em] w-[18em]">
-			<TrackTimes {trackData} {trackRecord} />
+			<TrackTimes {track} {trackRecord} />
 		</Card>
 		<Card class="flex flex-col gap-[10px] w-max">
 			<div class="font-headline">Controls</div>

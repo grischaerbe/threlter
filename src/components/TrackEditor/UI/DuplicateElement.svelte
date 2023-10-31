@@ -2,12 +2,12 @@
 	import Button from '$components/UI/components/Button.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData, currentlySelectedElement } = useTrackEditor()
-	const validated = trackData.validated
+	const { track, currentlySelectedElement } = useTrackEditor()
+	const validated = track.validated
 
 	const duplicateElement = () => {
 		if (!$currentlySelectedElement) return
-		const newTrackElement = trackData.duplicateTrackElement($currentlySelectedElement.id)
+		const newTrackElement = track.duplicateTrackElement($currentlySelectedElement.id)
 		currentlySelectedElement.set(newTrackElement)
 	}
 </script>

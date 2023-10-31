@@ -4,8 +4,8 @@
 	import Button from '$components/UI/components/Button.svelte'
 	import { useTrackEditor } from '../context'
 
-	const { trackData, currentlySelectedElement } = useTrackEditor()
-	const { validated } = trackData
+	const { track, currentlySelectedElement } = useTrackEditor()
+	const { validated } = track
 
 	const rotateElement = () => {
 		if (!$currentlySelectedElement) return
@@ -15,7 +15,7 @@
 		// modulo 360
 		euler.y = euler.y % (Math.PI * 2)
 		const newRotation = euler.toArray()
-		trackData.setTrackElementRotation($currentlySelectedElement.id, newRotation as any)
+		track.setTrackElementRotation($currentlySelectedElement.id, newRotation as any)
 	}
 </script>
 

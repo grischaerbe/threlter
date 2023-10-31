@@ -6,7 +6,7 @@ import type { EulerOrder, Vector3Tuple } from 'three'
 import z from 'zod'
 import { cyrb53 } from '../utils/hash'
 import { jsonCurrentWritable, type JsonCurrentWritable } from '../utils/jsonCurrentWritable'
-import { TrackData, TrackSchema } from './TrackData'
+import { TrackData, TrackDataSchema } from './TrackData'
 import mitt, { type Emitter } from 'mitt'
 
 export type JsonCurrentReadable<T> = Readable<T> & {
@@ -39,12 +39,12 @@ class TrackRespawns {
 	public bronze: JsonCurrentWritable<number> = jsonCurrentWritable(0)
 }
 
-const TrackDataSchema = z.object({
+const TrackSchema = z.object({
 	trackId: z.string(),
 	trackName: z.string(),
 	authorName: z.string(),
 	userId: z.string(),
-	track: TrackSchema,
+	trackData: TrackDataSchema,
 	trackTimes: z.object({
 		author: z.number(),
 		gold: z.number(),
@@ -68,7 +68,7 @@ type Events = {
 }
 
 export class Track implements Omit<Emitter<Events>, 'emit'> {
-	track = new TrackData()
+	trackData = new TrackData()
 
 	trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
 
@@ -110,7 +110,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 		const numbersToString = (args: (number | string)[]) => {
 			return args.map((arg) => (typeof arg === 'number' ? arg.toFixed(8) : arg)).join(':')
 		}
-		const trackElementsStringRepresentation = this.track.trackElements.current
+		const trackElementsStringRepresentation = this.trackData.trackElements.current
 			.map((trackElement) => {
 				const position = numbersToString(trackElement.position.current)
 				const rotation = numbersToString(trackElement.rotation.current)
@@ -169,30 +169,30 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 	}
 
 	public static fromJSON(data: any) {
-		const parsed = TrackDataSchema.parse(data)
+		const parsed = TrackSchema.parse(data)
 
-		const trackData = new Track(parsed.userId)
+		const track = new Track(parsed.userId)
 
-		trackData.trackId = parsed.trackId
-		trackData.setTrackName(parsed.trackName)
-		trackData.setAuthorName(parsed.authorName)
+		track.trackId = parsed.trackId
+		track.setTrackName(parsed.trackName)
+		track.setAuthorName(parsed.authorName)
 
-		trackData.track = TrackData.fromJSON(parsed.track)
+		track.trackData = TrackData.fromJSON(parsed.trackData)
 
-		trackData.trackTimes.author.set(parsed.trackTimes.author)
-		trackData.trackTimes.gold.set(parsed.trackTimes.gold)
-		trackData.trackTimes.silver.set(parsed.trackTimes.silver)
-		trackData.trackTimes.bronze.set(parsed.trackTimes.bronze)
+		track.trackTimes.author.set(parsed.trackTimes.author)
+		track.trackTimes.gold.set(parsed.trackTimes.gold)
+		track.trackTimes.silver.set(parsed.trackTimes.silver)
+		track.trackTimes.bronze.set(parsed.trackTimes.bronze)
 
-		trackData.trackRespawns.author.set(parsed.trackRespawns.author)
-		trackData.trackRespawns.gold.set(parsed.trackRespawns.gold)
-		trackData.trackRespawns.silver.set(parsed.trackRespawns.silver)
-		trackData.trackRespawns.bronze.set(parsed.trackRespawns.bronze)
+		track.trackRespawns.author.set(parsed.trackRespawns.author)
+		track.trackRespawns.gold.set(parsed.trackRespawns.gold)
+		track.trackRespawns.silver.set(parsed.trackRespawns.silver)
+		track.trackRespawns.bronze.set(parsed.trackRespawns.bronze)
 
-		trackData.#validated.set(parsed.validated)
-		trackData.validationId = parsed.validationId
+		track.#validated.set(parsed.validated)
+		track.validationId = parsed.validationId
 
-		return trackData
+		return track
 	}
 
 	public clone() {
@@ -271,7 +271,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 			console.warn('Cannot add track element to validated track!')
 			return
 		}
-		const trackElement = this.track.addTrackElement(type)
+		const trackElement = this.trackData.addTrackElement(type)
 		this.#emitter.emit('change', this)
 		return trackElement
 	}
@@ -281,7 +281,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 			console.warn('Cannot remove track element from validated track!')
 			return
 		}
-		this.track.removeTrackElement(id)
+		this.trackData.removeTrackElement(id)
 		this.#emitter.emit('change', this)
 	}
 
@@ -290,7 +290,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 			console.warn('Cannot duplicate track element of validated track!')
 			return
 		}
-		const trackElement = this.track.duplicateTrackElement(id)
+		const trackElement = this.trackData.duplicateTrackElement(id)
 		this.#emitter.emit('change', this)
 		return trackElement
 	}
@@ -300,7 +300,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 			console.warn('Cannot set track element type of validated track!')
 			return
 		}
-		this.track.setTrackElementType(id, type)
+		this.trackData.setTrackElementType(id, type)
 		this.#emitter.emit('change', this)
 	}
 
@@ -309,7 +309,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 			console.warn('Cannot set track element position of validated track!')
 			return
 		}
-		this.track.setTrackElementPosition(id, position)
+		this.trackData.setTrackElementPosition(id, position)
 		this.#emitter.emit('change', this)
 	}
 
@@ -322,7 +322,7 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 			console.warn('Cannot set track element rotation of validated track!')
 			return
 		}
-		this.track.setTrackElementRotation(id, rotation)
+		this.trackData.setTrackElementRotation(id, rotation)
 		this.#emitter.emit('change', this)
 	}
 }

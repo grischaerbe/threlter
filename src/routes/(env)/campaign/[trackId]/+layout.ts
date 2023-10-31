@@ -1,18 +1,19 @@
+import type { Track } from '$lib/Track/Track'
 import type { LayoutLoad } from './$types'
 import { redirect } from '@sveltejs/kit'
 
 export const load = (async ({ params, parent }) => {
-	const parentData = await parent()
+	// const parentData = await parent()
 
-	const trackData = parentData.campaign.tracks.find((track) => {
-		return track.trackId === params.trackId
-	})
+	// const track = parentData.campaign.tracks.find((track) => {
+	// 	return track.trackId === params.trackId
+	// })
 
-	if (!trackData) {
-		throw redirect(307, '/menu/main')
-	}
+	// if (!track) {
+	throw redirect(307, '/menu/main')
+	// }
 
 	return {
-		trackData
+		track: undefined as any as Track
 	}
 }) satisfies LayoutLoad

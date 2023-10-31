@@ -4,4 +4,4 @@
 	export let data
 </script>
 
-<TrackEditor trackData={data.trackData} />
+<TrackEditor track={data.track} />

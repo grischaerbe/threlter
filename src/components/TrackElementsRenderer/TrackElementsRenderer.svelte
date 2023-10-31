@@ -14,7 +14,7 @@
 	import type { TrackElement as TE } from '$lib/Track/TrackElement'
 	import { nakama } from '../../lib/nakama'
 
-	const trackData = new Track('000')
+	const track = new Track('000')
 
 	let queue: (keyof typeof trackElementPrototypes)[] = []
 	let currentTrackElement: TE | undefined = undefined
@@ -31,7 +31,7 @@
 	useFrame(() => {
 		if (!queue.length || currentTrackElement) return
 		const type = queue.shift()!
-		currentTrackElement = trackData.addTrackElement(type, false)
+		currentTrackElement = track.addTrackElement(type, false)
 	})
 
 	let doRender = false
@@ -51,7 +51,7 @@
 		() => {
 			if (!doRender || !currentTrackElement) return
 			download()
-			trackData.removeTrackElement(currentTrackElement.id, false)
+			track.removeTrackElement(currentTrackElement.id, false)
 			doRender = false
 			currentTrackElement = undefined
 		},
@@ -84,7 +84,7 @@
 
 <Env background={false} />
 
-<TrackViewer {trackData} let:trackElement>
+<TrackViewer {track} let:trackElement>
 	<T.Group rotation={rotationOverrides[trackElement.type.current] ?? [0, 0, 0]}>
 		<TrackElementPositionHelper
 			on:positionend={() => (doRender = true)}

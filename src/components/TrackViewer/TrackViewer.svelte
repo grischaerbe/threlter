@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
 	type TrackViewerContext = {
-		trackData: Track
+		track: Track
 		checkpointReached: (trackElementId: string) => void
 		finishReached: () => void
 		checkpointsReached: CurrentWritable<Set<string>>
@@ -26,8 +26,8 @@
 
 	const { sfx } = appState.options.audio
 
-	export let trackData: Track
-	$: elements = trackData.track.trackElements
+	export let track: Track
+	$: elements = track.trackData.trackElements
 
 	const dispatch = createEventDispatcher<{
 		trackcompleted: void
@@ -50,7 +50,7 @@
 
 	const finishReached = () => {
 		// player didn't go through all checkpoints
-		if (checkpointsReached.current.size !== trackData.track.checkpointCount.current) return
+		if (checkpointsReached.current.size !== track.trackData.checkpointCount.current) return
 
 		if ($sfx && !trackCompleted.current) {
 			playAudio('success1', {
@@ -65,7 +65,7 @@
 	}
 
 	const ctx: TrackViewerContext = {
-		trackData,
+		track: track,
 		checkpointReached,
 		finishReached,
 		checkpointsReached,

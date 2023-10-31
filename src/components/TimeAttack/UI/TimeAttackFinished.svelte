@@ -10,15 +10,15 @@
 	export let restart: () => void
 	export let time: number
 	export let trackRecord: TrackRecord | undefined
-	export let trackData: Track
+	export let track: Track
 </script>
 
-<BottomScreenTrackName title={trackData.trackName.current} />
+<BottomScreenTrackName title={track.trackName.current} />
 
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
 	<SpecialButton slot="topbar-right" forceFocusOnMount on:click={restart}>Restart</SpecialButton>
 	<Card class="inline-block text-[0.9em]">
-		<TrackTimes {time} {trackData} {trackRecord} />
+		<TrackTimes {time} {track} {trackRecord} />
 	</Card>
 </TopbarLayout>

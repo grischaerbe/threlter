@@ -4,8 +4,8 @@ import type { PageLoad } from './$types'
 export const load = (async ({ depends }) => {
 	depends('user:my-tracks')
 
-	const trackDatas = await TrackManager.getOwnTrackDatas()
+	const tracks = await TrackManager.getOwnTracks()
 	return {
-		trackDatas
+		tracks
 	}
 }) satisfies PageLoad

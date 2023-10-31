@@ -9,19 +9,19 @@ type TrackEditorContext = {
 	transformSpace: CurrentWritable<'local' | 'world'>
 	transformSnap: CurrentWritable<boolean>
 	isDragging: CurrentWritable<boolean>
-	trackData: Track
+	track: Track
 	currentlySelectedElement: CurrentWritable<TrackElement | undefined>
 	cameraControls: CurrentWritable<CameraControls[]>
 	activeCameraControls: CurrentWritable<CameraControls | undefined>
 }
 
-export const createTrackEditorContext = (trackData: Track) => {
+export const createTrackEditorContext = (track: Track) => {
 	const context: TrackEditorContext = {
 		transformMode: currentWritable('translate'),
 		transformSpace: currentWritable('local'),
 		transformSnap: currentWritable(false),
 		isDragging: currentWritable(false),
-		trackData,
+		track,
 		currentlySelectedElement: currentWritable(undefined),
 		cameraControls: currentWritable([]),
 		activeCameraControls: currentWritable(undefined)

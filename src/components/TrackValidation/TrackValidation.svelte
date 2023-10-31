@@ -5,10 +5,10 @@
 	import ValidationIntro from './UI/ValidationIntro.svelte'
 	import ValidationPaused from './UI/ValidationPaused.svelte'
 
-	export let trackData: Track
+	export let track: Track
 </script>
 
-<CommonGamePlay {trackData}>
+<CommonGamePlay {track}>
 	<ValidationPaused
 		let:proceed
 		let:time
@@ -16,9 +16,9 @@
 		{proceed}
 		{restart}
 		slot="ui-paused"
-		{trackData}
+		{track}
 		{time}
 	/>
-	<ValidationIntro let:proceed slot="ui-intro" {proceed} {trackData} />
-	<ValidationFinished let:time let:restart {restart} {trackData} slot="ui-finished" {time} />
+	<ValidationIntro let:proceed slot="ui-intro" {proceed} {track} />
+	<ValidationFinished let:time let:restart {restart} {track} slot="ui-finished" {time} />
 </CommonGamePlay>

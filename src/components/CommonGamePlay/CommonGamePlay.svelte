@@ -6,9 +6,11 @@
 	import { appState } from '$stores/app'
 	import { T, currentWritable, useFrame, watch } from '@threlte/core'
 	import { Suspense, useGamepad } from '@threlte/extras'
+	import type CC from 'camera-controls'
 	import { derived } from 'svelte/store'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
+	import CameraControls from '../CameraControls/CameraControls.svelte'
 	import Car from '../Car/Car.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
 	import TrackElementTransform from '../TrackViewer/TrackElementTransform.svelte'
@@ -16,18 +18,16 @@
 	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import BoundingSphere from './BoundingSphere.svelte'
-	import CameraControls from '../CameraControls/CameraControls.svelte'
-	import type CC from 'camera-controls'
-	import GhostPlayer from './GhostPlayer.svelte'
-	import GhostRecorder from './GhostRecorder.svelte'
+	import { spring } from 'svelte/motion'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
-	import { spring } from 'svelte/motion'
+	// import GhostPlayer from './GhostPlayer.svelte'
+	// import GhostRecorder from './GhostRecorder.svelte'
 
-	export let trackData: Track
+	export let track: Track
 
-	let currentTrackRecord = TrackRecord.fromLocalStorage(trackData)
-	let workingTrackRecord = TrackRecord.fromTrackData(trackData, new Ghost())
+	let currentTrackRecord = TrackRecord.fromLocalStorage(track)
+	let workingTrackRecord = TrackRecord.fromTrack(track, new Ghost())
 
 	const { visibility } = appState
 
@@ -100,7 +100,7 @@
 	watch(state, (state) => {
 		// when we're "playing", we initialize a new working track record
 		if (state === 'playing') {
-			workingTrackRecord = TrackRecord.fromTrackData(trackData, new Ghost())
+			workingTrackRecord = TrackRecord.fromTrack(track, new Ghost())
 		}
 	})
 
@@ -146,9 +146,9 @@
 	<LoadingUi slot="fallback" />
 
 	<!-- 3D -->
-	{#if trackData}
+	{#if track}
 		<BoundingSphere let:center let:radius let:sphere>
-			<TrackViewer let:trackElement {trackData} on:trackcompleted={onFinishReached}>
+			<TrackViewer let:trackElement {track} on:trackcompleted={onFinishReached}>
 				<TrackElementTransform {trackElement}>
 					<TrackElement {trackElement} />
 				</TrackElementTransform>

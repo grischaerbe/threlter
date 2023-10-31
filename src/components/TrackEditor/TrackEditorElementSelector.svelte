@@ -5,9 +5,11 @@
 
 	export let trackElement: TrackElement
 
-	const { currentlySelectedElement, isDragging, trackData } = useTrackEditor()
-
-	const { validated } = trackData
+	const {
+		currentlySelectedElement,
+		isDragging,
+		track: { validated }
+	} = useTrackEditor()
 
 	$: if ($validated) currentlySelectedElement.set(undefined)
 

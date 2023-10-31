@@ -3,7 +3,7 @@
 	import { useTrackEditor } from '../context'
 	import type { TrackElement } from '../../../lib/Track/TrackElement'
 
-	const { trackData } = useTrackEditor()
+	const { track } = useTrackEditor()
 
 	export let currentlySelectedTrackElement: TrackElement
 
@@ -57,13 +57,13 @@
 	const updatePosition = async (component: 0 | 1 | 2, data: number) => {
 		const currentPosition = currentlySelectedTrackElement.position.current
 		currentPosition[component] = data
-		trackData.setTrackElementPosition(currentlySelectedTrackElement.id, currentPosition)
+		track.setTrackElementPosition(currentlySelectedTrackElement.id, currentPosition)
 	}
 
 	const updateRotation = async (component: 0 | 1 | 2, data: number) => {
 		const currentRotation = currentlySelectedTrackElement.rotation.current
 		currentRotation[component] = data * DEG2RAD
-		trackData.setTrackElementRotation(currentlySelectedTrackElement.id, currentRotation)
+		track.setTrackElementRotation(currentlySelectedTrackElement.id, currentRotation)
 	}
 </script>
 

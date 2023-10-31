@@ -11,7 +11,7 @@ export class TrackManager {
 	public static client: Client = nakama.client
 	public static session = nakama.session
 
-	static async getOwnTrackDatas() {
+	static async getOwnTracks() {
 		if (!TrackManager.session.current) throw new Error('Session not set')
 
 		const response = await TrackManager.client.rpc(
@@ -25,17 +25,12 @@ export class TrackManager {
 
 		const { objects } = response.payload as { objects: { value: any }[] }
 
-		return objects
-			.filter(filterUndefined)
-			.map((object) => {
-				return Track.fromJSON(object.value)
-			})
-			.filter((trackData) => {
-				return !!trackData.validated.current
-			})
+		return objects.filter(filterUndefined).map((object) => {
+			return Track.fromJSON(object.value)
+		})
 	}
 
-	static async getUserTrackData(trackId: string) {
+	static async getUserTracks(trackId: string) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
 
 		console.log(trackId)
@@ -48,7 +43,7 @@ export class TrackManager {
 		return Track.fromJSON(object.value)
 	}
 
-	static async deleteUserTrackData(trackId: string) {
+	static async deleteUserTrack(trackId: string) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
 		await TrackManager.client.deleteStorageObjects(TrackManager.session.current, {
 			object_ids: [
@@ -58,24 +53,24 @@ export class TrackManager {
 				}
 			]
 		})
-		await TrackManager.getOwnTrackDatas()
+		await TrackManager.getOwnTracks()
 	}
 
-	static saveUserTrackDataDebounced = debounce(TrackManager.saveUserTrackData, 500)
+	static saveUserTrackDebounced = debounce(TrackManager.saveUserTrack, 500)
 
-	static async saveUserTrackData(trackData: Track) {
+	static async saveUserTrack(track: Track) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
-		const object = JSON.parse(JSON.stringify(trackData))
+		const object = JSON.parse(JSON.stringify(track))
 		await TrackManager.client.writeStorageObjects(TrackManager.session.current, [
 			{
 				collection: 'user-tracks',
-				key: trackData.trackId,
+				key: track.trackId,
 				value: object,
 				permission_read: 2,
 				permission_write: 1
 			}
 		])
-		await TrackManager.getOwnTrackDatas()
+		await TrackManager.getOwnTracks()
 	}
 
 	/**
@@ -102,8 +97,8 @@ export class TrackManager {
 			.map((object) => {
 				return Track.fromJSON(object.value)
 			})
-			.filter((trackData) => {
-				return !!trackData.validated.current
+			.filter((track) => {
+				return !!track.validated.current
 			})
 	}
 }

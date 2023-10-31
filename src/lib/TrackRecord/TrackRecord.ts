@@ -28,8 +28,8 @@ export class TrackRecord {
 		this.ghost = ghost
 	}
 
-	public static fromTrackData(trackData: Track, ghost?: Ghost) {
-		return new TrackRecord(trackData.trackId, trackData.validationId, ghost)
+	public static fromTrack(track: Track, ghost?: Ghost) {
+		return new TrackRecord(track.trackId, track.validationId, ghost)
 	}
 
 	get trackRecordId() {
@@ -50,22 +50,22 @@ export class TrackRecord {
 		localStorage.setItem(this.trackRecordId, JSON.stringify(this))
 	}
 
-	public static makeTrackRecordId(trackData: Track): string
+	public static makeTrackRecordId(track: Track): string
 	public static makeTrackRecordId(trackId: string, trackValidationId: string): string
-	public static makeTrackRecordId(trackIdOrTrackData: string | Track, trackValidationId?: string) {
-		if (typeof trackIdOrTrackData === 'string') {
-			return `Record-${trackIdOrTrackData}-${trackValidationId}`
+	public static makeTrackRecordId(trackIdOrTrack: string | Track, trackValidationId?: string) {
+		if (typeof trackIdOrTrack === 'string') {
+			return `Record-${trackIdOrTrack}-${trackValidationId}`
 		} else {
-			return `Record-${trackIdOrTrackData.trackId}-${trackIdOrTrackData.validationId}`
+			return `Record-${trackIdOrTrack.trackId}-${trackIdOrTrack.validationId}`
 		}
 	}
 
-	public static fromLocalStorage(trackData: Track) {
+	public static fromLocalStorage(track: Track) {
 		/**
 		 * Only return a record for a track if the track is validated
 		 */
-		if (!trackData.validated.current) return undefined
-		const data = localStorage.getItem(TrackRecord.makeTrackRecordId(trackData))
+		if (!track.validated.current) return undefined
+		const data = localStorage.getItem(TrackRecord.makeTrackRecordId(track))
 		if (data) return TrackRecord.fromString(data)
 		return undefined
 	}
