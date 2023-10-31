@@ -30,7 +30,7 @@
 	useFrame(() => {
 		if (!queue.length || currentTrackElement) return
 		const type = queue.shift()!
-		currentTrackElement = track.addTrackElement(type, false)
+		currentTrackElement = track.addTrackElement(type)
 	})
 
 	let doRender = false
@@ -50,7 +50,7 @@
 		() => {
 			if (!doRender || !currentTrackElement) return
 			download()
-			track.removeTrackElement(currentTrackElement.id, false)
+			track.removeTrackElement(currentTrackElement.id)
 			doRender = false
 			currentTrackElement = undefined
 		},

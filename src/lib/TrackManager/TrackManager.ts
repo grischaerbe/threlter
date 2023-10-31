@@ -33,8 +33,6 @@ export class TrackManager {
 	static async getUserTracks(trackId: string) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
 
-		console.log(trackId)
-
 		const response = await TrackManager.client.rpc(TrackManager.session.current, 'get_user_track', {
 			trackId
 		})
