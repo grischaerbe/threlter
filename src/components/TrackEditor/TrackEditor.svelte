@@ -9,13 +9,15 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import { useKeyUp } from '$hooks/useKeyUp'
-	import type { Track } from '$lib/Track/Track'
 	import { T, currentWritable } from '@threlte/core'
 	import { interactivity } from '@threlte/extras'
 	import CC from 'camera-controls'
+	import { onMount } from 'svelte'
 	import { Euler } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
+	import type { UserTrack } from '../../lib/Track/UserTrack'
+	import { TrackManager } from '../../lib/TrackManager/TrackManager'
 	import { c } from '../../lib/utils/classes'
 	import { appState } from '../../stores/app'
 	import CameraControls from '../CameraControls/CameraControls.svelte'
@@ -23,6 +25,7 @@
 	import Wireframe from '../Common/Wireframe.svelte'
 	import PlainButton from '../UI/components/PlainButton.svelte'
 	import SpecialButton from '../UI/components/SpecialButton.svelte'
+	import ToolTip from './ToolTip.svelte'
 	import TrackEditorElementSelection from './TrackEditorElementSelection.svelte'
 	import TrackEditorElementSelector from './TrackEditorElementSelector.svelte'
 	import TrackEditorElementTransformControls from './TrackEditorElementTransformControls.svelte'
@@ -34,10 +37,6 @@
 	import TrackEditorInfo from './UI/TrackEditorInfo.svelte'
 	import TrackEditorMenu from './UI/TrackEditorMenu.svelte'
 	import { createTrackEditorContext } from './context'
-	import ToolTip from './ToolTip.svelte'
-	import { onMount } from 'svelte'
-	import { TrackManager } from '../../lib/TrackManager/TrackManager'
-	import type { UserTrack } from '../../lib/Track/UserTrack'
 
 	const { visibility } = appState
 
@@ -51,14 +50,6 @@
 	onMount(() => {
 		track.on('change', onTrackChanged)
 		return () => track.off('change', onTrackChanged)
-	})
-
-	let shiftState = false
-	useKeyDown('Shift', (e) => {
-		shiftState = true
-	})
-	useKeyUp('Shift', (e) => {
-		shiftState = false
 	})
 
 	const showMenu = currentWritable(false)
@@ -176,6 +167,7 @@
 	}
 
 	useKeyDown('Shift+F', () => {
+		if ($showMenu) return
 		focusCurrentlySelectedElement()
 	})
 
@@ -186,16 +178,20 @@
 		currentlySelectedElement.set(undefined)
 	})
 
+	let shiftState = false
 	let permanentSnap = false
 	let temporarySnap = false
 	$: useSnap = (permanentSnap && !temporarySnap) || (!permanentSnap && temporarySnap)
+
 	useKeyDown('Shift', () => {
 		if ($showMenu) return
 		temporarySnap = true
+		shiftState = true
 	})
 	useKeyUp('Shift', () => {
 		if ($showMenu) return
 		temporarySnap = false
+		shiftState = false
 	})
 	$: transformSnap.set(useSnap)
 
@@ -228,23 +224,28 @@
 
 	// edit view
 	useKeyDown('x', () => {
+		if ($showMenu) return
 		if ($view !== 'edit') return
 		setEditView('x')
 	})
 	useKeyDown('y', () => {
+		if ($showMenu) return
 		if ($view !== 'edit') return
 		setEditView('y')
 	})
 	useKeyDown('z', () => {
+		if ($showMenu) return
 		if ($view !== 'edit') return
 		setEditView('z')
 	})
 	useKeyDown('o', () => {
+		if ($showMenu) return
 		if ($view !== 'edit') return
 		editView.set('orbit')
 	})
 
 	useKeyDown('w', () => {
+		if ($showMenu) return
 		if ($view !== 'edit') return
 		wireframe = !wireframe
 	})
