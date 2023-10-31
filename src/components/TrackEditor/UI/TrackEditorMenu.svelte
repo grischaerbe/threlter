@@ -5,7 +5,6 @@
 	import { createEventDispatcher } from 'svelte'
 	import BlurryCard from '../../UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
-	import SaveTrack from './SaveTrack.svelte'
 	import StartTrackValidation from './StartTrackValidation.svelte'
 	import TrackDetails from './TrackDetails.svelte'
 
@@ -43,12 +42,6 @@
 					completed from start to finish.
 				</div>
 				<StartTrackValidation />
-			</Card>
-
-			<Card class="flex flex-col gap-[15px]">
-				<div class="font-headline">Track export</div>
-				<div class="text-[0.8em]">Share your track with your friends.</div>
-				<SaveTrack />
 			</Card>
 		</BlurryCard>
 	</TopBarLayout>

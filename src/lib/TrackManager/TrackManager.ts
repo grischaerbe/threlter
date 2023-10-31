@@ -1,7 +1,7 @@
 import type { Client } from '@heroiclabs/nakama-js'
 import { debounce } from 'lodash-es'
 import { nakama } from '../nakama'
-import { Track } from '../Track/Track'
+import { UserTrack } from '../Track/UserTrack'
 
 const filterUndefined = <T>(d: T | undefined): d is T => {
 	return !!d
@@ -26,7 +26,7 @@ export class TrackManager {
 		const { objects } = response.payload as { objects: { value: any }[] }
 
 		return objects.filter(filterUndefined).map((object) => {
-			return Track.fromJSON(object.value)
+			return UserTrack.fromData(object.value)
 		})
 	}
 
@@ -40,7 +40,7 @@ export class TrackManager {
 		})
 		const { object } = response.payload as { object: { value: any } }
 		if (!object) return undefined
-		return Track.fromJSON(object.value)
+		return UserTrack.fromData(object.value)
 	}
 
 	static async deleteUserTrack(trackId: string) {
@@ -58,13 +58,13 @@ export class TrackManager {
 
 	static saveUserTrackDebounced = debounce(TrackManager.saveUserTrack, 500)
 
-	static async saveUserTrack(track: Track) {
+	static async saveUserTrack(userTrack: UserTrack) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
-		const object = JSON.parse(JSON.stringify(track))
+		const object = JSON.parse(JSON.stringify(userTrack))
 		await TrackManager.client.writeStorageObjects(TrackManager.session.current, [
 			{
 				collection: 'user-tracks',
-				key: track.trackId,
+				key: userTrack.trackId,
 				value: object,
 				permission_read: 2,
 				permission_write: 1
@@ -95,7 +95,7 @@ export class TrackManager {
 		return objects
 			.filter(filterUndefined)
 			.map((object) => {
-				return Track.fromJSON(object.value)
+				return UserTrack.fromData(object.value)
 			})
 			.filter((track) => {
 				return !!track.validated.current

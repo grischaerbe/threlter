@@ -4,6 +4,7 @@
 	import { Track } from '$lib/Track/Track'
 	import { appState } from '$stores/app'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
+	import { UserTrack } from '../../../../../lib/Track/UserTrack'
 	import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
 	import { nakama } from '../../../../../lib/nakama'
 
@@ -23,7 +24,6 @@
 	tracksCanBeDeleted
 	tracksCanBeDuplicated
 	tracksCanBeValidated
-	tracksCanBeExported
 	showAuthor
 	on:playtrack={(e) => {
 		goto(`/user/${e.detail.trackId}/time-attack`)
@@ -48,11 +48,6 @@
 	on:validatetrack={(e) => {
 		goto(`/user/${e.detail.trackId}/validate`)
 	}}
-	on:exporttrack={(e) => {
-		const track = Track.fromLocalStorage(e.detail.trackId)
-		if (!track) return
-		track.saveTrackToDisk()
-	}}
 >
 	<div
 		class="bottom-0 pb-[15px] bg-gradient-to-t from-blue-950 to-transparent pt-[60px] left-0 w-full justify-center absolute flex flex-row gap-[15px] text-[0.8em]"
@@ -62,7 +57,7 @@
 			forceFocusOnMount={!userHasTracks}
 			on:click={async () => {
 				if (!$userId) return
-				const track = new Track($userId)
+				const track = new UserTrack($userId)
 				track.setTrackName(`Unnamed Track`)
 				track.setAuthorName(appState.options.player.name.current)
 				track.addTrackElement('Box')

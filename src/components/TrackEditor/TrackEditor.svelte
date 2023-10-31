@@ -37,10 +37,11 @@
 	import ToolTip from './ToolTip.svelte'
 	import { onMount } from 'svelte'
 	import { TrackManager } from '../../lib/TrackManager/TrackManager'
+	import type { UserTrack } from '../../lib/Track/UserTrack'
 
 	const { visibility } = appState
 
-	export let track: Track
+	export let track: UserTrack
 
 	// update the track remotely whenever it changes
 	const onTrackChanged = () => {

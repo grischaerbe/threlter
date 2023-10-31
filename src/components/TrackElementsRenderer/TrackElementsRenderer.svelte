@@ -1,20 +1,19 @@
 <!-- This component saves all trackElement preview images, resize your browser viewport to 400x400 -->
 <script lang="ts">
-	import { T, useFrame, useRender, useThrelte } from '@threlte/core'
 	import Env from '$components/Common/Env.svelte'
+	import { Track } from '$lib/Track/Track'
+	import type { TrackElement as TE } from '$lib/Track/TrackElement'
+	import { T, useFrame, useRender, useThrelte } from '@threlte/core'
+	import type { Sphere } from 'three'
+	import { DEG2RAD } from 'three/src/math/MathUtils'
+	import { trackElementPrototypes } from '../TrackElements/elements'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
 	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import Button from '../UI/components/Button.svelte'
-	import { trackElementPrototypes } from '../TrackElements/elements'
 	import TrackElementPositionHelper from './TrackElementPositionHelper.svelte'
-	import type { Sphere } from 'three'
-	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import { Track } from '$lib/Track/Track'
-	import type { TrackElement as TE } from '$lib/Track/TrackElement'
-	import { nakama } from '../../lib/nakama'
 
-	const track = new Track('000')
+	const track = new Track()
 
 	let queue: (keyof typeof trackElementPrototypes)[] = []
 	let currentTrackElement: TE | undefined = undefined
