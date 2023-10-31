@@ -43,7 +43,9 @@
 		})
 		if (!track) return
 		const newTrack = track.clone()
+		track.setTrackName(`${track.trackName.current} (Copy)`)
 		await TrackManager.saveUserTrack(newTrack)
+		invalidate('user:my-tracks')
 	}}
 	on:validatetrack={(e) => {
 		goto(`/user/${e.detail.trackId}/validate`)

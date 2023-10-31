@@ -2,13 +2,13 @@
 	import Card from '$components/UI/components/Card.svelte'
 	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
-	import type { Track } from '$lib/Track/Track'
+	import type { UserTrack } from '../../../lib/Track/UserTrack'
 	import { TrackManager } from '../../../lib/TrackManager/TrackManager'
 	import { nakama } from '../../../lib/nakama'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
-	export let track: Track
+	export let track: UserTrack
 	export let time: number
 
 	const timeIsBetter =
@@ -18,9 +18,9 @@
 
 	export let restart: () => void
 
-	const upload = async () => {
+	const publish = async () => {
 		if (!nakama.session.current) return
-		TrackManager.saveUserTrack(track)
+		TrackManager.publishUserTrack(track)
 	}
 </script>
 
@@ -29,8 +29,10 @@
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
 	<slot slot="topbar-right">
-		<SpecialButton forceFocusOnMount on:click={restart}>Restart</SpecialButton>
-		<SpecialButton on:click={upload}>Upload</SpecialButton>
+		<div class="flex gap-[5px]">
+			<SpecialButton forceFocusOnMount on:click={restart}>Restart</SpecialButton>
+			<SpecialButton on:click={publish}>Publish</SpecialButton>
+		</div>
 	</slot>
 	<Card class="inline-block text-[0.9em]">
 		<TrackTimes {track} />

@@ -92,6 +92,11 @@ export class Track implements Omit<Emitter<Events>, 'emit'> {
 	public on = this.#emitter.on
 	public off = this.#emitter.off
 	public all = this.#emitter.all
+	public emit = this.#emitter.emit
+
+	public toJSON() {
+		return this
+	}
 
 	/**
 	 * The validation id is a hash of all track elements. It is used to invalidate

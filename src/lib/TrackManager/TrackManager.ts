@@ -19,7 +19,7 @@ export class TrackManager {
 			'get_user_tracks',
 			{
 				sort: 'recent',
-				userId: TrackManager.session.current.user_id
+				own: true
 			}
 		)
 
@@ -55,20 +55,22 @@ export class TrackManager {
 	}
 
 	static saveUserTrackDebounced = debounce(TrackManager.saveUserTrack, 500)
-
 	static async saveUserTrack(userTrack: UserTrack) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
-		const object = JSON.parse(JSON.stringify(userTrack))
-		await TrackManager.client.writeStorageObjects(TrackManager.session.current, [
+		await TrackManager.client.rpc(
+			TrackManager.session.current,
+			'save_user_track',
 			{
-				collection: 'user-tracks',
-				key: userTrack.trackId,
-				value: object,
-				permission_read: 2,
-				permission_write: 1
+				userTrack
 			}
-		])
-		await TrackManager.getOwnTracks()
+		)
+	}
+
+	static async publishUserTrack(userTrack: UserTrack) {
+		if (!TrackManager.session.current) throw new Error('Session not set')
+		await TrackManager.client.rpc(TrackManager.session.current, 'publish_user_track', {
+			userTrack
+		})
 	}
 
 	/**
@@ -83,8 +85,7 @@ export class TrackManager {
 			{
 				sort,
 				limit,
-				page,
-				validated: true
+				page
 			}
 		)
 
