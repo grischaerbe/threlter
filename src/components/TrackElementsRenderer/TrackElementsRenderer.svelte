@@ -67,7 +67,7 @@
 
 	const download = function () {
 		const link = document.createElement('a')
-		link.download = `${currentTrackElement?.type.current}.png`
+		link.download = `${currentTrackElement?.type}.png`
 		link.href = renderer?.domElement.toDataURL('image/png') ?? ''
 		link.click()
 	}
@@ -84,7 +84,7 @@
 <Env background={false} />
 
 <TrackViewer {track} let:trackElement>
-	<T.Group rotation={rotationOverrides[trackElement.type.current] ?? [0, 0, 0]}>
+	<T.Group rotation={rotationOverrides[trackElement.type] ?? [0, 0, 0]}>
 		<TrackElementPositionHelper
 			on:positionend={() => (doRender = true)}
 			on:spherecalculated={(e) => {

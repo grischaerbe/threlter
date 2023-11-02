@@ -30,12 +30,12 @@
 	}
 
 	const dispatch = createEventDispatcher<{
-		playtrack: { trackId: string }
-		edittrack: { trackId: string }
-		deletetrack: { trackId: string }
-		duplicatetrack: { trackId: string }
-		exporttrack: { trackId: string }
-		validatetrack: { trackId: string }
+		playtrack: { track: Track }
+		edittrack: { track: Track }
+		deletetrack: { track: Track }
+		duplicatetrack: { track: Track }
+		exporttrack: { track: Track }
+		validatetrack: { track: Track }
 	}>()
 </script>
 
@@ -60,7 +60,7 @@
 								index === tracks.length - 1 && 'pb-[11px]'
 							)}
 						>
-							{track.trackName.current}
+							{track.trackName}
 						</PlainButton>
 					{/if}
 				{/each}
@@ -86,21 +86,21 @@
 					<div class="flex flex-row justify-between items-start mb-[15px]">
 						<div>
 							<span class="font-headline">
-								{track.trackName.current}
+								{track.trackName}
 							</span>
 
-							{#if track.authorName.current.length && showAuthor}
+							{#if track.authorName.length && showAuthor}
 								<div class="text-[0.8em]">
-									{track.authorName.current}
+									{track.authorName}
 								</div>
 							{/if}
 						</div>
 
-						{#if track.validated.current}
+						{#if track.validated}
 							<SpecialButton
 								style="green-inverted"
 								on:click={() => {
-									dispatch('playtrack', { trackId: track.trackId })
+									dispatch('playtrack', { track })
 								}}
 							>
 								Play
@@ -108,7 +108,7 @@
 						{/if}
 					</div>
 
-					{#if tracksCanBeValidated && !track.validated.current}
+					{#if tracksCanBeValidated && !track.validated}
 						<div class="text-[0.8em]">
 							Track is not validated yet.
 							<br />
@@ -116,7 +116,7 @@
 						</div>
 					{/if}
 
-					{#if track.validated.current}
+					{#if track.validated}
 						<TrackTimes class="w-[27ch] text-[0.8em]" {track} {trackRecord} />
 					{/if}
 				</Card>
@@ -124,10 +124,10 @@
 				{#if tracksCanBeDeleted || tracksCanBeDuplicated || tracksCanBeEdited || tracksCanBeValidated}
 					<div class="flex flex-row justify-end items-stretch mb-[2px]">
 						<ButtonGroup let:divider={Divider} class="text-[0.7em] !rounded-t-none !border-t-0">
-							{#if !track.validated.current && tracksCanBeValidated}
+							{#if !track.validated && tracksCanBeValidated}
 								<PlainButton
 									on:click={() => {
-										dispatch('validatetrack', { trackId: track.trackId })
+										dispatch('validatetrack', { track })
 									}}
 									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500/80 hover:bg-green-500 focus:bg-green-500"
 								>
@@ -138,7 +138,7 @@
 							{#if tracksCanBeEdited}
 								<PlainButton
 									on:click={() => {
-										dispatch('edittrack', { trackId: track.trackId })
+										dispatch('edittrack', { track })
 									}}
 									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 								>
@@ -150,7 +150,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 									on:click={() => {
-										dispatch('duplicatetrack', { trackId: track.trackId })
+										dispatch('duplicatetrack', { track })
 									}}
 								>
 									Duplicate
@@ -161,7 +161,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 									on:click={() => {
-										dispatch('exporttrack', { trackId: track.trackId })
+										dispatch('exporttrack', { track })
 									}}
 								>
 									Export
@@ -172,7 +172,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500/80 hover:bg-red-500 focus:bg-red-500"
 									on:click={() => {
-										dispatch('deletetrack', { trackId: track.trackId })
+										dispatch('deletetrack', { track })
 									}}
 								>
 									Delete

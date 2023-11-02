@@ -37,6 +37,7 @@
 	import TrackEditorInfo from './UI/TrackEditorInfo.svelte'
 	import TrackEditorMenu from './UI/TrackEditorMenu.svelte'
 	import { createTrackEditorContext } from './context'
+	import { toReadable } from '../../lib/utils/toStore'
 
 	const { visibility } = appState
 
@@ -74,7 +75,7 @@
 
 	let wireframe = false
 
-	const validated = track.validated
+	const validated = toReadable(track, 'validated')
 
 	interactivity()
 
@@ -92,9 +93,9 @@
 
 	const setOrbitPoint = (currentlySelectedElement: typeof $currentlySelectedElement) => {
 		$activeCameraControls?.setOrbitPoint(
-			currentlySelectedElement!.position.current[0],
-			currentlySelectedElement!.position.current[1],
-			currentlySelectedElement!.position.current[2]
+			currentlySelectedElement!.position[0],
+			currentlySelectedElement!.position[1],
+			currentlySelectedElement!.position[2]
 		)
 	}
 
@@ -132,7 +133,7 @@
 	useKeyDown('Shift+R', () => {
 		if ($showMenu) return
 		if (!$currentlySelectedElement) return
-		const euler = new Euler().set(...$currentlySelectedElement.rotation.current)
+		const euler = new Euler().set(...$currentlySelectedElement.rotation)
 		// snap to the next 90 degree rotation on the y axis
 		euler.y += 90 * DEG2RAD
 		// modulo 360
@@ -161,7 +162,7 @@
 
 	const focusCurrentlySelectedElement = () => {
 		if ($showMenu || !$activeCameraControls || !$currentlySelectedElement) return
-		$activeCameraControls.moveTo(...$currentlySelectedElement!.position.current, true)
+		$activeCameraControls.moveTo(...$currentlySelectedElement!.position, true)
 		$activeCameraControls.dollyTo(50, true)
 		$activeCameraControls.setFocalOffset(0, 0, 0, true)
 	}
@@ -461,11 +462,11 @@
 				<AddElement />
 			</div>
 
-			{#if $currentlySelectedElement && $currentlySelectedElementType}
+			{#if $currentlySelectedElement && currentlySelectedElementType}
 				<div class="absolute bottom-0 right-0">
 					<Card>
 						<div class="mb-[10px] font-headline">
-							{trackElementPrototypes[$currentlySelectedElementType].buttonLabel}
+							{trackElementPrototypes[currentlySelectedElementType].buttonLabel}
 						</div>
 						<div class="mb-[20px]">
 							{#key $currentlySelectedElement.id}

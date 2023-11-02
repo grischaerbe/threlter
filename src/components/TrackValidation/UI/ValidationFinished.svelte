@@ -11,8 +11,7 @@
 	export let track: UserTrack
 	export let time: number
 
-	const timeIsBetter =
-		track.trackTimes.author.current === 0 || (track.trackTimes.author.current ?? Infinity) > time
+	const timeIsBetter = track.trackTimes.author === 0 || (track.trackTimes.author ?? Infinity) > time
 
 	if (timeIsBetter) track.validate(time)
 
@@ -24,7 +23,7 @@
 	}
 </script>
 
-<BottomScreenTrackName title={track.trackName.current} />
+<BottomScreenTrackName title={track.trackName} />
 
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>

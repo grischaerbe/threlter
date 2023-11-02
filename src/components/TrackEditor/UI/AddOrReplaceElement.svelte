@@ -5,11 +5,13 @@
 		type TrackElementPrototypeType
 	} from '$components/TrackElements/elements'
 	import { c } from '$lib/utils/classes'
+	import { toReadable } from '../../../lib/utils/toStore'
 	import PlainButton from '../../UI/components/PlainButton.svelte'
 	import { useTrackEditor } from '../context'
 
 	const { track, currentlySelectedElement } = useTrackEditor()
-	const validated = track.validated
+
+	const validated = toReadable(track, 'validated')
 
 	type Category = {
 		name: TrackElementCategory

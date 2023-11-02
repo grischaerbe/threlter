@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z, type TypeOf } from 'zod'
 import { Track, TrackSchema } from './Track'
 
 export const UserTrackSchema = TrackSchema.extend({
@@ -7,21 +7,22 @@ export const UserTrackSchema = TrackSchema.extend({
 })
 
 export class UserTrack extends Track {
+	isUserTrack: true = true
+
 	userId: string
-
-	#public: boolean = false
-	get public() {
-		return this.#public
-	}
-
-	set public(value: boolean) {
-		this.#public = value
-		this.emit('change', this)
-	}
+	public = false
 
 	constructor(userId: string) {
 		super()
 		this.userId = userId
+	}
+
+	toJSON(): TypeOf<typeof UserTrackSchema> {
+		return {
+			...super.toJSON(),
+			userId: this.userId,
+			public: this.public
+		}
 	}
 
 	public static fromData(data: any) {
@@ -34,7 +35,7 @@ export class UserTrack extends Track {
 	public setFromData(data: any) {
 		const parsed = UserTrackSchema.parse(data)
 		this.userId = parsed.userId
-		this.#public = parsed.public
+		this.public = parsed.public
 		super.setFromData(parsed)
 		return this
 	}
@@ -44,13 +45,5 @@ export class UserTrack extends Track {
 		cloned.setFromData(JSON.parse(JSON.stringify(this)))
 		cloned.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
 		return cloned
-	}
-
-	toJSON() {
-		return {
-			...super.toJSON(),
-			userId: this.userId,
-			public: this.public
-		}
 	}
 }

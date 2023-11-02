@@ -5,7 +5,7 @@ export const load = (async () => {
 	const id = localStorage['nakama.device.id'] ?? Math.random().toString(16).slice(2)
 	localStorage['nakama.device.id'] = id
 
-	nakama.startSession(id)
+	await nakama.startSession(id)
 
 	return {}
 }) satisfies LayoutLoad

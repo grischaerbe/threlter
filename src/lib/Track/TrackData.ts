@@ -1,123 +1,107 @@
 import type { EulerOrder, Vector3Tuple } from 'three'
-import { jsonCurrentWritable, type JsonCurrentWritable } from '../utils/jsonCurrentWritable'
-import { jsonCurrentReadable, type JsonCurrentReadable, type TrackElementType } from './Track'
-import { TrackElement } from './TrackElement'
 import z, { type TypeOf } from 'zod'
+import type { TrackElementType } from './Track'
+import { TrackElement, TrackElementSchema } from './TrackElement'
 
 export const TrackDataSchema = z.object({
-	trackElements: z.array(
-		z.object({
-			id: z.string(),
-			type: z.string(),
-			position: z.tuple([z.number(), z.number(), z.number()]),
-			rotation: z.tuple([z.number(), z.number(), z.number(), z.string()])
-		})
-	),
+	trackElements: z.array(TrackElementSchema),
 	checkpointCount: z.number(),
 	finishCount: z.number()
 })
 
 export class TrackData {
-	#trackElements: JsonCurrentWritable<TrackElement[]> = jsonCurrentWritable([])
-	trackElements: JsonCurrentReadable<TrackElement[]> = jsonCurrentReadable(this.#trackElements)
+	trackElements: TrackElement[] = []
+	checkpointCount = 0
+	finishCount = 0
 
-	#checkpointCount = jsonCurrentWritable(0)
-	checkpointCount = jsonCurrentReadable(this.#checkpointCount)
-
-	#finishCount = jsonCurrentWritable(0)
-	finishCount = jsonCurrentReadable(this.#finishCount)
-
-	public static fromString(json: string) {
-		const data = JSON.parse(json)
-		return TrackData.fromJSON(data)
+	toJSON(): TypeOf<typeof TrackDataSchema> {
+		return {
+			trackElements: this.trackElements.map((trackElement) => trackElement.toJSON()),
+			checkpointCount: this.checkpointCount,
+			finishCount: this.finishCount
+		}
 	}
 
-	public static fromJSON(data: any) {
+	public setFromData(data: any) {
 		const parsed = TrackDataSchema.parse(data)
-		const track = new TrackData()
-		track.#trackElements.set(
-			parsed.trackElements.map((trackElement: any) => TrackElement.fromJSON(trackElement))
-		)
-		track.updateCheckpointCount()
-		return track
+		parsed.trackElements.forEach((trackElement) => {
+			const te = this.addTrackElement(trackElement.type as TrackElementType)
+			te.setPosition(trackElement.position)
+			te.setRotation(trackElement.rotation as any)
+		})
+		this.updateCheckpointCount()
 	}
 
 	private updateCheckpointCount() {
-		const checkpointCount = this.#trackElements.current.filter((trackElement) => {
-			return trackElement.type.current.startsWith('Checkpoint')
+		const checkpointCount = this.trackElements.filter((trackElement) => {
+			return trackElement.type.startsWith('Checkpoint')
 		}).length
-		const finishCount = this.#trackElements.current.filter((trackElement) => {
-			return trackElement.type.current.startsWith('Finish')
+		const finishCount = this.trackElements.filter((trackElement) => {
+			return trackElement.type.startsWith('Finish')
 		}).length
-		this.#checkpointCount.set(checkpointCount)
-		this.#finishCount.set(finishCount)
+		this.checkpointCount = checkpointCount
+		this.finishCount = finishCount
 	}
 
 	public addTrackElement(type: TrackElementType) {
-		const newTrackElement = TrackElement.fromType(type)
-		this.#trackElements.update((trackElements) => {
-			trackElements.push(newTrackElement)
-			return trackElements
-		})
+		const newTrackElement = new TrackElement(type)
+		this.trackElements.push(newTrackElement)
+		// force update
+		this.trackElements = this.trackElements
 		this.updateCheckpointCount()
 		return newTrackElement
 	}
 
 	public removeTrackElement(id: string) {
-		this.#trackElements.update((trackElements) => {
-			return trackElements.filter((trackElement) => trackElement.id !== id)
-		})
+		const index = this.trackElements.findIndex((trackElement) => trackElement.id === id)
+		if (index === -1) return
+		// immutable remove
+		this.trackElements = [
+			...this.trackElements.slice(0, index),
+			...this.trackElements.slice(index + 1)
+		]
 		this.updateCheckpointCount()
 	}
 
-	public duplicateTrackElement(id: string) {
-		const trackElementToDuplicate = this.#trackElements.current.find(
-			(trackElement) => trackElement.id === id
-		)
-		if (!trackElementToDuplicate) {
+	public duplicateTrackElement(idOrTrackElement: string | TrackElement) {
+		let te: TrackElement | undefined
+		if (typeof idOrTrackElement === 'string') {
+			te = this.trackElements.find((trackElement) => trackElement.id === idOrTrackElement)
+		} else {
+			te = idOrTrackElement
+		}
+		if (!te) {
 			console.warn('Cannot duplicate track element that does not exist!')
 			return
 		}
-		const newTrackElement = TrackElement.fromTrackElement(trackElementToDuplicate)
-		this.#trackElements.update((trackElements) => {
-			trackElements.push(newTrackElement)
-			return trackElements
-		})
+		const newTrackElement = te.clone()
+		this.trackElements = [...this.trackElements, newTrackElement]
 		this.updateCheckpointCount()
 		return newTrackElement
 	}
 
 	public setTrackElementType = (id: string, type: TrackElementType) => {
-		this.#trackElements.update((trackElements) => {
-			const trackElement = trackElements.find((trackElement) => trackElement.id === id)
-			if (trackElement) {
-				trackElement.setType(type)
-			}
-			return trackElements
-		})
+		const trackElement = this.trackElements.find((trackElement) => trackElement.id === id)
+		if (trackElement) {
+			trackElement.setType(type)
+		}
 		this.updateCheckpointCount()
 	}
 
 	public setTrackElementPosition = (id: string, position: Vector3Tuple) => {
-		this.#trackElements.update((trackElements) => {
-			const trackElement = trackElements.find((trackElement) => trackElement.id === id)
-			if (trackElement) {
-				trackElement.setPosition(position)
-			}
-			return trackElements
-		})
+		const trackElement = this.trackElements.find((trackElement) => trackElement.id === id)
+		if (trackElement) {
+			trackElement.setPosition(position)
+		}
 	}
 
 	public setTrackElementRotation = (
 		id: string,
 		rotation: [x: number, y: number, z: number, order: EulerOrder]
 	) => {
-		this.#trackElements.update((trackElements) => {
-			const trackElement = trackElements.find((trackElement) => trackElement.id === id)
-			if (trackElement) {
-				trackElement.setRotation(rotation)
-			}
-			return trackElements
-		})
+		const trackElement = this.trackElements.find((trackElement) => trackElement.id === id)
+		if (trackElement) {
+			trackElement.setRotation(rotation)
+		}
 	}
 }

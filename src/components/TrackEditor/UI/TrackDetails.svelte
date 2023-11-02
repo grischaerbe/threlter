@@ -1,11 +1,12 @@
 <script lang="ts">
 	import TextInput from '$components/UI/components/TextInput.svelte'
+	import { toWritable } from '../../../lib/utils/toStore'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
 	const { track } = useTrackEditor()
 
-	let trackName = track.trackName.current
+	let newTrackName = track.trackName
 </script>
 
 <div class="flex flex-row items-end text-[0.8em]">
@@ -14,15 +15,15 @@
 		id="track-name"
 		inputClass="!rounded-r-none !border-r-0 h-[46px]"
 		preventFocusOnFocusLost
-		bind:value={trackName}
+		bind:value={newTrackName}
 	/>
 
 	<SpecialButton
-		disabled={!trackName.length}
+		disabled={!newTrackName.length}
 		class="h-[46px] !rounded-l-none"
 		on:click={() => {
-			if (!trackName.length) return
-			track.setTrackName(trackName)
+			if (!newTrackName.length) return
+			track.trackName = newTrackName
 		}}
 	>
 		Save

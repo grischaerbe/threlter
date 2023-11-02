@@ -19,25 +19,25 @@
 	}
 
 	const personalBestMedal = trackRecord
-		? trackRecord.time.current < track.trackTimes.author.current
+		? trackRecord.time.current < track.trackTimes.author
 			? medals.author
-			: trackRecord.time.current < track.trackTimes.gold.current
+			: trackRecord.time.current < track.trackTimes.gold
 			? medals.gold
-			: trackRecord.time.current < track.trackTimes.silver.current
+			: trackRecord.time.current < track.trackTimes.silver
 			? medals.silver
-			: trackRecord.time.current < track.trackTimes.bronze.current
+			: trackRecord.time.current < track.trackTimes.bronze
 			? medals.bronze
 			: ''
 		: ''
 
 	const yourTimeMedal = time
-		? time < track.trackTimes.author.current
+		? time < track.trackTimes.author
 			? medals.author
-			: time < track.trackTimes.gold.current
+			: time < track.trackTimes.gold
 			? medals.gold
-			: time < track.trackTimes.silver.current
+			: time < track.trackTimes.silver
 			? medals.silver
-			: time < track.trackTimes.bronze.current
+			: time < track.trackTimes.bronze
 			? medals.bronze
 			: ''
 		: ''
@@ -46,27 +46,27 @@
 <div class={c('grid grid-cols-[auto_auto] gap-x-[30px] gap-y-[15px]', _class)}>
 	<div>🏅 Author</div>
 	<div class="font-mono text-right">
-		<FormattedTime time={track.trackTimes.author.current} />
+		<FormattedTime time={track.trackTimes.author} />
 	</div>
 
-	{#if track.trackTimes.gold.current !== 0}
+	{#if track.trackTimes.gold !== 0}
 		<div>🥇 Gold</div>
 		<div class="font-mono text-right">
-			<FormattedTime time={track.trackTimes.gold.current} />
+			<FormattedTime time={track.trackTimes.gold} />
 		</div>
 	{/if}
 
-	{#if track.trackTimes.silver.current !== 0}
+	{#if track.trackTimes.silver !== 0}
 		<div>🥈 Silver</div>
 		<div class="font-mono text-right">
-			<FormattedTime time={track.trackTimes.silver.current} />
+			<FormattedTime time={track.trackTimes.silver} />
 		</div>
 	{/if}
 
-	{#if track.trackTimes.bronze.current !== 0}
+	{#if track.trackTimes.bronze !== 0}
 		<div>🥉 Bronze</div>
 		<div class="font-mono text-right">
-			<FormattedTime time={track.trackTimes.bronze.current} />
+			<FormattedTime time={track.trackTimes.bronze} />
 		</div>
 	{/if}
 

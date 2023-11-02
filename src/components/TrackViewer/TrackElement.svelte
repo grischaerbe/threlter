@@ -15,7 +15,7 @@
 	setContext<TrackElement>('track-element', trackElement)
 
 	$: type = trackElement.type
-	$: component = trackElementPrototypes[$type].component
+	$: component = trackElementPrototypes[type].component
 </script>
 
 <svelte:component this={component}>

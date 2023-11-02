@@ -23,11 +23,13 @@
 	import { useEvent } from '../../hooks/useEvents'
 	import { useAudioProvider } from '../Utilities/AudioProvider.svelte'
 	import { appState } from '../../stores/app'
+	import { toReadable } from '../../lib/utils/toStore'
 
 	const { sfx } = appState.options.audio
 
 	export let track: Track
-	$: elements = track.trackData.trackElements
+
+	const elements = toReadable(track.trackData, 'trackElements')
 
 	const dispatch = createEventDispatcher<{
 		trackcompleted: void
@@ -50,7 +52,7 @@
 
 	const finishReached = () => {
 		// player didn't go through all checkpoints
-		if (checkpointsReached.current.size !== track.trackData.checkpointCount.current) return
+		if (checkpointsReached.current.size !== track.trackData.checkpointCount) return
 
 		if ($sfx && !trackCompleted.current) {
 			playAudio('success1', {

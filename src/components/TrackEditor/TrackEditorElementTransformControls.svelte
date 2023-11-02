@@ -12,6 +12,7 @@
 	import type { TrackElement } from '$lib/Track/TrackElement'
 	import { useKeyDown } from '../../hooks/useKeyDown'
 	import { useKeyUp } from '../../hooks/useKeyUp'
+	import { toReadable } from '../../lib/utils/toStore'
 
 	export let trackElement: TrackElement
 
@@ -24,8 +25,8 @@
 		isDragging
 	} = useTrackEditor()
 
-	$: position = $currentlySelectedElement?.position
-	$: rotation = $currentlySelectedElement?.rotation
+	$: position = $currentlySelectedElement && toReadable($currentlySelectedElement, 'position')
+	$: rotation = $currentlySelectedElement && toReadable($currentlySelectedElement, 'rotation')
 
 	const selected = derived(currentlySelectedElement, (currentlySelectedElement) => {
 		return currentlySelectedElement?.id === trackElement.id
@@ -33,7 +34,7 @@
 
 	const onChange = (ref: Group) => {
 		track.setTrackElementPosition(trackElement.id, ref.position.toArray())
-		const rotation = ref.rotation.toArray() as TrackElement['rotation']['current']
+		const rotation = ref.rotation.toArray() as TrackElement['rotation']
 		track.setTrackElementRotation(trackElement.id, rotation)
 	}
 

@@ -9,12 +9,13 @@ ot. If it is not reactive, it will only set the position and rotation
 <script lang="ts">
 	import { T } from '@threlte/core'
 	import type { TrackElement } from '$lib/Track/TrackElement'
+	import { toReadable } from '../../lib/utils/toStore'
 
 	export let trackElement: TrackElement
 	export let reactive = false
 
-	const position = trackElement.position
-	const rotation = trackElement.rotation
+	const position = toReadable(trackElement, 'position')
+	const rotation = toReadable(trackElement, 'rotation')
 </script>
 
 {#if reactive}
@@ -24,8 +25,8 @@ ot. If it is not reactive, it will only set the position and rotation
 {:else}
 	<T.Group
 		on:create={({ ref }) => {
-			ref.position.set(...position.current)
-			ref.rotation.set(...rotation.current)
+			ref.position.set(...$position)
+			ref.rotation.set(...$rotation)
 		}}
 		let:ref
 	>

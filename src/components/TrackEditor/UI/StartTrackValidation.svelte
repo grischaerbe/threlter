@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Button from '$components/UI/components/Button.svelte'
+	import { toReadable } from '../../../lib/utils/toStore'
 	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import { useTrackEditor } from '../context'
 
 	const { track } = useTrackEditor()
 
-	const { validated } = track
+	const validated = toReadable(track, 'validated')
 </script>
 
 {#if $validated}

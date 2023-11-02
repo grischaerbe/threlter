@@ -4,16 +4,14 @@
 	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
 	import { appState } from '$stores/app'
 	import { Canvas, T } from '@threlte/core'
-	import { AudioListener, Suspense } from '@threlte/extras'
+	import { AudioListener, CSM, Suspense } from '@threlte/extras'
 	import { Debug, World } from '@threlte/rapier'
-	import { NoToneMapping } from 'three'
+	import { NoToneMapping, Vector3 } from 'three'
 	import '../app.postcss'
 	import Renderer from '../components/Renderer.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
 	import { sunPos } from '../config'
-	import { Vector3 } from 'three'
-	import { CSM } from '@threlte/extras'
 
 	const {
 		visibility,

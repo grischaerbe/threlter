@@ -3,13 +3,14 @@
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import Button from '$components/UI/components/Button.svelte'
 	import { useTrackEditor } from '../context'
+	import { toReadable } from '../../../lib/utils/toStore'
 
 	const { track, currentlySelectedElement } = useTrackEditor()
-	const { validated } = track
+	const validated = toReadable(track, 'validated')
 
 	const rotateElement = () => {
 		if (!$currentlySelectedElement) return
-		const euler = new Euler().set(...$currentlySelectedElement.rotation.current)
+		const euler = new Euler().set(...$currentlySelectedElement.rotation)
 		// snap to the next 90 degree rotation on the y axis
 		euler.y += 90 * DEG2RAD
 		// modulo 360

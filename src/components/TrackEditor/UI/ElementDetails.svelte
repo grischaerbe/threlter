@@ -2,6 +2,7 @@
 	import { DEG2RAD, RAD2DEG } from 'three/src/math/MathUtils'
 	import { useTrackEditor } from '../context'
 	import type { TrackElement } from '../../../lib/Track/TrackElement'
+	import { toReadable } from '../../../lib/utils/toStore'
 
 	const { track } = useTrackEditor()
 
@@ -33,7 +34,9 @@
 		}
 	}
 
-	const position = currentlySelectedTrackElement.position
+	const position = toReadable(currentlySelectedTrackElement, 'position')
+	const rotation = toReadable(currentlySelectedTrackElement, 'rotation')
+
 	$: if (!focus.position.x && elements.position.x) {
 		elements.position.x.value = $position[0].toString()
 	}
@@ -43,7 +46,6 @@
 	$: if (!focus.position.z && elements.position.z) {
 		elements.position.z.value = $position[2].toString()
 	}
-	const rotation = currentlySelectedTrackElement.rotation
 	$: if (!focus.rotation.x && elements.rotation.x) {
 		elements.rotation.x.value = ($rotation[0] * RAD2DEG).toString()
 	}
@@ -55,13 +57,13 @@
 	}
 
 	const updatePosition = async (component: 0 | 1 | 2, data: number) => {
-		const currentPosition = currentlySelectedTrackElement.position.current
+		const currentPosition = currentlySelectedTrackElement.position
 		currentPosition[component] = data
 		track.setTrackElementPosition(currentlySelectedTrackElement.id, currentPosition)
 	}
 
 	const updateRotation = async (component: 0 | 1 | 2, data: number) => {
-		const currentRotation = currentlySelectedTrackElement.rotation.current
+		const currentRotation = currentlySelectedTrackElement.rotation
 		currentRotation[component] = data * DEG2RAD
 		track.setTrackElementRotation(currentlySelectedTrackElement.id, currentRotation)
 	}

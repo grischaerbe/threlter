@@ -18,7 +18,7 @@
 	useKeyDown('p', proceed)
 </script>
 
-<BottomScreenTrackName title={track.trackName.current} />
+<BottomScreenTrackName title={track.trackName} />
 
 <CurrentTime {time} />
 

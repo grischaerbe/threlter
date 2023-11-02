@@ -13,7 +13,7 @@
 	export let track: Track
 </script>
 
-<BottomScreenTrackName title={track.trackName.current} />
+<BottomScreenTrackName title={track.trackName} />
 <TopbarLayout>
 	<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">Menu</SpecialButton>
 

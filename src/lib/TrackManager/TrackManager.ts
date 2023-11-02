@@ -57,20 +57,12 @@ export class TrackManager {
 	static saveUserTrackDebounced = debounce(TrackManager.saveUserTrack, 500)
 	static async saveUserTrack(userTrack: UserTrack) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
-		await TrackManager.client.rpc(
-			TrackManager.session.current,
-			'save_user_track',
-			{
-				userTrack
-			}
-		)
+		await TrackManager.client.rpc(TrackManager.session.current, 'save_user_track', userTrack)
 	}
 
 	static async publishUserTrack(userTrack: UserTrack) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
-		await TrackManager.client.rpc(TrackManager.session.current, 'publish_user_track', {
-			userTrack
-		})
+		await TrackManager.client.rpc(TrackManager.session.current, 'publish_user_track', userTrack)
 	}
 
 	/**
@@ -97,7 +89,7 @@ export class TrackManager {
 				return UserTrack.fromData(object.value)
 			})
 			.filter((track) => {
-				return !!track.validated.current
+				return !!track.validated
 			})
 	}
 }

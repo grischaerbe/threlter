@@ -20,6 +20,11 @@ export const load = (async ({ params, parent, route }) => {
 		throw redirect(307, '/menu/main')
 	}
 
+	// if the track is public and the user is trying to edit it, return to the my tracks menu
+	if (track.public && route.id.includes('edit')) {
+		throw redirect(307, '/menu/my-tracks')
+	}
+
 	return {
 		track
 	}
