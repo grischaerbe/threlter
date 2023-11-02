@@ -83,9 +83,6 @@
 	on:controlstart={(e) => {
 		disableAutoRotate = true
 	}}
-	on:zoom={(e) => {
-		console.log('zoomstart', e)
-	}}
 	on:controlend={() => {
 		disableAutoRotate = false
 	}}

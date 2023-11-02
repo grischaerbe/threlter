@@ -3,6 +3,7 @@
 	"trackName": "In Transit",
 	"authorName": "legrisch",
 	"userId": "00000000-0000-0000-0000-000000000000",
+	"public": true,
 	"trackData": {
 		"trackElements": [
 			{ "id": "xa96xec", "type": "Box", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },

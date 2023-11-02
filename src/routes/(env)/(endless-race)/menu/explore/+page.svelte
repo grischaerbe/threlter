@@ -12,6 +12,6 @@
 	tracks={data.tracks}
 	showAuthor
 	on:playtrack={(e) => {
-		goto(`/user/${e.detail.trackId}/time-attack`)
+		goto(`/user/${e.detail.track.trackId}/time-attack`)
 	}}
 />

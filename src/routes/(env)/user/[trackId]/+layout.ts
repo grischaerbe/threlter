@@ -7,7 +7,7 @@ export const load = (async ({ params, parent, route }) => {
 	// need to wait for it
 	await parent()
 
-	const track = await TrackManager.getUserTracks(params.trackId)
+	const track = await TrackManager.getUserTrack(params.trackId)
 
 	// if the track doesn't exist, redirect to the main menu
 	if (!track) {

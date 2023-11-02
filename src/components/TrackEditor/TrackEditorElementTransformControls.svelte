@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { T } from '@threlte/core'
+	import { T, watch } from '@threlte/core'
 	import { TransformControls } from '@threlte/extras'
 	import { derived } from 'svelte/store'
 	import type { Group } from 'three'
@@ -25,8 +25,24 @@
 		isDragging
 	} = useTrackEditor()
 
-	$: position = $currentlySelectedElement && toReadable($currentlySelectedElement, 'position')
-	$: rotation = $currentlySelectedElement && toReadable($currentlySelectedElement, 'rotation')
+	let currentPosition: TrackElement['position'] = [0, 0, 0]
+	let currentRotation: TrackElement['rotation'] = [0, 0, 0, 'XYZ']
+
+	watch(currentlySelectedElement, (currentlySelectedElement) => {
+		if (!currentlySelectedElement) return
+		const position = toReadable(currentlySelectedElement, 'position')
+		const rotation = toReadable(currentlySelectedElement, 'rotation')
+		const unsubscribePosition = position.subscribe((position) => {
+			currentPosition = position
+		})
+		const unsubscribeRotation = rotation.subscribe((rotation) => {
+			currentRotation = rotation
+		})
+		return () => {
+			unsubscribePosition()
+			unsubscribeRotation()
+		}
+	})
 
 	const selected = derived(currentlySelectedElement, (currentlySelectedElement) => {
 		return currentlySelectedElement?.id === trackElement.id
@@ -67,8 +83,8 @@
 	})
 </script>
 
-{#if $selected && $position && $rotation}
-	<T.Group position={$position} rotation={$rotation} let:ref>
+{#if $selected && currentPosition && currentRotation}
+	<T.Group position={currentPosition} rotation={currentRotation} let:ref>
 		<TransformControls
 			raycast={() => {
 				return false

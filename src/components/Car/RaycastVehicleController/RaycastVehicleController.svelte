@@ -10,7 +10,7 @@
 		type Vector as RapierVector
 	} from '@dimforge/rapier3d-compat'
 	import { T, currentWritable, useFrame } from '@threlte/core'
-	import { Audio, useGamepad } from '@threlte/extras'
+	import { Audio, useGamepad, useSuspense } from '@threlte/extras'
 	import { Collider, RigidBody, useRapier } from '@threlte/rapier'
 	import { spring } from 'svelte/motion'
 	import { Group, Quaternion, Vector3 } from 'three'
@@ -26,6 +26,8 @@
 	export let active = true
 	export let volume = 1
 	export let useAudio = true
+
+	const { suspended } = useSuspense()
 
 	const { world } = useRapier()
 
@@ -1020,7 +1022,7 @@
 	})
 </script>
 
-{#if useAudio}
+{#if useAudio && !$suspended}
 	<Audio src="/sfx/engine6_normalized.wav" loop autoplay volume={_volume} {playbackRate} />
 {/if}
 

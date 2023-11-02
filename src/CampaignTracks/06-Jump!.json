@@ -3,6 +3,7 @@
 	"trackName": "Jump!",
 	"authorName": "",
 	"userId": "00000000-0000-0000-0000-000000000000",
+	"public": true,
 	"trackData": {
 		"trackElements": [
 			{ "id": "yijn5i6", "type": "Boost", "position": [0, 0, 0], "rotation": [0, 0, 0, "XYZ"] },

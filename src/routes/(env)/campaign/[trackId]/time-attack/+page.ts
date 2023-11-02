@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit'
-import type { LayoutLoad } from './$types'
-import { Track } from '../../../../lib/Track/Track'
+import type { PageLoad } from '../$types'
+import { Track } from '../../../../../lib/Track/Track'
 
 const filterUndefined = <T>(value: T | undefined): value is T => {
 	return value !== undefined
@@ -11,7 +11,7 @@ export const load = (async ({ params, parent }) => {
 	// need to wait for it
 	await parent()
 
-	const jsons = await import.meta.glob('../../../../CampaignTracks/*.json', { eager: true })
+	const jsons = await import.meta.glob('../../../../../CampaignTracks/*.json', { eager: true })
 	const tracks = Object.values(jsons)
 		.map((json) => {
 			return new Track().setFromData((json as any).default)
@@ -29,4 +29,4 @@ export const load = (async ({ params, parent }) => {
 	return {
 		track
 	}
-}) satisfies LayoutLoad
+}) satisfies PageLoad

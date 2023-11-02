@@ -30,7 +30,7 @@ export class TrackManager {
 		})
 	}
 
-	static async getUserTracks(trackId: string) {
+	static async getUserTrack(trackId: string) {
 		if (!TrackManager.session.current) throw new Error('Session not set')
 
 		const response = await TrackManager.client.rpc(TrackManager.session.current, 'get_user_track', {
@@ -38,7 +38,7 @@ export class TrackManager {
 		})
 		const { object } = response.payload as { object: { value: any } }
 		if (!object) return undefined
-		return UserTrack.fromData(object.value)
+		return UserTrack.fromData(object)
 	}
 
 	static async deleteUserTrack(trackId: string) {

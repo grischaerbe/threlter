@@ -3,6 +3,7 @@
 	"trackName": "The Aperture",
 	"authorName": "legrisch",
 	"userId": "00000000-0000-0000-0000-000000000000",
+	"public": true,
 	"trackData": {
 		"trackElements": [
 			{ "id": "naezi6k", "type": "Box", "position": [-10, 0, -10], "rotation": [0, 0, 0, "XYZ"] },

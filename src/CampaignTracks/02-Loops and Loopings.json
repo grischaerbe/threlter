@@ -3,6 +3,7 @@
 	"trackName": "Loops and Loopings",
 	"authorName": "legrisch",
 	"userId": "00000000-0000-0000-0000-000000000000",
+	"public": true,
 	"trackData": {
 		"trackElements": [
 			{ "id": "4o28cjj", "type": "Boost", "position": [-10, 0, 0], "rotation": [0, 0, 0, "XYZ"] },

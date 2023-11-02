@@ -11,6 +11,6 @@
 	bind:trackSelected
 	tracks={data.tracks}
 	on:playtrack={(e) => {
-		goto(`/campaign/${e.detail.trackId}/time-attack`)
+		goto(`/campaign/${e.detail.track.trackId}/time-attack`)
 	}}
 />
