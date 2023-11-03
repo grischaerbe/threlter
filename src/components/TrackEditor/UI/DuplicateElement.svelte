@@ -4,7 +4,6 @@
 	import { useTrackEditor } from '../context'
 
 	const { track, currentlySelectedElement } = useTrackEditor()
-	const validated = toReadable(track, 'validated')
 
 	const duplicateElement = () => {
 		if (!$currentlySelectedElement) return
@@ -13,6 +12,4 @@
 	}
 </script>
 
-<Button style="regular" class="font-mono" disabled={$validated} on:click={duplicateElement}>
-	Duplicate
-</Button>
+<Button style="regular" class="font-mono" on:click={duplicateElement}>Duplicate</Button>

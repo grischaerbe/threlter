@@ -34,6 +34,7 @@
 			detune: 300
 		})
 	}}
+	on:click
 	on:pointerenter={() => {
 		if (!$sfx) return
 		playAudio('buttonHover', {

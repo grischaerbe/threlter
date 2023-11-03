@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import type { Track } from '$lib/Track/Track'
-	import { Ghost } from '$lib/TrackRecord/Ghost'
-	import { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { appState } from '$stores/app'
 	import { T, currentWritable, useFrame, watch } from '@threlte/core'
 	import { Suspense, useGamepad } from '@threlte/extras'
 	import type CC from 'camera-controls'
+	import { spring } from 'svelte/motion'
 	import { derived } from 'svelte/store'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
+	import type { TrackRecordsManager } from '../../lib/TrackRecord/TrackRecordsManager'
+	import { nakama } from '../../lib/nakama'
 	import CameraControls from '../CameraControls/CameraControls.svelte'
 	import Car from '../Car/Car.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
@@ -18,16 +19,21 @@
 	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import BoundingSphere from './BoundingSphere.svelte'
-	import { spring } from 'svelte/motion'
+	import GhostPlayer from './GhostPlayer.svelte'
+	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
-	// import GhostPlayer from './GhostPlayer.svelte'
-	// import GhostRecorder from './GhostRecorder.svelte'
+	import { toReadable } from '../../lib/utils/toStore'
+
+	const { userId } = nakama
+
+	if (!$userId) throw new Error('No user id found')
 
 	export let track: Track
+	export let trackRecordsManager: TrackRecordsManager
 
-	let currentTrackRecord = TrackRecord.fromLocalStorage(track)
-	let workingTrackRecord = TrackRecord.fromTrack(track, new Ghost())
+	const currentRecord = toReadable(trackRecordsManager, 'current')
+	const ghostRecords = toReadable(trackRecordsManager, 'ghostRecords')
 
 	const { visibility } = appState
 
@@ -100,7 +106,10 @@
 	watch(state, (state) => {
 		// when we're "playing", we initialize a new working track record
 		if (state === 'playing') {
-			workingTrackRecord = TrackRecord.fromTrack(track, new Ghost())
+			if (!$userId) {
+				throw new Error('No user id found')
+			}
+			trackRecordsManager.reset()
 		}
 	})
 
@@ -120,16 +129,12 @@
 	gamepad.clusterBottom.on('press', softResetGame)
 	useKeyDown('Enter', softResetGame)
 
+	let newTrackRecord = false
+	let newPersonalBest = false
+
 	const onFinishReached = () => {
+		trackRecordsManager.setCurrentFinalTime($time)
 		state.set('finished')
-		workingTrackRecord.time.set($time)
-		if (
-			!currentTrackRecord ||
-			TrackRecord.isNewTrackRecord(currentTrackRecord, workingTrackRecord)
-		) {
-			workingTrackRecord.saveToLocalStorage()
-			currentTrackRecord = workingTrackRecord
-		}
 	}
 
 	let cc: CC
@@ -181,37 +186,35 @@
 		freeze={$carFrozen}
 		freezeCamera={$state === 'finished'}
 		useCarCamera={$state !== 'intro'}
+		let:carState
 	>
-		<!-- let:carState -->
-		<!-- {#if workingTrackRecord.ghost && $state === 'playing'}
-			<GhostRecorder ghost={workingTrackRecord.ghost} time={$time} {carState} />
+		{#if $state === 'playing'}
+			<GhostRecorder ghost={$currentRecord.ghost} time={$time} {carState} />
 		{/if}
 
-		{#if currentTrackRecord?.ghost && $state === 'playing'}
-			<GhostPlayer {carState} ghost={currentTrackRecord.ghost} time={$time} />
-		{/if} -->
+		{#each $ghostRecords as trackRecord}
+			<GhostPlayer {carState} ghost={trackRecord.ghost} time={$time} />
+		{/each}
 	</Car>
 
 	{#if !suspended}
 		<!-- UI -->
 		<UiWrapper>
 			{#if $paused}
-				<slot time={$time} {proceed} {restart} name="ui-paused" trackRecord={currentTrackRecord} />
+				<slot time={$time} {proceed} {restart} name="ui-paused" />
 			{:else if $state === 'intro'}
-				<slot {proceed} trackRecord={currentTrackRecord} name="ui-intro" />
+				<slot {proceed} name="ui-intro" />
 			{:else if $state === 'count-in'}
-				<slot name="ui-count-in" {proceed} trackRecord={currentTrackRecord}>
+				<slot name="ui-count-in" {proceed}>
 					<CountIn on:countindone={proceed} time={$time} />
 				</slot>
 			{:else if $state === 'playing'}
-				<slot name="ui-playing" time={$time} trackRecord={currentTrackRecord}>
+				<slot name="ui-playing" time={$time}>
 					<GamePlay time={$time} />
 				</slot>
 			{:else if $state === 'finished'}
-				<slot name="ui-finished" {restart} time={$time} trackRecord={currentTrackRecord} />
+				<slot name="ui-finished" {restart} time={$time} />
 			{/if}
 		</UiWrapper>
 	{/if}
 </Suspense>
-
-<slot {proceed} {restart} time={$time} trackRecord={currentTrackRecord} />

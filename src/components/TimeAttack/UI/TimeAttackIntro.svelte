@@ -1,15 +1,12 @@
 <script lang="ts">
 	import Card from '$components/UI/components/Card.svelte'
-	import TrackTimes from '$components/UI/components/TrackTimes.svelte'
 	import TopbarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import type { Track } from '$lib/Track/Track'
-	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import BottomScreenTrackName from '../../UI/components/BottomScreenTrackName.svelte'
-	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 	import Key from '../../UI/components/Key.svelte'
+	import SpecialButton from '../../UI/components/SpecialButton.svelte'
 
 	export let proceed: () => void
-	export let trackRecord: TrackRecord | undefined
 	export let track: Track
 </script>
 
@@ -21,7 +18,7 @@
 
 	<div class="flex flex-col gap-[15px] items-start">
 		<Card class="inline-block text-[0.9em] w-[18em]">
-			<TrackTimes {track} {trackRecord} />
+			<!-- <TrackTimes {track} {trackRecord} /> -->
 		</Card>
 		<Card class="flex flex-col gap-[10px] w-max">
 			<div class="font-headline">Controls</div>

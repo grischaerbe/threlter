@@ -39,21 +39,12 @@
 				</Card>
 
 				<Card class="flex flex-col gap-[10px] w-auto h-full">
-					<div class="font-headline">TRACK VALIDATION</div>
+					<div class="font-headline">Playing a track</div>
 
 					<div class="text-[0.65em]">
-						A track must be validated before it can be played. To validate a track, it must be
-						completed from start to finish. This means it must have a finish and you need to be able
-						to reach the finish from the start.
-					</div>
-				</Card>
-
-				<Card class="flex flex-col gap-[10px] w-auto h-full">
-					<div class="font-headline">Track export</div>
-
-					<div class="text-[0.65em]">
-						Tracks can be exported to share them with other players. An exported track can then be
-						imported in "User Tracks".
+						A track must be published before it can be played. To publish a track you need to
+						validate that it can be completed from start to finish. In practice, this means it must
+						have a finish block and you need to be able to reach the finish from the start.
 					</div>
 				</Card>
 			</div>

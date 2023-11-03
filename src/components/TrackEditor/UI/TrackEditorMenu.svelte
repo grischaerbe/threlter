@@ -36,10 +36,11 @@
 			</Card>
 
 			<Card class="flex flex-col gap-[15px]">
-				<div class="font-headline">TRACK VALIDATION</div>
+				<div class="font-headline">Publish this track</div>
 				<div class="text-[0.8em]">
-					A track must be validated before it can be played. To validate a track, it must be
-					completed from start to finish.
+					A track must be published before it can be played. To publish a track you need to validate
+					that it can be completed from start to finish. In practice, this means it must have a
+					finish block and you need to be able to reach the finish from the start.
 				</div>
 				<StartTrackValidation />
 			</Card>

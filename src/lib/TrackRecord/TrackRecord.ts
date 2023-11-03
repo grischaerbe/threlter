@@ -1,8 +1,14 @@
-import { derived } from 'svelte/store'
-import type { Track } from '../Track/Track'
-import { jsonCurrentWritable } from '../utils/jsonCurrentWritable'
-import { Ghost } from './Ghost'
-import { formatTime } from '../utils/formatters'
+import { z, type TypeOf } from 'zod'
+import { Ghost, GhostSchema } from './Ghost'
+
+export const TrackRecordSchema = z.object({
+	recordId: z.string(),
+	trackId: z.string(),
+	userId: z.string(),
+	ghost: GhostSchema,
+	time: z.number(),
+	respawns: z.number()
+})
 
 /**
  * A track record is a record of a track with a specific validation id.
@@ -11,79 +17,49 @@ import { formatTime } from '../utils/formatters'
  * It is saved to local storage except for the ghost.
  */
 export class TrackRecord {
+	recordId: string = Math.random().toString(36).substring(2, 9)
 	public trackId: string
-	public trackValidationId: string
+	public userId: string
 
-	public ghost: Ghost | undefined
+	public ghost: Ghost
+	public time = Number.MAX_SAFE_INTEGER
+	public respawns = Number.MAX_SAFE_INTEGER
 
-	public time = jsonCurrentWritable(0)
-
-	public timeFormatted = derived(this.time, (time) => formatTime(time))
-
-	public respawns = jsonCurrentWritable(0)
-
-	constructor(trackId: string, trackValidationId: string, ghost?: Ghost) {
+	constructor(userId: string, trackId: string) {
+		this.userId = userId
 		this.trackId = trackId
-		this.trackValidationId = trackValidationId
-		this.ghost = ghost
-	}
-
-	public static fromTrack(track: Track, ghost?: Ghost) {
-		return new TrackRecord(track.trackId, track.validationId, ghost)
-	}
-
-	get trackRecordId() {
-		return TrackRecord.makeTrackRecordId(this.trackId, this.trackValidationId)
-	}
-
-	public initializeGhost() {
 		this.ghost = new Ghost()
 	}
 
-	public toJSON() {
-		// save this but without the ghost
-		const { ghost, ...rest } = this
-		return rest
+	public static fromData(data: any) {
+		const parsed = TrackRecordSchema.parse(data)
+		const trackRecord = new TrackRecord(parsed.userId, parsed.trackId)
+		trackRecord.recordId = parsed.recordId
+		trackRecord.trackId = parsed.trackId
+		trackRecord.ghost.setFromData(parsed.ghost)
+		trackRecord.time = parsed.time
+		trackRecord.respawns = parsed.respawns
+		return trackRecord
 	}
 
-	public saveToLocalStorage() {
-		localStorage.setItem(this.trackRecordId, JSON.stringify(this))
+	public setFromData(data: any) {
+		const parsed = TrackRecordSchema.parse(data)
+		this.trackId = parsed.trackId
+		this.ghost.setFromData(parsed.ghost)
+		this.time = parsed.time
+		this.respawns = parsed.respawns
+		return this
 	}
 
-	public static makeTrackRecordId(track: Track): string
-	public static makeTrackRecordId(trackId: string, trackValidationId: string): string
-	public static makeTrackRecordId(trackIdOrTrack: string | Track, trackValidationId?: string) {
-		if (typeof trackIdOrTrack === 'string') {
-			return `Record-${trackIdOrTrack}-${trackValidationId}`
-		} else {
-			return `Record-${trackIdOrTrack.trackId}-${trackIdOrTrack.validationId}`
+	public toJSON(): TypeOf<typeof TrackRecordSchema> {
+		return {
+			recordId: this.recordId,
+			trackId: this.trackId,
+			userId: this.userId,
+			ghost: this.ghost.toJSON(),
+			time: this.time,
+			respawns: this.respawns
 		}
-	}
-
-	public static fromLocalStorage(track: Track) {
-		/**
-		 * Only return a record for a track if the track is validated
-		 */
-		if (!track.validated.current) return undefined
-		const data = localStorage.getItem(TrackRecord.makeTrackRecordId(track))
-		if (data) return TrackRecord.fromString(data)
-		return undefined
-	}
-
-	public static fromString(string: string) {
-		const data = JSON.parse(string)
-		return TrackRecord.fromJSON(data)
-	}
-
-	public static fromJSON(data: any) {
-		const record = new TrackRecord(data.trackId, data.trackValidationId)
-		record.time.set(data.time)
-		record.respawns.set(data.respawns)
-
-		// The ghost is not saved to local storage, so it may be undefined
-		if (data.ghost) record.ghost = Ghost.fromJSON(data.ghost)
-
-		return record
 	}
 
 	/**
@@ -91,10 +67,8 @@ export class TrackRecord {
 	 */
 	public static isNewTrackRecord(currentTrackRecord: TrackRecord, newTrackRecord: TrackRecord) {
 		const isSameTrack = currentTrackRecord.trackId === newTrackRecord.trackId
-		const isSameValidation =
-			currentTrackRecord.trackValidationId === newTrackRecord.trackValidationId
-		const isBetterTime = currentTrackRecord.time.current > newTrackRecord.time.current
-		const isBetterRespawns = currentTrackRecord.respawns.current < newTrackRecord.respawns.current
-		return isSameTrack && isSameValidation && (isBetterTime || isBetterRespawns)
+		const isBetterTime = currentTrackRecord.time > newTrackRecord.time
+		const isBetterRespawns = currentTrackRecord.respawns < newTrackRecord.respawns
+		return isSameTrack && (isBetterTime || isBetterRespawns)
 	}
 }

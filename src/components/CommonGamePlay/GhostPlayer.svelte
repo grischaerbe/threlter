@@ -11,24 +11,34 @@
 	export let time: number
 	export let carState: CarState
 
-	let opacity = 0
+	ghost.initializePlayback()
 
-	$: ghost.calculateAverageTimeBetweenFrames()
+	let opacity = 0
 
 	let group: Group
 
 	let showGhost = true
 
 	useFrame(() => {
-		if (!ghost.frames.length) {
+		// we didn't start playing yet
+		if (time === 0) {
+			if (!ghost.isInitialized()) {
+				ghost.initializePlayback()
+			}
 			showGhost = false
 			return
 		}
-		if (time > ghost.lastFrameTime || time < ghost.firstFrameTime) {
+
+		// we don't have any more frames
+		if (!ghost.hasPlaybackFrames()) {
 			showGhost = false
 			return
 		}
-		const currentFrame = ghost.getFrame(time)
+
+		// get the current frame
+		const currentFrame = ghost.getPlaybackFrame(time)
+
+		// if for some reason we don't have a frame
 		if (!currentFrame) {
 			showGhost = false
 			return

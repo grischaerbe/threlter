@@ -11,6 +11,7 @@
 	import Renderer from '../components/Renderer.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
 	import StartPrompt from '../components/UI/StartPrompt.svelte'
+	import Resolution from '../components/Utilities/Resolution.svelte'
 	import { sunPos } from '../config'
 
 	const {
@@ -55,6 +56,8 @@
 			preserveDrawingBuffer: true
 		}}
 	>
+		<Resolution />
+
 		<World order={-999}>
 			{#if $debug}
 				<Debug depthTest={false} depthWrite={false} />

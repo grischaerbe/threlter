@@ -1,3 +1,4 @@
+import { browser } from '$app/environment'
 import { nakama } from '../../lib/nakama'
 import type { LayoutLoad } from './$types'
 

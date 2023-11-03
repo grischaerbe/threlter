@@ -76,7 +76,10 @@
 	{volume}
 	useAudio={$sfx && $revealed}
 	{freeze}
+	let:carState
 >
+	<slot {carState} />
+
 	<T.PerspectiveCamera
 		bind:ref={carCam}
 		slot="camera"

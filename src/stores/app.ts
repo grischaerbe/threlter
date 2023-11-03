@@ -14,7 +14,11 @@ export const appState = {
 		},
 		video: {
 			shadows: persist(currentWritable(true), 'tm-options-video-shadows'),
-			postprocessing: persist(currentWritable(true), 'tm-options-video-postprocessing')
+			postprocessing: persist(currentWritable(true), 'tm-options-video-postprocessing'),
+			resolution: persist(
+				currentWritable<'high' | 'medium' | 'low'>('high'),
+				'tm-options-video-resolution'
+			)
 		}
 	}
 }

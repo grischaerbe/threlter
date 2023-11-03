@@ -1,14 +1,16 @@
 <script lang="ts">
 	import CommonGamePlay from '$components/CommonGamePlay/CommonGamePlay.svelte'
 	import type { UserTrack } from '../../lib/Track/UserTrack'
+	import type { TrackRecordsManager } from '../../lib/TrackRecord/TrackRecordsManager'
 	import ValidationFinished from './UI/ValidationFinished.svelte'
 	import ValidationIntro from './UI/ValidationIntro.svelte'
 	import ValidationPaused from './UI/ValidationPaused.svelte'
 
 	export let track: UserTrack
+	export let trackRecordsManager: TrackRecordsManager
 </script>
 
-<CommonGamePlay {track}>
+<CommonGamePlay {track} {trackRecordsManager}>
 	<ValidationPaused
 		let:proceed
 		let:time
@@ -20,5 +22,12 @@
 		{time}
 	/>
 	<ValidationIntro let:proceed slot="ui-intro" {proceed} {track} />
-	<ValidationFinished let:time let:restart {restart} {track} slot="ui-finished" {time} />
+	<ValidationFinished
+		let:time
+		let:restart
+		{restart}
+		{track}
+		slot="ui-finished"
+		{trackRecordsManager}
+	/>
 </CommonGamePlay>

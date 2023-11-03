@@ -9,13 +9,15 @@
 
 	import type { TrackElement } from '$lib/Track/TrackElement'
 	import { trackElementPrototypes } from '../TrackElements/elements'
+	import { toReadable } from '../../lib/utils/toStore'
 
 	export let trackElement: TrackElement
 
 	setContext<TrackElement>('track-element', trackElement)
 
-	$: type = trackElement.type
-	$: component = trackElementPrototypes[type].component
+	const type = toReadable(trackElement, 'type')
+
+	$: component = trackElementPrototypes[$type].component
 </script>
 
 <svelte:component this={component}>

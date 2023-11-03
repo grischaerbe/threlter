@@ -1,6 +1,7 @@
 import { Client, Session, type Socket } from '@heroiclabs/nakama-js'
 import { currentWritable } from '@threlte/core'
-import { derived } from 'svelte/store'
+import { derived, get } from 'svelte/store'
+import { appState } from '../../stores/app'
 
 const client = new Client('defaultkey', '127.0.0.1', '7350')
 const session = currentWritable<Session | undefined>(undefined)
@@ -40,19 +41,19 @@ const startSession = async (deviceId: string) => {
 		}
 	}
 
+	updateAccount()
+}
+
+const updateAccount = async () => {
 	// connect socket
-	// if (!session.current) throw new Error('Session not set')
-	// socket.set(client.createSocket())
-	// socket.current?.connect(session.current, true)
+	if (!session.current) throw new Error('Session not set')
 
-	// const account = await client.getAccount(session.current)
-
-	// await client.updateAccount(session.current, {
-	// 	username: 'legrisch',
-	// 	display_name: 'legrisch',
-	// 	timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-	// 	lang_tag: navigator.language
-	// })
+	await client.updateAccount(session.current, {
+		username: get(appState.options.player.name),
+		display_name: get(appState.options.player.name),
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+		lang_tag: navigator.language
+	})
 }
 
 /**
@@ -80,5 +81,6 @@ export const nakama = {
 	authenticated,
 	socket,
 	startSession,
-	endSession
+	endSession,
+	updateAccount
 }

@@ -2,9 +2,10 @@
 	import type { Track } from '$lib/Track/Track'
 	import type { TrackRecord } from '$lib/TrackRecord/TrackRecord'
 	import { c } from '$lib/utils/classes'
+	import type { UserTrack } from '../../../lib/Track/UserTrack'
 	import FormattedTime from './FormattedTime.svelte'
 
-	export let track: Track
+	export let track: Track | UserTrack
 	export let trackRecord: TrackRecord | undefined = undefined
 	export let time: number | undefined = undefined
 
@@ -18,14 +19,18 @@
 		bronze: '🥉'
 	}
 
+	const isUserTrack = (track: any): track is UserTrack => {
+		return !!track.isUserTrack
+	}
+
 	const personalBestMedal = trackRecord
-		? trackRecord.time.current < track.trackTimes.author
+		? trackRecord.time < track.trackTimes.author
 			? medals.author
-			: trackRecord.time.current < track.trackTimes.gold
+			: trackRecord.time < track.trackTimes.gold
 			? medals.gold
-			: trackRecord.time.current < track.trackTimes.silver
+			: trackRecord.time < track.trackTimes.silver
 			? medals.silver
-			: trackRecord.time.current < track.trackTimes.bronze
+			: trackRecord.time < track.trackTimes.bronze
 			? medals.bronze
 			: ''
 		: ''
@@ -44,10 +49,12 @@
 </script>
 
 <div class={c('grid grid-cols-[auto_auto] gap-x-[30px] gap-y-[15px]', _class)}>
-	<div>🏅 Author</div>
-	<div class="font-mono text-right">
-		<FormattedTime time={track.trackTimes.author} />
-	</div>
+	{#if isUserTrack(track) && track.userTrackRecord}
+		<div>🏅 Author</div>
+		<div class="font-mono text-right">
+			<FormattedTime time={track.userTrackRecord.time} />
+		</div>
+	{/if}
 
 	{#if track.trackTimes.gold !== 0}
 		<div>🥇 Gold</div>
@@ -77,7 +84,7 @@
 	{#if trackRecord}
 		<div>{personalBestMedal} Personal Best</div>
 		<div class="font-mono text-right">
-			<FormattedTime time={trackRecord.time.current} />
+			<FormattedTime time={trackRecord.time} />
 		</div>
 	{/if}
 

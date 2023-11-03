@@ -5,12 +5,13 @@
 	import { appState } from '$stores/app'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
+	import { nakama } from '../../../../../lib/nakama'
 
 	const { audio, video, player, debug } = appState.options
 
 	const { name } = player
 	const { music, sfx } = audio
-	const { postprocessing, shadows } = video
+	const { postprocessing, shadows, resolution } = video
 
 	let oldPlayerName = appState.options.player.name.current
 </script>
@@ -29,6 +30,36 @@
 
 		<Checkbox class="pl-0" bind:checked={$shadows}>SHADOWS</Checkbox>
 		<Checkbox class="pl-0" bind:checked={$postprocessing}>POST PROCESSING</Checkbox>
+
+		<div class="my-[10px] font-headline">Resolution</div>
+
+		<Checkbox
+			class="pl-0"
+			checked={$resolution === 'high'}
+			on:click={() => {
+				resolution.set('high')
+			}}
+		>
+			HIGH
+		</Checkbox>
+		<Checkbox
+			class="pl-0"
+			checked={$resolution === 'medium'}
+			on:click={() => {
+				resolution.set('medium')
+			}}
+		>
+			MEDIUM
+		</Checkbox>
+		<Checkbox
+			class="pl-0"
+			checked={$resolution === 'low'}
+			on:click={() => {
+				resolution.set('low')
+			}}
+		>
+			LOW
+		</Checkbox>
 	</Card>
 
 	<Card class="flex flex-col items-start justify-start">
@@ -48,6 +79,7 @@
 				class="h-[46px] !rounded-l-none"
 				on:click={() => {
 					name.set(oldPlayerName)
+					nakama.updateAccount()
 				}}
 			>
 				Save

@@ -75,8 +75,6 @@
 
 	let wireframe = false
 
-	const validated = toReadable(track, 'validated')
-
 	interactivity()
 
 	const {
@@ -312,7 +310,6 @@
 							'group relative aspect-square bg-gray-200 border-2 border-gray-600 text-gray-600 rounded-full inline-block px-[0.2em] [&_svg]:w-[0.85em] [&_svg]:h-[0.85em] [&_svg]:!fill-current',
 							wireframe && 'bg-gray-600 !text-white'
 						)}
-						disabled={$validated}
 						on:click={() => (wireframe = !wireframe)}
 					>
 						<svg
@@ -335,7 +332,6 @@
 							'relative group aspect-square bg-gray-200 border-2 border-gray-600 text-gray-600 rounded-full inline-block px-[0.2em] [&_svg]:w-[0.85em] [&_svg]:h-[0.85em] [&_svg]:!fill-current',
 							useSnap && 'bg-gray-600 !text-white'
 						)}
-						disabled={$validated}
 						on:click={() => (permanentSnap = !permanentSnap)}
 					>
 						<svg
@@ -358,7 +354,6 @@
 							'group relative aspect-square bg-gray-200 border-2 border-gray-600 text-gray-600 rounded-full inline-block px-[0.2em] [&_svg]:w-[0.85em] [&_svg]:h-[0.85em] [&_svg]:!fill-current',
 							!$currentlySelectedElement && 'bg-gray-300 !text-gray-400 border-gray-400'
 						)}
-						disabled={$validated}
 						on:click={focusCurrentlySelectedElement}
 					>
 						<svg
@@ -381,7 +376,6 @@
 							'group relative aspect-square bg-gray-200 border-2 border-gray-600 text-gray-600 rounded-full inline-block px-[0.2em] [&_svg]:w-[0.85em] [&_svg]:h-[0.85em] [&_svg]:!fill-current',
 							$editView === 'orbit' && 'bg-gray-600 !text-white'
 						)}
-						disabled={$validated}
 						on:click={() => ($editView = 'orbit')}
 					>
 						<svg
@@ -403,7 +397,6 @@
 								'aspect-square bg-red-200 border-2 border-red-600 text-red-600 rounded-full inline-block text-[0.85em] px-[0.4em]',
 								($editView === 'x' || $editView === 'x-inverse') && 'bg-red-600 !text-white'
 							)}
-							disabled={$validated}
 							on:click={() => setEditView('x')}
 						>
 							X
@@ -414,7 +407,6 @@
 									'aspect-square bg-green-200 border-2 border-green-600 text-green-600 rounded-full inline-block text-[0.85em] px-[0.4em]',
 									($editView === 'y' || $editView === 'y-inverse') && 'bg-green-600 !text-white'
 								)}
-								disabled={$validated}
 								on:click={() => setEditView('y')}
 							>
 								Y
@@ -424,7 +416,6 @@
 									'aspect-square bg-blue-200 border-2 border-blue-600 text-blue-600 rounded-full inline-block text-[0.85em] px-[0.4em]',
 									($editView === 'z' || $editView === 'z-inverse') && 'bg-blue-600 !text-white'
 								)}
-								disabled={$validated}
 								on:click={() => setEditView('z')}
 							>
 								Z
@@ -433,30 +424,6 @@
 					</div>
 				</div>
 			</div>
-
-			{#if $validated}
-				<Card class="flex flex-col gap-[15px] max-w-[28ch]">
-					<div class="font-headline">Track validated</div>
-
-					<div class="text-[0.8em]">
-						<p class="mb-[10px]">
-							The track is validated and can be played. A validated track cannot be edited.
-						</p>
-						<p>If you want to edit the track, you have to unlock it first.</p>
-					</div>
-
-					<div class="pb-[2px]">
-						<SpecialButton
-							style="red-inverted"
-							on:click={() => {
-								track.invalidate()
-							}}
-						>
-							Unlock
-						</SpecialButton>
-					</div>
-				</Card>
-			{/if}
 
 			<div class="absolute bottom-0 left-0">
 				<AddElement />

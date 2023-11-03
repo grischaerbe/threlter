@@ -4,7 +4,6 @@
 	import { useTrackEditor } from '../context'
 
 	const { track, currentlySelectedElement } = useTrackEditor()
-	const validated = toReadable(track, 'validated')
 
 	const removeElement = () => {
 		if (!$currentlySelectedElement) return
@@ -13,4 +12,4 @@
 	}
 </script>
 
-<Button style="red" disabled={$validated} class="font-mono" on:click={removeElement}>Delete</Button>
+<Button style="red" class="font-mono" on:click={removeElement}>Delete</Button>

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
+	import TrackSelection from '$components/UI/layouts/UserTrackSelection.svelte'
 
 	export let data
 

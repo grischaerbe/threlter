@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import type { LayoutLoad } from './$types'
 import { TrackManager } from '../../../../lib/TrackManager/TrackManager'
+import { TrackRecordsManager } from '../../../../lib/TrackRecord/TrackRecordsManager'
 
 export const load = (async ({ params, parent, route }) => {
 	// the parent layout logs in the user and creates the nakama session, so we

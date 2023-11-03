@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { goto, invalidate } from '$app/navigation'
-	import TrackSelection from '$components/UI/layouts/TrackSelection.svelte'
-	import { appState } from '$stores/app'
+	import { goto } from '$app/navigation'
+	import UserTrackSelection from '$components/UI/layouts/UserTrackSelection.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { UserTrack } from '../../../../../lib/Track/UserTrack'
 	import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
@@ -11,44 +10,10 @@
 
 	const { userId } = nakama
 
-	let trackSelected = false
-
 	$: userHasTracks = data.tracks.length > 0
-
-	const isUserTrack = (track: any): track is UserTrack => !!track.isUserTrack
 </script>
 
-<TrackSelection
-	bind:trackSelected
-	tracks={data.tracks}
-	tracksCanBeEdited
-	tracksCanBeDeleted
-	tracksCanBeDuplicated
-	tracksCanBeValidated
-	showAuthor
-	on:playtrack={(e) => {
-		goto(`/user/${e.detail.track.trackId}/time-attack`)
-	}}
-	on:deletetrack={async (e) => {
-		if (!nakama.session.current) return
-		await TrackManager.deleteUserTrack(e.detail.track.trackId)
-		invalidate('user:my-tracks')
-	}}
-	on:edittrack={(e) => {
-		goto(`/user/${e.detail.track.trackId}/edit`)
-	}}
-	on:duplicatetrack={async (e) => {
-		if (!nakama.session.current) return
-		if (!isUserTrack(e.detail.track)) return
-		const newTrack = e.detail.track.clone()
-		newTrack.trackName = `${newTrack.trackName} (Copy)`
-		await TrackManager.saveUserTrack(newTrack)
-		invalidate('user:my-tracks')
-	}}
-	on:validatetrack={(e) => {
-		goto(`/user/${e.detail.track.trackId}/validate`)
-	}}
->
+<UserTrackSelection tracks={data.tracks} users={data.users}>
 	<div
 		class="bottom-0 pb-[15px] bg-gradient-to-t from-blue-950 to-transparent pt-[60px] left-0 w-full justify-center absolute flex flex-row gap-[15px] text-[0.8em]"
 	>
@@ -59,7 +24,6 @@
 				if (!$userId) return
 				const track = new UserTrack($userId)
 				track.trackName = 'Unnamed Track'
-				track.authorName = appState.options.player.name.current
 				track.addTrackElement('Box')
 				await TrackManager.saveUserTrack(track)
 				goto(`/user/${track.trackId}/edit`)
@@ -79,4 +43,4 @@
 			CREATE
 		</SpecialButton>
 	</div>
-</TrackSelection>
+</UserTrackSelection>

@@ -1,3 +1,4 @@
+import { browser } from '$app/environment'
 import type { CurrentWritable } from '@threlte/core'
 import type { Updater } from 'svelte/store'
 
@@ -7,6 +8,7 @@ export const persist = <T>(store: CurrentWritable<T>, key: string) => {
 		current: store.current
 	} as any
 	const save = () => {
+		if (!browser) return
 		localStorage.setItem(key, JSON.stringify({ value: store.current }))
 	}
 	const set = (v: T) => {
@@ -21,7 +23,7 @@ export const persist = <T>(store: CurrentWritable<T>, key: string) => {
 	}
 	s.set = set
 	s.update = update
-	const localStorageValue = localStorage.getItem(key)
+	const localStorageValue = browser ? localStorage.getItem(key) : undefined
 	if (localStorageValue) {
 		const { value } = JSON.parse(localStorageValue)
 		set(value)

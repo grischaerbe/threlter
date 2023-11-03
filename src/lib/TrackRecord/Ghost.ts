@@ -1,40 +1,97 @@
-class GhostFrame {
-	public position: [number, number, number]
-	public quaternion: [number, number, number, number]
-	public time: number
+import { z, type TypeOf } from 'zod'
+import { GhostFrame, GhostFrameSchema } from './GhostFrame'
 
-	constructor(
-		position: [number, number, number],
-		quaternion: [number, number, number, number],
-		time: number
-	) {
-		this.position = position
-		this.quaternion = quaternion
-		this.time = time
-	}
-}
+export const GhostSchema = z.object({
+	id: z.string(),
+	frames: z.array(GhostFrameSchema)
+})
 
 export class Ghost {
 	public frames: GhostFrame[]
 	public id = Math.random().toString(36).substring(2, 9)
 	public averageTimeBetweenFrames = -1
+	public thresholdFactor = 2
 
 	public firstFrameTime = 0
 	public lastFrameTime = 0
+
+	#playbackFrames: GhostFrame[] = []
 
 	constructor() {
 		this.frames = []
 	}
 
-	public calculateAverageTimeBetweenFrames() {
+	isInitialized() {
+		return this.#playbackFrames.length === this.frames.length
+	}
+
+	initializePlayback() {
+		this.#playbackFrames = [...this.frames].reverse()
+		this.calculateAverageTimeBetweenPlaybackFrames()
+		this.lastFrameTime = this.#playbackFrames[0]?.time ?? 0
+		this.firstFrameTime = this.#playbackFrames[this.#playbackFrames.length - 1]?.time ?? 0
+	}
+
+	hasPlaybackFrames() {
+		return this.#playbackFrames.length > 0
+	}
+
+	getPlaybackFrame(time: number) {
+		if (this.#playbackFrames.length === 0) return undefined
+		// the frames are stored in this.#playbackFrames in reverse order
+		let closestFrameIndex = -1
+
+		let closestDiff = this.averageTimeBetweenFrames * this.thresholdFactor
+		// we iterate from the end of the array
+		frameloop: for (let index = this.#playbackFrames.length - 1; index >= 0; index--) {
+			const frame = this.#playbackFrames[index]
+			if (!frame) continue frameloop
+			const diff = Math.abs(frame.time - time)
+			if (diff < closestDiff) {
+				closestFrameIndex = index
+				closestDiff = diff
+			} else {
+				break frameloop
+			}
+		}
+
+		// we didn't find a frame in the threshold, so we return undefined
+		if (closestFrameIndex === -1) return undefined
+
+		// remove all frames after the closest frame (reverse order)
+		this.#playbackFrames.splice(closestFrameIndex + 1)
+
+		// pop
+		return this.#playbackFrames.pop()
+	}
+
+	public setFromData(data: any) {
+		const parsed = GhostSchema.parse(data)
+		this.id = parsed.id
+		this.frames = []
+		parsed.frames.forEach((frame) => {
+			this.addFrame(frame.position, frame.quaternion, frame.time)
+		})
+		this.calculateAverageTimeBetweenPlaybackFrames()
+		return this
+	}
+
+	public toJSON(): TypeOf<typeof GhostSchema> {
+		return {
+			id: this.id,
+			frames: this.frames.map((frame) => frame.toJSON())
+		}
+	}
+
+	public calculateAverageTimeBetweenPlaybackFrames() {
 		// calculate the average time between frames by checking the time between the first and last frame
 		// and dividing it by the number of frames
-		if (this.frames.length < 2) return
-		const firstFrame = this.frames[0]
-		const lastFrame = this.frames[this.frames.length - 1]
+		if (this.#playbackFrames.length < 2) return
+		const firstFrame = this.#playbackFrames[0]
+		const lastFrame = this.#playbackFrames[this.#playbackFrames.length - 1]
 		if (!firstFrame || !lastFrame) return
-		const diff = lastFrame.time - firstFrame.time
-		this.averageTimeBetweenFrames = diff / this.frames.length
+		const diff = Math.abs(lastFrame.time - firstFrame.time)
+		this.averageTimeBetweenFrames = diff / this.#playbackFrames.length
 	}
 
 	public addFrame(
@@ -46,48 +103,5 @@ export class Ghost {
 		this.frames.push(new GhostFrame(position, quaternion, time))
 		if (time > this.lastFrameTime) this.lastFrameTime = time
 		if (time < this.firstFrameTime) this.firstFrameTime = time
-	}
-
-	public getFrame(time: number): GhostFrame | undefined {
-		// get frame that is closest to the time
-		let closestFrame: GhostFrame | undefined = undefined
-		let closestDiff = Infinity
-
-		// we are potentially iterating over thousands of frames, so we start at a reasonable index.
-		// We know the average time between frames, so we can use that to calculate a start index. We then subtract 50 frames for good measure.
-
-		if (this.averageTimeBetweenFrames === -1) this.calculateAverageTimeBetweenFrames()
-		const startIndex = Math.max(
-			0,
-			Math.floor((time - this.averageTimeBetweenFrames * 25) / this.averageTimeBetweenFrames)
-		)
-
-		frameloop: for (let index = startIndex; index < this.frames.length; index++) {
-			const frame = this.frames[index]
-			if (!frame) continue frameloop
-			const diff = Math.abs(frame.time - time)
-			if (diff < closestDiff) {
-				closestFrame = frame
-				closestDiff = diff
-			} else {
-				break frameloop
-			}
-		}
-
-		return closestFrame
-	}
-
-	public static fromString(string: string) {
-		const data = JSON.parse(string)
-		return Ghost.fromJSON(data)
-	}
-
-	public static fromJSON(data: any) {
-		const ghost = new Ghost()
-		ghost.id = data.id
-		for (const frame of data.frames) {
-			ghost.addFrame(frame.position, frame.quaternion, frame.time)
-		}
-		return ghost
 	}
 }

@@ -6,7 +6,6 @@
 	import { toReadable } from '../../../lib/utils/toStore'
 
 	const { track, currentlySelectedElement } = useTrackEditor()
-	const validated = toReadable(track, 'validated')
 
 	const rotateElement = () => {
 		if (!$currentlySelectedElement) return
@@ -20,6 +19,4 @@
 	}
 </script>
 
-<Button style="regular" class="font-mono" disabled={$validated} on:click={rotateElement}>
-	Rotate
-</Button>
+<Button style="regular" class="font-mono" on:click={rotateElement}>Rotate</Button>

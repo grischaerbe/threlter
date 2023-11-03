@@ -8,21 +8,17 @@
 
 	const { currentlySelectedElement, isDragging, track } = useTrackEditor()
 
-	const validated = toReadable(track, 'validated')
-
-	$: if ($validated) currentlySelectedElement.set(undefined)
-
 	$: selected = $currentlySelectedElement?.id === trackElement.id
 </script>
 
 <T.Group
 	on:click={(e) => {
 		e.stopPropagation()
-		if ($isDragging || $validated) return
+		if ($isDragging) return
 		currentlySelectedElement.set(trackElement)
 	}}
 	on:pointermissed={() => {
-		if ($isDragging || $validated) return
+		if ($isDragging) return
 		currentlySelectedElement.set(undefined)
 	}}
 >

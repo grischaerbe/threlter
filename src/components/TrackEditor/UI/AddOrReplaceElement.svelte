@@ -5,13 +5,10 @@
 		type TrackElementPrototypeType
 	} from '$components/TrackElements/elements'
 	import { c } from '$lib/utils/classes'
-	import { toReadable } from '../../../lib/utils/toStore'
 	import PlainButton from '../../UI/components/PlainButton.svelte'
 	import { useTrackEditor } from '../context'
 
 	const { track, currentlySelectedElement } = useTrackEditor()
-
-	const validated = toReadable(track, 'validated')
 
 	type Category = {
 		name: TrackElementCategory
@@ -38,11 +35,11 @@
 	})
 </script>
 
-<div class={c('flex flex-row items-end gap-[5px]', $validated && 'opacity-50')}>
+<div class={c('flex flex-row items-end gap-[5px]')}>
 	{#each categories as category, index}
 		{@const isSelected = selectedCategory === category}
 		<div class="flex flex-col gap-[0px]">
-			{#if isSelected && !$validated}
+			{#if isSelected}
 				{#each category.elements as element, index}
 					{@const isFirst = index === 0}
 					<PlainButton
@@ -50,8 +47,7 @@
 							'border-orange border-x-2 border-b-2 p-[6px] bg-blue-950',
 							isFirst && 'rounded-t-md border-t-2'
 						)}
-						disabled={$validated}
-						forceFocusOnMount={index === category.elements.length - 1 && !$validated}
+						forceFocusOnMount={index === category.elements.length - 1}
 						on:click={() => {
 							if ($currentlySelectedElement) {
 								track.setTrackElementType($currentlySelectedElement.id, element)
@@ -78,14 +74,13 @@
 						selectedCategory = category
 					}
 				}}
-				forceFocusOnMount={index === 0 && !$validated}
+				forceFocusOnMount={index === 0}
 				class={c(
 					'border-orange p-[6px]',
 					isSelected
 						? 'border-x-2 border-b-2 rounded-b-md bg-blue-900'
 						: 'border-2 rounded-md bg-blue-950'
 				)}
-				disabled={$validated}
 			>
 				<img src={category.previewImage} alt={category.name} class="!h-[56px] !w-[56px]" />
 			</PlainButton>

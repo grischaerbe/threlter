@@ -4,4 +4,4 @@
 	export let data
 </script>
 
-<TrackValidation track={data.track} />
+<TrackValidation track={data.track} trackRecordsManager={data.trackRecordsManager} />
