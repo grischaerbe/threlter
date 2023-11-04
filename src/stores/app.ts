@@ -6,7 +6,8 @@ export const appState = {
 	options: {
 		debug: persist(currentWritable(false), 'tm-options-debug'),
 		player: {
-			name: persist(currentWritable(''), 'tm-options-player-name')
+			name: persist(currentWritable(''), 'tm-options-player-name'),
+			color: persist(currentWritable('#fe3d00'), 'tm-options-player-color')
 		},
 		audio: {
 			music: persist(currentWritable(true), 'tm-options-audio-music'),

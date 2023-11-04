@@ -18,11 +18,14 @@
 	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
 	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
-	import BoundingSphere from './BoundingSphere.svelte'
+	import Bounds from './Bounds.svelte'
 	import GhostPlayer from './GhostPlayer.svelte'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
+	import type { Box3 } from 'three'
+	import BoundsState from './BoundsState.svelte'
+	import OutOfBounds from './UI/OutOfBounds.svelte'
 
 	export let track: Track
 	export let trackRecordsManager: TrackRecordsManager
@@ -121,9 +124,6 @@
 	gamepad.clusterBottom.on('press', softResetGame)
 	useKeyDown('Enter', softResetGame)
 
-	let newTrackRecord = false
-	let newPersonalBest = false
-
 	const onFinishReached = () => {
 		trackRecordsManager.setCurrentFinalTime($time)
 		state.set('finished')
@@ -137,40 +137,39 @@
 			autoRotate = false
 		}
 	})
+
+	let boundsBox3: Box3 | undefined
 </script>
 
 <Suspense final let:suspended>
 	<LoadingUi slot="fallback" />
 
-	<!-- 3D -->
-	{#if track}
-		<BoundingSphere let:center let:radius let:sphere>
-			<TrackViewer let:trackElement {track} on:trackcompleted={onFinishReached}>
-				<TrackElementTransform {trackElement}>
-					<TrackElement {trackElement} />
-				</TrackElementTransform>
-			</TrackViewer>
+	<Bounds let:center let:radius let:sphere bind:boundsBox3>
+		<TrackViewer let:trackElement {track} on:trackcompleted={onFinishReached}>
+			<TrackElementTransform {trackElement}>
+				<TrackElement {trackElement} />
+			</TrackElementTransform>
+		</TrackViewer>
 
-			{#if radius > 0 && $state === 'intro'}
-				<T.PerspectiveCamera makeDefault position.x={radius}>
-					<CameraControls
-						{autoRotate}
-						autoRotateSpeed={0.5}
-						truckSpeed={0}
-						bind:ref={cc}
-						on:create={async ({ ref }) => {
-							await ref.moveTo(center.x, center.y, center.z)
-							await ref.fitToSphere(sphere, false)
-							const currentDist = ref.distance
-							ref.polarAngle = 75 * DEG2RAD
-							ref.minDistance = currentDist
-							ref.maxDistance = currentDist
-						}}
-					/>
-				</T.PerspectiveCamera>
-			{/if}
-		</BoundingSphere>
-	{/if}
+		{#if radius > 0 && $state === 'intro'}
+			<T.PerspectiveCamera makeDefault position.x={radius}>
+				<CameraControls
+					{autoRotate}
+					autoRotateSpeed={0.5}
+					truckSpeed={0}
+					bind:ref={cc}
+					on:create={async ({ ref }) => {
+						await ref.moveTo(center.x, center.y, center.z)
+						await ref.fitToSphere(sphere, false)
+						const currentDist = ref.distance
+						ref.polarAngle = 75 * DEG2RAD
+						ref.minDistance = currentDist
+						ref.maxDistance = currentDist
+					}}
+				/>
+			</T.PerspectiveCamera>
+		{/if}
+	</Bounds>
 
 	<Car
 		active={$carActive}
@@ -180,12 +179,26 @@
 		useCarCamera={$state !== 'intro'}
 		let:carState
 	>
+		{#if $state === 'playing' && boundsBox3}
+			<BoundsState {boundsBox3} {carState} let:isOutOfBounds>
+				{#if isOutOfBounds}
+					<UiWrapper>
+						<slot name="ui-out-of-bounds" {restart} {softReset}>
+							<OutOfBounds />
+						</slot>
+					</UiWrapper>
+				{/if}
+			</BoundsState>
+		{/if}
+
 		{#if $state === 'playing'}
 			<GhostRecorder ghost={$currentRecord.ghost} time={$time} {carState} />
 		{/if}
 
 		{#each $ghostRecords as trackRecord}
-			<GhostPlayer {carState} ghost={trackRecord.ghost} time={$time} />
+			{#key trackRecord.recordId}
+				<GhostPlayer {carState} {trackRecord} time={$time} />
+			{/key}
 		{/each}
 	</Car>
 

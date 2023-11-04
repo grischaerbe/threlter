@@ -45,7 +45,7 @@
 	</div>
 </div>
 
-{#if !isCampaign && !isMyTracks && !isOptions}
+{#if !isExplore && !isMyTracks && !isOptions}
 	<div class="text-xs fixed bottom-[15px] left-[15px] text-white/30">
 		{$userId}
 	</div>

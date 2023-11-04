@@ -1,23 +1,32 @@
 <script lang="ts">
-	import { T, useFrame } from '@threlte/core'
-	import type { Group } from 'three'
+	import { T, useFrame, useThrelte } from '@threlte/core'
+	import { Text } from '@threlte/extras'
+	import type { ComponentProps } from 'svelte'
+	import { Group } from 'three'
 	import { DEG2RAD, clamp, mapLinear } from 'three/src/math/MathUtils'
-	import type { Ghost } from '../../lib/TrackRecord/Ghost'
+	import { TrackManager } from '../../lib/TrackManager/TrackManager'
+	import type { TrackRecord } from '../../lib/TrackRecord/TrackRecord'
 	import MuscleCarGhost from '../Car/Models/MuscleCarGhost.svelte'
 	import MuscleCarGhostWheel from '../Car/Models/MuscleCarGhostWheel.svelte'
 	import type { CarState } from '../Car/RaycastVehicleController/types'
 
-	export let ghost: Ghost
+	export let trackRecord: TrackRecord
 	export let time: number
 	export let carState: CarState
 
-	ghost.initializePlayback()
+	$: ghost = trackRecord.ghost
+
+	const { camera } = useThrelte()
 
 	let opacity = 0
 
-	let group: Group
+	const positionGroup = new Group()
+	const rotationGroup = new Group()
+	let text: ComponentProps<Text>['ref']
 
 	let showGhost = true
+
+	let userPromise = TrackManager.getUser([trackRecord.userId])
 
 	useFrame(() => {
 		// we didn't start playing yet
@@ -44,8 +53,8 @@
 			return
 		} else {
 			showGhost = true
-			group?.position.set(...currentFrame.position)
-			group?.quaternion.set(...currentFrame.quaternion)
+			positionGroup.position.set(...currentFrame.position)
+			rotationGroup.quaternion.set(...currentFrame.quaternion)
 
 			// get distance from two [number, number, number] vectors
 			const distanceFromCarToGhost = Math.sqrt(
@@ -55,6 +64,12 @@
 			)
 
 			opacity = clamp(mapLinear(distanceFromCarToGhost, 1, 10, 0, 0.5), 0, 0.5)
+
+			if (text) {
+				text.up.set($camera.up.x, $camera.up.y, $camera.up.z)
+				text.lookAt($camera.position)
+				text.fillOpacity = opacity
+			}
 		}
 	})
 
@@ -63,8 +78,20 @@
 	const height = -0.4
 </script>
 
-{#if showGhost}
-	<T.Group bind:ref={group}>
+<T is={positionGroup} visible={showGhost}>
+	{#await userPromise then user}
+		<Text
+			font="/fonts/Rubik-Regular.ttf"
+			bind:ref={text}
+			text={user[0].username}
+			fontSize={0.4}
+			anchorX="50%"
+			anchorY="100%"
+			position.y={1}
+		/>
+	{/await}
+
+	<T is={rotationGroup}>
 		<T.Group rotation.y={-90 * DEG2RAD}>
 			<MuscleCarGhost {opacity} />
 
@@ -96,5 +123,5 @@
 				</T.Group>
 			</T.Group>
 		</T.Group>
-	</T.Group>
-{/if}
+	</T>
+</T>

@@ -8,15 +8,14 @@
 		EffectComposer,
 		EffectPass,
 		FXAAEffect,
+		NoiseEffect,
 		RenderPass,
 		ToneMappingEffect,
-		ToneMappingMode,
-		NoiseEffect,
-		KernelSize
+		ToneMappingMode
 	} from 'postprocessing'
 	import { onDestroy } from 'svelte'
-	import { appState } from '../stores/app'
 	import { HalfFloatType } from 'three'
+	import { appState } from '../stores/app'
 
 	const { postprocessing } = appState.options.video
 
@@ -64,7 +63,7 @@
 		intensity: 0.3
 	})
 
-	const { renderer, scene, camera } = useThrelte()
+	const { renderer, scene, camera, dpr } = useThrelte()
 
 	const composer = new EffectComposer(renderer, {
 		frameBufferType: HalfFloatType
@@ -102,5 +101,6 @@
 	})
 
 	const { size } = useThrelte()
-	$: composer.setSize($size.width, $size.height)
+	$: composer.setSize($size.width, $size.height, false)
+	$: $dpr, composer.setSize($size.width, $size.height, false)
 </script>

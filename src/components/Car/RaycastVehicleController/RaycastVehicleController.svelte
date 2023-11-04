@@ -1,6 +1,3 @@
-<!--
-
--->
 <script lang="ts">
 	import {
 		Collider as RapierCollider,

@@ -3,6 +3,7 @@
 	import Checkbox from '$components/UI/components/Checkbox.svelte'
 	import TextInput from '$components/UI/components/TextInput.svelte'
 	import { appState } from '$stores/app'
+	import { useKeyboardNavigation } from '../../../../../components/UI/KeyboardNavigation.svelte'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { Nakama } from '../../../../../lib/nakama/Nakama'
@@ -10,20 +11,58 @@
 
 	const { audio, video, player, debug } = appState.options
 
-	const { name } = player
+	const { name, color } = player
 	const { music, sfx } = audio
 	const { postprocessing, shadows, resolution } = video
 
+	const colors = ['#fe3d00', '#BABACA', '#353535', '#6892be', '#FFD700']
+
 	let currentPlayerName = appState.options.player.name.current
+
+	const { keyboardNavigationAction } = useKeyboardNavigation()
 </script>
 
 <BlurryCard class="h-full grid grid-cols-2 gap-[15px]">
 	<Card class="flex flex-col items-start justify-start">
-		<div class="mb-[10px] font-headline">Audio</div>
+		<div class="mb-[10px] font-headline">Name</div>
 
-		<Checkbox forceFocusOnMount class="pl-0" bind:checked={$music}>Music</Checkbox>
+		<div class="flex flex-row items-end text-[0.8em] w-full">
+			<TextInput
+				label="Name"
+				labelClass="hidden"
+				id="name"
+				inputClass="!rounded-r-none !border-r-0 h-[46px]"
+				preventFocusOnFocusLost
+				bind:value={currentPlayerName}
+			/>
 
-		<Checkbox class="pl-0" bind:checked={$sfx}>SFX</Checkbox>
+			<SpecialButton
+				disabled={!currentPlayerName.length}
+				class="h-[46px] !rounded-l-none"
+				on:click={async () => {
+					name.set(currentPlayerName)
+					Nakama.client.updateAccount(await SessionManager.getSession(), {
+						username: currentPlayerName
+					})
+				}}
+			>
+				Save
+			</SpecialButton>
+		</div>
+
+		<div class="my-[10px] font-headline">Color</div>
+		<div class="flex flex-row gap-[10px]">
+			{#each colors as c}
+				<button
+					use:keyboardNavigationAction
+					class="h-[20px] w-[20px] block border-[3px] border-white/20 rounded-sm outline-none"
+					style="background-color: {c};"
+					on:click={() => {
+						color.set(c)
+					}}
+				/>
+			{/each}
+		</div>
 	</Card>
 
 	<Card class="flex flex-col items-start justify-start">
@@ -64,30 +103,11 @@
 	</Card>
 
 	<Card class="flex flex-col items-start justify-start">
-		<div class="mb-[10px] font-headline">Player</div>
+		<div class="mb-[10px] font-headline">Audio</div>
 
-		<div class="flex flex-row items-end text-[0.8em] w-full">
-			<TextInput
-				label="Name"
-				id="name"
-				inputClass="!rounded-r-none !border-r-0 h-[46px]"
-				preventFocusOnFocusLost
-				bind:value={currentPlayerName}
-			/>
+		<Checkbox class="pl-0" bind:checked={$music}>Music</Checkbox>
 
-			<SpecialButton
-				disabled={!currentPlayerName.length}
-				class="h-[46px] !rounded-l-none"
-				on:click={async () => {
-					name.set(currentPlayerName)
-					Nakama.client.updateAccount(await SessionManager.getSession(), {
-						username: currentPlayerName
-					})
-				}}
-			>
-				Save
-			</SpecialButton>
-		</div>
+		<Checkbox class="pl-0" bind:checked={$sfx}>SFX</Checkbox>
 	</Card>
 
 	<Card class="flex flex-col items-start justify-start">

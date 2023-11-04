@@ -19,7 +19,7 @@
 
 	export let headline: string | undefined = undefined
 
-	let selectedTrack: UserTrack | undefined = undefined
+	let selectedTrack: UserTrack | undefined = tracks.length ? tracks[0] : undefined
 
 	const isOwnTrack = (userTrack: UserTrack) => userTrack.userId === SessionManager.userId
 </script>
