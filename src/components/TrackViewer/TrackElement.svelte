@@ -5,11 +5,11 @@
 </script>
 
 <script lang="ts">
-	import { getContext, setContext } from 'svelte'
+	import { getContext, setContext, type SvelteComponent } from 'svelte'
 
 	import type { TrackElement } from '$lib/Track/TrackElement'
-	import { trackElementPrototypes } from '../TrackElements/elements'
 	import { toReadable } from '../../lib/utils/toStore'
+	import { trackElementPrototypes } from '../TrackElements/elements'
 
 	export let trackElement: TrackElement
 
@@ -17,7 +17,13 @@
 
 	const type = toReadable(trackElement, 'type')
 
-	$: component = trackElementPrototypes[$type].component
+	$: component = trackElementPrototypes[$type].component as typeof SvelteComponent<
+		any,
+		any,
+		{
+			selection: {}
+		}
+	>
 </script>
 
 <svelte:component this={component}>
