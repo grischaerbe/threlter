@@ -66,7 +66,7 @@ export class Track extends Dispatcher<Events> {
 		return this
 	}
 
-	public clone() {
+	public remix() {
 		const cloned = new Track()
 		cloned.setFromData(JSON.parse(JSON.stringify(this)))
 		cloned.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`

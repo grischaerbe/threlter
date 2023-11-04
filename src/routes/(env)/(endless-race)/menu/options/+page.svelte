@@ -5,7 +5,8 @@
 	import { appState } from '$stores/app'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
-	import { nakama } from '../../../../../lib/nakama'
+	import { Nakama } from '../../../../../lib/nakama/Nakama'
+	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 
 	const { audio, video, player, debug } = appState.options
 
@@ -13,7 +14,7 @@
 	const { music, sfx } = audio
 	const { postprocessing, shadows, resolution } = video
 
-	let oldPlayerName = appState.options.player.name.current
+	let currentPlayerName = appState.options.player.name.current
 </script>
 
 <BlurryCard class="h-full grid grid-cols-2 gap-[15px]">
@@ -71,15 +72,17 @@
 				id="name"
 				inputClass="!rounded-r-none !border-r-0 h-[46px]"
 				preventFocusOnFocusLost
-				bind:value={oldPlayerName}
+				bind:value={currentPlayerName}
 			/>
 
 			<SpecialButton
-				disabled={!oldPlayerName.length}
+				disabled={!currentPlayerName.length}
 				class="h-[46px] !rounded-l-none"
-				on:click={() => {
-					name.set(oldPlayerName)
-					nakama.updateAccount()
+				on:click={async () => {
+					name.set(currentPlayerName)
+					Nakama.client.updateAccount(await SessionManager.getSession(), {
+						username: currentPlayerName
+					})
 				}}
 			>
 				Save

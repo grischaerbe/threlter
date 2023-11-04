@@ -24,9 +24,7 @@
 	}
 
 	const personalBestMedal = trackRecord
-		? trackRecord.time < track.trackTimes.author
-			? medals.author
-			: trackRecord.time < track.trackTimes.gold
+		? trackRecord.time < track.trackTimes.gold
 			? medals.gold
 			: trackRecord.time < track.trackTimes.silver
 			? medals.silver
@@ -36,9 +34,7 @@
 		: ''
 
 	const yourTimeMedal = time
-		? time < track.trackTimes.author
-			? medals.author
-			: time < track.trackTimes.gold
+		? time < track.trackTimes.gold
 			? medals.gold
 			: time < track.trackTimes.silver
 			? medals.silver

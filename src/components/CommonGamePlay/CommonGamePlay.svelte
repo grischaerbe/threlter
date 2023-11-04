@@ -10,7 +10,7 @@
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
 	import type { TrackRecordsManager } from '../../lib/TrackRecord/TrackRecordsManager'
-	import { nakama } from '../../lib/nakama'
+	import { toReadable } from '../../lib/utils/toStore'
 	import CameraControls from '../CameraControls/CameraControls.svelte'
 	import Car from '../Car/Car.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
@@ -23,11 +23,6 @@
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
-	import { toReadable } from '../../lib/utils/toStore'
-
-	const { userId } = nakama
-
-	if (!$userId) throw new Error('No user id found')
 
 	export let track: Track
 	export let trackRecordsManager: TrackRecordsManager
@@ -106,9 +101,6 @@
 	watch(state, (state) => {
 		// when we're "playing", we initialize a new working track record
 		if (state === 'playing') {
-			if (!$userId) {
-				throw new Error('No user id found')
-			}
 			trackRecordsManager.reset()
 		}
 	})

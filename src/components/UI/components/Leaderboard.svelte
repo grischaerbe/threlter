@@ -2,14 +2,15 @@
 	import { onMount } from 'svelte'
 	import type { Track } from '../../../lib/Track/Track'
 	import { TrackManager } from '../../../lib/TrackManager/TrackManager'
-	import { nakama } from '../../../lib/nakama'
+	import { SessionManager } from '../../../lib/nakama/SessionManager'
+	import { toReadable } from '../../../lib/utils/toStore'
 	import FormattedTime from './FormattedTime.svelte'
 	import SpecialButton from './SpecialButton.svelte'
 
 	export let track: Track
 	export let itemsPerPage = 10
 
-	const { userId } = nakama
+	const userId = toReadable(SessionManager, 'userId')
 
 	let leaderboard: Awaited<ReturnType<typeof TrackManager.getLeaderboard>> | undefined = undefined
 

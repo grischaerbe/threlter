@@ -4,11 +4,9 @@
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { UserTrack } from '../../../../../lib/Track/UserTrack'
 	import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
-	import { nakama } from '../../../../../lib/nakama'
+	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 
 	export let data
-
-	const { userId } = nakama
 
 	$: userHasTracks = data.tracks.length > 0
 </script>
@@ -21,8 +19,8 @@
 			style="inverted"
 			forceFocusOnMount={!userHasTracks}
 			on:click={async () => {
-				if (!$userId) return
-				const track = new UserTrack($userId)
+				if (!SessionManager.userId) return
+				const track = new UserTrack(SessionManager.userId)
 				track.trackName = 'Unnamed Track'
 				track.addTrackElement('Box')
 				await TrackManager.saveUserTrack(track)

@@ -1,7 +1,7 @@
 import { z, type TypeOf } from 'zod'
+import { TrackRecord, TrackRecordSchema } from '../TrackRecord/TrackRecord'
+import { SessionManager } from '../nakama/SessionManager'
 import { Track, TrackSchema } from './Track'
-import { TrackRecordSchema, TrackRecord } from '../TrackRecord/TrackRecord'
-import { nakama } from '../nakama'
 
 export const UserTrackSchema = TrackSchema.extend({
 	userId: z.string(),
@@ -47,13 +47,14 @@ export class UserTrack extends Track {
 		return this
 	}
 
-	public clone() {
-		if (!nakama.session.current?.user_id) throw new Error('User not logged in')
-		const cloned = new UserTrack(this.userId)
+	public remix() {
+		if (!SessionManager.userId) throw new Error('User not logged in')
+		const cloned = new UserTrack('')
 		cloned.setFromData(JSON.parse(JSON.stringify(this)))
-		cloned.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+		cloned.trackName = `${this.trackName} (Remix)`
 		cloned.userTrackRecord = undefined
-		cloned.userId = nakama.session.current.user_id
+		cloned.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+		cloned.userId = SessionManager.userId
 		return cloned
 	}
 }

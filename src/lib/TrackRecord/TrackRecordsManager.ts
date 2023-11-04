@@ -1,6 +1,6 @@
 import { Dispatcher } from '../Track/Dispatcher'
 import { TrackManager } from '../TrackManager/TrackManager'
-import { nakama } from '../nakama'
+import { SessionManager } from '../nakama/SessionManager'
 import { TrackRecord } from './TrackRecord'
 
 function filterUndefined(value: TrackRecord | undefined): value is TrackRecord {
@@ -24,14 +24,13 @@ export class TrackRecordsManager extends Dispatcher<Events> {
 	current: TrackRecord
 
 	static async fromTrackId(trackId: string) {
-		if (!nakama.session.current || !nakama.session.current.user_id)
-			throw new Error('Session not set')
+		if (!SessionManager.userId) throw new Error('Session not set')
 		const [rankedTrackRecord, ownTrackRecord] = await Promise.all([
 			TrackManager.getTrackRecord(trackId, 1),
 			TrackManager.getOwnTrackRecord(trackId)
 		])
 		return new TrackRecordsManager(
-			nakama.session.current.user_id,
+			SessionManager.userId,
 			trackId,
 			rankedTrackRecord,
 			ownTrackRecord

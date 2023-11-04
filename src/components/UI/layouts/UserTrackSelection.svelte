@@ -6,7 +6,7 @@
 	import type { UserTrack } from '../../../lib/Track/UserTrack'
 	import { TrackManager } from '../../../lib/TrackManager/TrackManager'
 	import { LoadDependencies } from '../../../lib/loadDependencies'
-	import { nakama } from '../../../lib/nakama'
+	import { SessionManager } from '../../../lib/nakama/SessionManager'
 	import BlurryCard from '../components/BlurryCard.svelte'
 	import ButtonGroup from '../components/ButtonGroup/ButtonGroup.svelte'
 	import Card from '../components/Card.svelte'
@@ -21,9 +21,7 @@
 
 	let selectedTrack: UserTrack | undefined = undefined
 
-	const { userId } = nakama
-
-	const isOwnTrack = (userTrack: UserTrack) => userTrack.userId === $userId
+	const isOwnTrack = (userTrack: UserTrack) => userTrack.userId === SessionManager.userId
 </script>
 
 {#if headline}
@@ -71,7 +69,7 @@
 								</span>
 
 								<div class="text-[0.8em]">
-									{user?.display_name}
+									{user?.username}
 								</div>
 							</div>
 
@@ -119,12 +117,9 @@
 							<PlainButton
 								class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 								on:click={async () => {
-									if (!nakama.session.current || !nakama.session.current.user_id || !selectedTrack)
-										return
-									const newTrack = selectedTrack.clone()
-									newTrack.trackName = `${newTrack.trackName} (Copy)`
-									newTrack.userId = nakama.session.current.user_id
-									newTrack.userTrackRecord = undefined
+									if (!SessionManager.userId) return
+									if (!selectedTrack) return
+									const newTrack = selectedTrack.remix()
 									await TrackManager.saveUserTrack(newTrack)
 									await invalidate(LoadDependencies['menu/my-tracks'])
 									goto(`/user/${newTrack.trackId}/edit`)
@@ -137,7 +132,7 @@
 								<PlainButton
 									class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500/80 hover:bg-red-500 focus:bg-red-500"
 									on:click={async () => {
-										if (!nakama.session.current || !selectedTrack) return
+										if (!selectedTrack) return
 										await TrackManager.deleteUserTrack(selectedTrack.trackId)
 										invalidate(LoadDependencies['menu/my-tracks'])
 									}}

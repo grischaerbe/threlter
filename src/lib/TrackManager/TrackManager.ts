@@ -1,28 +1,19 @@
-import type { Client } from '@heroiclabs/nakama-js'
 import { debounce } from 'lodash-es'
-import { nakama } from '../nakama'
 import { UserTrack } from '../Track/UserTrack'
 import { TrackRecord } from '../TrackRecord/TrackRecord'
+import { Nakama } from '../nakama/Nakama'
+import { SessionManager } from '../nakama/SessionManager'
 
 const filterUndefined = <T>(d: T | undefined): d is T => {
 	return !!d
 }
 
 export class TrackManager {
-	public static client: Client = nakama.client
-	public static session = nakama.session
-
 	static async getOwnTracks() {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-
-		const response = await TrackManager.client.rpc(
-			TrackManager.session.current,
-			'get_user_tracks',
-			{
-				sort: 'recent',
-				own: true
-			}
-		)
+		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
+			sort: 'recent',
+			own: true
+		})
 
 		const { objects } = response.payload as { objects: { value: any }[] }
 
@@ -32,9 +23,7 @@ export class TrackManager {
 	}
 
 	static async getUserTrack(trackId: string) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-
-		const response = await TrackManager.client.rpc(TrackManager.session.current, 'get_user_track', {
+		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_track', {
 			trackId
 		})
 		const { object } = response.payload as { object: { value: any } }
@@ -43,8 +32,7 @@ export class TrackManager {
 	}
 
 	static async deleteUserTrack(trackId: string) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		await TrackManager.client.deleteStorageObjects(TrackManager.session.current, {
+		await Nakama.client.deleteStorageObjects(await SessionManager.getSession(), {
 			object_ids: [
 				{
 					collection: 'user-tracks',
@@ -57,13 +45,11 @@ export class TrackManager {
 
 	static saveUserTrackDebounced = debounce(TrackManager.saveUserTrack, 500)
 	static async saveUserTrack(userTrack: UserTrack) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		await TrackManager.client.rpc(TrackManager.session.current, 'save_user_track', userTrack)
+		await Nakama.client.rpc(await SessionManager.getSession(), 'save_user_track', userTrack)
 	}
 
 	static async publishUserTrack(userTrack: UserTrack, trackRecord: TrackRecord) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		await TrackManager.client.rpc(TrackManager.session.current, 'publish_user_track', {
+		await Nakama.client.rpc(await SessionManager.getSession(), 'publish_user_track', {
 			userTrack,
 			trackRecord
 		})
@@ -73,17 +59,11 @@ export class TrackManager {
 	 * Tracks by other users, only validated tracks.
 	 */
 	public static async getCommunityTracks(sort: 'popular' | 'recent', limit: number, page: number) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-
-		const response = await TrackManager.client.rpc(
-			TrackManager.session.current,
-			'get_user_tracks',
-			{
-				sort,
-				limit,
-				page
-			}
-		)
+		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
+			sort,
+			limit,
+			page
+		})
 
 		const { objects } = response.payload as { objects: { value: any }[] }
 
@@ -98,16 +78,14 @@ export class TrackManager {
 	}
 
 	public static async addTrackRecord(trackRecord: TrackRecord) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		await TrackManager.client.rpc(TrackManager.session.current, 'add_track_record', {
+		await Nakama.client.rpc(await SessionManager.getSession(), 'add_track_record', {
 			trackRecord
 		})
 	}
 
 	public static async getLeaderboard(trackId: string, limit: number, cursor?: string) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		const response = await TrackManager.client.listLeaderboardRecords(
-			TrackManager.session.current,
+		const response = await Nakama.client.listLeaderboardRecords(
+			await SessionManager.getSession(),
 			trackId,
 			undefined,
 			limit,
@@ -151,9 +129,8 @@ export class TrackManager {
 	}
 
 	public static async getUser(userIds: string[]) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		const response = await TrackManager.client.getUsers(
-			TrackManager.session.current,
+		const response = await Nakama.client.getUsers(
+			await SessionManager.getSession(),
 			userIds,
 			undefined,
 			undefined
@@ -162,10 +139,9 @@ export class TrackManager {
 	}
 
 	public static async getTrackRecord(trackId: string, rank: number) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
 		try {
-			const response = await TrackManager.client.listLeaderboardRecords(
-				TrackManager.session.current,
+			const response = await Nakama.client.listLeaderboardRecords(
+				await SessionManager.getSession(),
 				trackId,
 				undefined,
 				rank,
@@ -182,13 +158,12 @@ export class TrackManager {
 	}
 
 	public static async getOwnTrackRecord(trackId: string) {
-		if (!TrackManager.session.current) throw new Error('Session not set')
-		if (!TrackManager.session.current.user_id) throw new Error('User not logged in')
+		if (!SessionManager.userId) throw new Error('User not logged in')
 		try {
-			const response = await TrackManager.client.listLeaderboardRecordsAroundOwner(
-				TrackManager.session.current,
+			const response = await Nakama.client.listLeaderboardRecordsAroundOwner(
+				await SessionManager.getSession(),
 				trackId,
-				TrackManager.session.current.user_id,
+				SessionManager.userId,
 				1
 			)
 			const trackRecords = response.records?.map((record) => {
