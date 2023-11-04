@@ -2,13 +2,14 @@
 	import { T, useFrame, useThrelte } from '@threlte/core'
 	import { Text } from '@threlte/extras'
 	import type { ComponentProps } from 'svelte'
-	import { Group } from 'three'
+	import { Group, Mesh, MeshBasicMaterial, ShaderMaterial } from 'three'
 	import { DEG2RAD, clamp, mapLinear } from 'three/src/math/MathUtils'
 	import { TrackManager } from '../../lib/TrackManager/TrackManager'
 	import type { TrackRecord } from '../../lib/TrackRecord/TrackRecord'
 	import MuscleCarGhost from '../Car/Models/MuscleCarGhost.svelte'
 	import MuscleCarGhostWheel from '../Car/Models/MuscleCarGhostWheel.svelte'
 	import type { CarState } from '../Car/RaycastVehicleController/types'
+	import { createBillboardMaterial } from './createBillboardMaterial'
 
 	export let trackRecord: TrackRecord
 	export let time: number
@@ -23,6 +24,27 @@
 	const positionGroup = new Group()
 	const rotationGroup = new Group()
 	let text: ComponentProps<Text>['ref']
+	const textMaterial = new ShaderMaterial({
+		vertexShader: `
+			void main() {
+				vec4 mvPosition = modelViewMatrix * vec4( 0.0, 0.0, 0.0, 1.0 );
+				vec3 scale = vec3( length(modelViewMatrix[0].xyz), length(modelViewMatrix[1].xyz), length(modelViewMatrix[2].xyz) );
+				mvPosition.xyz += position * scale;
+				gl_Position = projectionMatrix * mvPosition;
+			}
+		`,
+		fragmentShader: `
+			uniform float opacity;
+
+			void main() {
+				gl_FragColor = vec4(1.0, 1.0, 1.0, opacity);
+			}
+		`,
+		transparent: true,
+		uniforms: {
+			opacity: { value: 0 }
+		}
+	})
 
 	let showGhost = true
 
@@ -65,11 +87,7 @@
 
 			opacity = clamp(mapLinear(distanceFromCarToGhost, 1, 10, 0, 0.5), 0, 0.5)
 
-			if (text) {
-				text.up.set($camera.up.x, $camera.up.y, $camera.up.z)
-				text.lookAt($camera.position)
-				text.fillOpacity = opacity
-			}
+			textMaterial.uniforms.opacity.value = opacity
 		}
 	})
 
@@ -88,6 +106,7 @@
 			anchorX="50%"
 			anchorY="100%"
 			position.y={1}
+			material={textMaterial}
 		/>
 	{/await}
 
