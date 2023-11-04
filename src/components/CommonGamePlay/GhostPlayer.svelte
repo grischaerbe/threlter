@@ -2,14 +2,13 @@
 	import { T, useFrame, useThrelte } from '@threlte/core'
 	import { Text } from '@threlte/extras'
 	import type { ComponentProps } from 'svelte'
-	import { Group, Mesh, MeshBasicMaterial, ShaderMaterial } from 'three'
+	import { Group, ShaderMaterial } from 'three'
 	import { DEG2RAD, clamp, mapLinear } from 'three/src/math/MathUtils'
 	import { TrackManager } from '../../lib/TrackManager/TrackManager'
 	import type { TrackRecord } from '../../lib/TrackRecord/TrackRecord'
 	import MuscleCarGhost from '../Car/Models/MuscleCarGhost.svelte'
 	import MuscleCarGhostWheel from '../Car/Models/MuscleCarGhostWheel.svelte'
 	import type { CarState } from '../Car/RaycastVehicleController/types'
-	import { createBillboardMaterial } from './createBillboardMaterial'
 
 	export let trackRecord: TrackRecord
 	export let time: number
