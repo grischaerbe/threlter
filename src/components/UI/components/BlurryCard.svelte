@@ -7,7 +7,7 @@
 
 <div
 	class={c(
-		'bg-blue-950/50 p-[15px] rounded-3xl border-2 border-blue-950 relative overflow-auto pointer-events-auto backdrop-blur',
+		'bg-blue-950/50 p-[15px] rounded-3xl border-[3px] border-blue-950 relative overflow-auto pointer-events-auto backdrop-blur',
 		_class
 	)}
 >

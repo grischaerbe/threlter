@@ -11,7 +11,7 @@ const filterUndefined = <T>(d: T | undefined): d is T => {
 export class TrackManager {
 	static async getOwnTracks(page: number = 1, perPage: number = 10) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
-			sort: 'recent',
+			sort: 'new',
 			own: true,
 			limit: perPage,
 			page
@@ -63,7 +63,7 @@ export class TrackManager {
 	/**
 	 * Tracks by other users, only validated tracks.
 	 */
-	public static async getCommunityTracks(sort: 'popular' | 'recent', limit: number, page: number) {
+	public static async getCommunityTracks(sort: 'hot' | 'new', limit: number, page: number) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
 			sort,
 			limit,

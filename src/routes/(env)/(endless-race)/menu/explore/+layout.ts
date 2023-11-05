@@ -9,7 +9,7 @@ export const load = (async ({ depends, params, url }) => {
 
 	if (!SessionManager.userId) throw redirect(307, '/')
 
-	const sort = (url.searchParams.get('sort') ?? 'recent') as 'recent' | 'popular'
+	const sort = (url.searchParams.get('sort') ?? 'hot') as 'new' | 'hot'
 	const page = Number(url.searchParams.get('page') ?? 1)
 
 	const { tracks, hasMore } = await TrackManager.getCommunityTracks(sort, 10, page)
