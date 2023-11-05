@@ -9,17 +9,22 @@ const filterUndefined = <T>(d: T | undefined): d is T => {
 }
 
 export class TrackManager {
-	static async getOwnTracks() {
+	static async getOwnTracks(page: number = 1, perPage: number = 10) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
 			sort: 'recent',
-			own: true
+			own: true,
+			limit: perPage,
+			page
 		})
 
-		const { objects } = response.payload as { objects: { value: any }[] }
+		const { objects, hasMore } = response.payload as { objects: { value: any }[]; hasMore: boolean }
 
-		return objects.filter(filterUndefined).map((object) => {
-			return UserTrack.fromData(object.value)
-		})
+		return {
+			tracks: objects.filter(filterUndefined).map((object) => {
+				return UserTrack.fromData(object.value)
+			}),
+			hasMore
+		}
 	}
 
 	static async getUserTrack(trackId: string) {
@@ -65,16 +70,19 @@ export class TrackManager {
 			page
 		})
 
-		const { objects } = response.payload as { objects: { value: any }[] }
+		const { objects, hasMore } = response.payload as { objects: { value: any }[]; hasMore: boolean }
 
-		return objects
-			.filter(filterUndefined)
-			.map((object) => {
-				return UserTrack.fromData(object.value)
-			})
-			.filter((track) => {
-				return !!track.public
-			})
+		return {
+			tracks: objects
+				.filter(filterUndefined)
+				.map((object) => {
+					return UserTrack.fromData(object.value)
+				})
+				.filter((track) => {
+					return !!track.public
+				}),
+			hasMore
+		}
 	}
 
 	public static async addTrackRecord(trackRecord: TrackRecord) {

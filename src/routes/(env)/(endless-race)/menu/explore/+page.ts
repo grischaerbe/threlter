@@ -1,20 +1,19 @@
-import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
+import { redirect } from '@sveltejs/kit'
+import { toSearchParamsString } from '../../../../../lib/utils/queryParamsString'
 import type { PageLoad } from './$types'
 
-export const load = (async () => {
-	const tracks = await TrackManager.getCommunityTracks('recent', 20, 1)
-	const userIds = tracks
-		.map((track) => track.userId)
-		// filter duplicates
-		.filter((userId, index, array) => {
-			return array.indexOf(userId) === index
-		})
-	const users = await TrackManager.getUser(userIds)
-	users.sort((a, b) => {
-		return userIds.indexOf(a.id ?? '') - userIds.indexOf(b.id ?? '')
-	})
-	return {
-		tracks,
-		users
+// If the user navigates to /menu/explore, redirect them to the first track in the list
+export const load = (async ({ parent, url }) => {
+	const data = await parent()
+
+	const firstTrack = data.tracks[0]
+
+	if (firstTrack) {
+		throw redirect(
+			307,
+			`/menu/explore/${firstTrack.trackId}${toSearchParamsString(url.searchParams)}`
+		)
 	}
+
+	return {}
 }) satisfies PageLoad

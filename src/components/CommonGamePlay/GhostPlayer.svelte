@@ -98,7 +98,7 @@
 		<Text
 			font="/fonts/Rubik-Regular.ttf"
 			bind:ref={text}
-			text={UserManager.getUserName(user[0])}
+			text={UserManager.formatUserName(user[0])}
 			fontSize={0.4}
 			anchorX="50%"
 			anchorY="100%"

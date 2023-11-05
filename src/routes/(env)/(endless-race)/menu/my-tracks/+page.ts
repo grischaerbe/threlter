@@ -1,18 +1,19 @@
-import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
-import { LoadDependencies } from '../../../../../lib/loadDependencies'
-import { SessionManager } from '../../../../../lib/nakama/SessionManager'
+import { redirect } from '@sveltejs/kit'
+import { toSearchParamsString } from '../../../../../lib/utils/queryParamsString'
 import type { PageLoad } from './$types'
 
-export const load = (async ({ depends }) => {
-	depends(LoadDependencies['menu/my-tracks'])
+// If the user navigates to /menu/my-tracks, redirect them to the first track in their list
+export const load = (async ({ parent, url }) => {
+	const data = await parent()
 
-	if (!SessionManager.userId) throw new Error('Not logged in')
+	const firstTrack = data.tracks[0]
 
-	const tracks = await TrackManager.getOwnTracks()
-	const users = await TrackManager.getUser([SessionManager.userId])
-
-	return {
-		tracks,
-		users
+	if (firstTrack) {
+		throw redirect(
+			307,
+			`/menu/my-tracks/${firstTrack.trackId}${toSearchParamsString(url.searchParams)}`
+		)
 	}
+
+	return {}
 }) satisfies PageLoad

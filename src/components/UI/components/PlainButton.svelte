@@ -42,6 +42,7 @@
 
 <svelte:element
 	this={href ? 'a' : 'button'}
+	role={href ? 'link' : 'button'}
 	{href}
 	use:keyboardNavigationAction={{
 		forceFocus: forceFocusOnMount,

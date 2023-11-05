@@ -6,14 +6,22 @@ import { SessionManager } from './SessionManager'
  * Currently this is still housed in TrackManager, but it will be moved here.
  */
 export class UserManager {
-	public static getUserName(user: User) {
-		if (user.id === SessionManager.userId) {
-			return `${user.username} (you)`
+	public static formatUserName(userId: string, userName: string): string | undefined
+	public static formatUserName(user: User): string | undefined
+	public static formatUserName(userIdOrUser: string | User, userName?: string): string | undefined {
+		let uId = typeof userIdOrUser === 'string' ? userIdOrUser : userIdOrUser.id
+		let uName = typeof userIdOrUser === 'string' ? userName : userIdOrUser.username
+		if (uId === SessionManager.userId) {
+			return `${uName} (you)`
 		}
-		return user.username
+		return uName
 	}
 
-	public static isSelf(user: User) {
-		return user.id === SessionManager.userId
+	public static isSelf(userId: string): boolean
+	public static isSelf(user: User): boolean
+	public static isSelf(userIdOrUser: string | User) {
+		return typeof userIdOrUser === 'string'
+			? userIdOrUser === SessionManager.userId
+			: userIdOrUser.id === SessionManager.userId
 	}
 }

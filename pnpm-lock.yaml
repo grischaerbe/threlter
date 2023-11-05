@@ -106,6 +106,9 @@ devDependencies:
   svelte-preprocess:
     specifier: ^4.10.7
     version: 4.10.7(postcss-load-config@4.0.1)(postcss@8.4.24)(svelte@4.0.0)(typescript@5.0.4)
+  sveltekit-search-params:
+    specifier: ^1.0.15
+    version: 1.0.15(@sveltejs/kit@1.20.5)(svelte@4.0.0)
   tailwindcss:
     specifier: ^3.3.2
     version: 3.3.2
@@ -2711,6 +2714,16 @@ packages:
       locate-character: 3.0.0
       magic-string: 0.30.0
       periscopic: 3.1.0
+    dev: true
+
+  /sveltekit-search-params@1.0.15(@sveltejs/kit@1.20.5)(svelte@4.0.0):
+    resolution: {integrity: sha512-LLuG961adpMMnyG/5Ixj9Cv++62ol7aSpVpE0qIFzQuOZ/5J3PwSoXu06pBw9DZi5Awj40OXtGLtpyh6WZjqVQ==}
+    peerDependencies:
+      '@sveltejs/kit': ^1.0.0
+      svelte: ^3.55.0 || ^4.0.0
+    dependencies:
+      '@sveltejs/kit': 1.20.5(svelte@4.0.0)(vite@4.3.9)
+      svelte: 4.0.0
     dev: true
 
   /tailwindcss@3.3.2:
