@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { T, useFrame, useThrelte } from '@threlte/core'
+	import { T, useFrame } from '@threlte/core'
 	import { Text } from '@threlte/extras'
 	import type { ComponentProps } from 'svelte'
 	import { Group, ShaderMaterial } from 'three'
 	import { DEG2RAD, clamp, mapLinear } from 'three/src/math/MathUtils'
 	import { TrackManager } from '../../lib/TrackManager/TrackManager'
 	import type { TrackRecord } from '../../lib/TrackRecord/TrackRecord'
+	import { UserManager } from '../../lib/nakama/UserManager'
 	import MuscleCarGhost from '../Car/Models/MuscleCarGhost.svelte'
 	import MuscleCarGhostWheel from '../Car/Models/MuscleCarGhostWheel.svelte'
 	import type { CarState } from '../Car/RaycastVehicleController/types'
@@ -15,8 +16,6 @@
 	export let carState: CarState
 
 	$: ghost = trackRecord.ghost
-
-	const { camera } = useThrelte()
 
 	let opacity = 0
 
@@ -70,7 +69,6 @@
 
 		// if for some reason we don't have a frame
 		if (!currentFrame) {
-			showGhost = false
 			return
 		} else {
 			showGhost = true
@@ -100,7 +98,7 @@
 		<Text
 			font="/fonts/Rubik-Regular.ttf"
 			bind:ref={text}
-			text={user[0].username}
+			text={UserManager.getUserName(user[0])}
 			fontSize={0.4}
 			anchorX="50%"
 			anchorY="100%"

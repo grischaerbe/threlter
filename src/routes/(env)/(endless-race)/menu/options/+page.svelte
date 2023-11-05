@@ -3,11 +3,13 @@
 	import Checkbox from '$components/UI/components/Checkbox.svelte'
 	import TextInput from '$components/UI/components/TextInput.svelte'
 	import { appState } from '$stores/app'
+	import { spring } from 'svelte/motion'
 	import { useKeyboardNavigation } from '../../../../../components/UI/KeyboardNavigation.svelte'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { Nakama } from '../../../../../lib/nakama/Nakama'
 	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
+	import { c } from '../../../../../lib/utils/classes'
 
 	const { audio, video, player, debug } = appState.options
 
@@ -20,38 +22,64 @@
 	let currentPlayerName = appState.options.player.name.current
 
 	const { keyboardNavigationAction } = useKeyboardNavigation()
+
+	let cardOpacity = spring(1)
+
+	let hoveringOverColor = false
 </script>
 
-<BlurryCard class="h-full grid grid-cols-2 gap-[15px]">
-	<Card class="flex flex-col items-start justify-start">
-		<div class="mb-[10px] font-headline">Name</div>
+<BlurryCard
+	class={c(
+		'h-full grid grid-cols-2 gap-[15px] transition-colors',
+		hoveringOverColor && 'bg-transparent border-transparent backdrop-blur-none'
+	)}
+>
+	<Card
+		class={c(
+			'flex flex-col items-start justify-start transition',
+			hoveringOverColor && 'bg-transparent'
+		)}
+	>
+		<div class={c('transition', hoveringOverColor && 'opacity-0')}>
+			<div class="mb-[10px] font-headline">Name</div>
 
-		<div class="flex flex-row items-end text-[0.8em] w-full">
-			<TextInput
-				label="Name"
-				labelClass="hidden"
-				id="name"
-				inputClass="!rounded-r-none !border-r-0 h-[46px]"
-				preventFocusOnFocusLost
-				bind:value={currentPlayerName}
-			/>
+			<div class="flex flex-row items-end text-[0.8em] w-full">
+				<TextInput
+					label="Name"
+					labelClass="hidden"
+					id="name"
+					inputClass="!rounded-r-none !border-r-0 h-[46px]"
+					preventFocusOnFocusLost
+					bind:value={currentPlayerName}
+				/>
 
-			<SpecialButton
-				disabled={!currentPlayerName.length}
-				class="h-[46px] !rounded-l-none"
-				on:click={async () => {
-					name.set(currentPlayerName)
-					Nakama.client.updateAccount(await SessionManager.getSession(), {
-						username: currentPlayerName
-					})
-				}}
-			>
-				Save
-			</SpecialButton>
+				<SpecialButton
+					disabled={!currentPlayerName.length}
+					class="h-[46px] !rounded-l-none"
+					on:click={async () => {
+						name.set(currentPlayerName)
+						Nakama.client.updateAccount(await SessionManager.getSession(), {
+							username: currentPlayerName
+						})
+					}}
+				>
+					Save
+				</SpecialButton>
+			</div>
 		</div>
 
 		<div class="my-[10px] font-headline">Color</div>
-		<div class="flex flex-row gap-[10px]">
+		<div
+			class="flex flex-row gap-[10px]"
+			on:pointerenter={() => {
+				cardOpacity.set(0.25)
+				hoveringOverColor = true
+			}}
+			on:pointerleave={() => {
+				cardOpacity.set(1)
+				hoveringOverColor = false
+			}}
+		>
 			{#each colors as c}
 				<button
 					use:keyboardNavigationAction
@@ -60,12 +88,25 @@
 					on:click={() => {
 						color.set(c)
 					}}
+					on:focus={() => {
+						cardOpacity.set(0.25)
+						hoveringOverColor = true
+					}}
+					on:blur={() => {
+						cardOpacity.set(1)
+						hoveringOverColor = false
+					}}
 				/>
 			{/each}
 		</div>
 	</Card>
 
-	<Card class="flex flex-col items-start justify-start">
+	<Card
+		class={c(
+			'flex flex-col items-start justify-start transition',
+			hoveringOverColor && 'bg-transparent opacity-0'
+		)}
+	>
 		<div class="mb-[10px] font-headline">Video</div>
 
 		<Checkbox class="pl-0" bind:checked={$shadows}>SHADOWS</Checkbox>
@@ -102,7 +143,12 @@
 		</Checkbox>
 	</Card>
 
-	<Card class="flex flex-col items-start justify-start">
+	<Card
+		class={c(
+			'flex flex-col items-start justify-start transition',
+			hoveringOverColor && 'bg-transparent opacity-0'
+		)}
+	>
 		<div class="mb-[10px] font-headline">Audio</div>
 
 		<Checkbox class="pl-0" bind:checked={$music}>Music</Checkbox>
@@ -110,7 +156,12 @@
 		<Checkbox class="pl-0" bind:checked={$sfx}>SFX</Checkbox>
 	</Card>
 
-	<Card class="flex flex-col items-start justify-start">
+	<Card
+		class={c(
+			'flex flex-col items-start justify-start transition',
+			hoveringOverColor && 'bg-transparent opacity-0'
+		)}
+	>
 		<div class="mb-[10px] font-headline">Misc</div>
 
 		<Checkbox class="pl-0" bind:checked={$debug}>DEBUG</Checkbox>

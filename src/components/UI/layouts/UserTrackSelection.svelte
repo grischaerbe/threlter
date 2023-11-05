@@ -13,6 +13,7 @@
 	import Leaderboard from '../components/Leaderboard.svelte'
 	import PlainButton from '../components/PlainButton.svelte'
 	import SpecialButton from '../components/SpecialButton.svelte'
+	import { UserManager } from '../../../lib/nakama/UserManager'
 
 	export let tracks: UserTrack[]
 	export let users: User[] | undefined = undefined
@@ -67,10 +68,11 @@
 								<span class="font-headline">
 									{selectedTrack.trackName}
 								</span>
-
-								<div class="text-[0.8em]">
-									{user?.username}
-								</div>
+								{#if user}
+									<div class="text-[0.8em]">
+										{UserManager.getUserName(user)}
+									</div>
+								{/if}
 							</div>
 
 							{#if selectedTrack.public}
