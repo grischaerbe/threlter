@@ -7,6 +7,7 @@ import { LeaderboardEntry } from './LeaderboardEntry'
 export class Leaderboard {
 	public trackId: string
 	public leaderboardEntries: LeaderboardEntry[] = []
+	public ownLeaderboardEntry?: LeaderboardEntry
 	public page = 1
 	public entriesPerPage = 10
 	public loading = false
@@ -25,8 +26,39 @@ export class Leaderboard {
 
 	public static async fromTrackId(trackId: string) {
 		const leaderboard = new Leaderboard(trackId)
-		await leaderboard.fetchEntries()
+		await Promise.all([leaderboard.fetchOwnEntry(), leaderboard.fetchEntries()])
 		return leaderboard
+	}
+
+	private async fetchOwnEntry() {
+		const response = await Nakama.client.listLeaderboardRecordsAroundOwner(
+			await SessionManager.getSession(),
+			this.trackId,
+			SessionManager.userId!,
+			1
+		)
+
+		const record = response.records?.[0]
+
+		if (
+			record === undefined ||
+			record.metadata === undefined ||
+			record.owner_id === undefined ||
+			record.username === undefined ||
+			record.score === undefined ||
+			record.rank === undefined
+		) {
+			return
+		}
+
+		this.ownLeaderboardEntry = new LeaderboardEntry(
+			this.trackId,
+			record.owner_id,
+			record.username,
+			record.score,
+			record.rank,
+			TrackRecord.fromData(record.metadata)
+		)
 	}
 
 	private async fetchEntries(cursor: string | undefined = undefined) {

@@ -10,6 +10,7 @@
 	import { LoadDependencies } from '../../../../../../lib/loadDependencies'
 	import { SessionManager } from '../../../../../../lib/nakama/SessionManager'
 	import { UserManager } from '../../../../../../lib/nakama/UserManager'
+	import { shareTrack } from '../../../../../../lib/shareTrack'
 	import { c } from '../../../../../../lib/utils/classes'
 	import { appState } from '../../../../../../stores/app'
 	import type { PageData } from './$types'
@@ -78,6 +79,15 @@
 						</PlainButton>
 						<Divider />
 					{/if}
+					<PlainButton
+						class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
+						on:click={async () => {
+							shareTrack(track, leaderboard)
+						}}
+					>
+						Share
+					</PlainButton>
+					<Divider />
 					<PlainButton
 						class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 						on:click={async () => {

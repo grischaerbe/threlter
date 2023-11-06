@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, invalidate } from '$app/navigation'
+	import { goto } from '$app/navigation'
 	import ButtonGroup from '../../../../../../components/UI/components/ButtonGroup/ButtonGroup.svelte'
 	import Card from '../../../../../../components/UI/components/Card.svelte'
 	import PlainButton from '../../../../../../components/UI/components/PlainButton.svelte'
@@ -7,9 +7,9 @@
 	import TrackTimes from '../../../../../../components/UI/components/TrackTimes.svelte'
 	import LeaderboardViewer from '../../../../../../lib/Leaderboard/LeaderboardViewer.svelte'
 	import { TrackManager } from '../../../../../../lib/TrackManager/TrackManager'
-	import { LoadDependencies } from '../../../../../../lib/loadDependencies'
 	import { SessionManager } from '../../../../../../lib/nakama/SessionManager'
 	import { UserManager } from '../../../../../../lib/nakama/UserManager'
+	import { shareTrack } from '../../../../../../lib/shareTrack'
 	import { c } from '../../../../../../lib/utils/classes'
 	import type { PageData } from './$types'
 
@@ -52,6 +52,15 @@
 
 			<div class="flex flex-row justify-end items-stretch mb-[2px]">
 				<ButtonGroup let:divider={Divider} class="text-[0.7em] !rounded-t-none !border-t-0">
+					<PlainButton
+						class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
+						on:click={async () => {
+							shareTrack(track, leaderboard)
+						}}
+					>
+						Share
+					</PlainButton>
+					<Divider />
 					<PlainButton
 						class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 						on:click={async () => {
