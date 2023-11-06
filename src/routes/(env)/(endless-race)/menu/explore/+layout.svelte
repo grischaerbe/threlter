@@ -1,17 +1,18 @@
 <script lang="ts">
+	import { page } from '$app/stores'
 	import { queryParam } from 'sveltekit-search-params'
 	import TrackList from '../../../../../components/UI/TrackList.svelte'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
-	import { currentSearchParamsString } from '../../../../../lib/utils/queryParamsString.js'
-	import { c } from '../../../../../lib/utils/classes'
 	import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
+	import { c } from '../../../../../lib/utils/classes'
+	import { currentSearchParamsString } from '../../../../../lib/utils/queryParamsString.js'
 
 	export let data
 
 	const sort = queryParam('sort')
 
-	const page = queryParam<number>('page', {
+	const currentPage = queryParam<number>('page', {
 		encode(value) {
 			return value.toString()
 		},
@@ -29,6 +30,7 @@
 <div class="w-full h-full relative flex flex-col">
 	<div class="h-min text-orange flex">
 		<SpecialButton
+			preload={false}
 			style="inverted"
 			on:click={() => {
 				sort.set(TrackManager.Sort.TopMonthly)
@@ -43,6 +45,7 @@
 			MONTHLY
 		</SpecialButton>
 		<SpecialButton
+			preload={false}
 			style="inverted"
 			on:click={() => {
 				sort.set(TrackManager.Sort.TopWeekly)
@@ -55,6 +58,7 @@
 			WEEKLY
 		</SpecialButton>
 		<SpecialButton
+			preload={false}
 			style="inverted"
 			on:click={() => {
 				sort.set(TrackManager.Sort.TopDaily)
@@ -67,6 +71,7 @@
 			DAILY
 		</SpecialButton>
 		<SpecialButton
+			preload={false}
 			style="inverted"
 			on:click={() => {
 				sort.set(TrackManager.Sort.New)
@@ -83,22 +88,23 @@
 	<BlurryCard class="min-h-0 rounded-tl-none flex-1">
 		<div class="grid grid-cols-3 gap-[15px]">
 			<TrackList
+				preload={false}
 				class="col-span-1"
 				tracks={data.tracks}
-				selectedTrackId={data.selectedTrackId}
+				selectedTrackId={$page.params.trackId}
 				selectTrackHref={(track) => {
 					return `/menu/explore/${track.trackId}${$currentSearchParamsString}`
 				}}
 				hasNextPage={data.hasMore}
 				hasPreviousPage={data.page > 1}
 				on:nextPage={() => {
-					page.update((page) => {
+					currentPage.update((page) => {
 						if (!page) return page
 						return page + 1
 					})
 				}}
 				on:previousPage={() => {
-					page.update((page) => {
+					currentPage.update((page) => {
 						if (!page) return page
 						return page - 1
 					})

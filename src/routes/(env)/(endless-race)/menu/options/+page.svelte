@@ -7,10 +7,8 @@
 	import { useKeyboardNavigation } from '../../../../../components/UI/KeyboardNavigation.svelte'
 	import BlurryCard from '../../../../../components/UI/components/BlurryCard.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
-	import { Nakama } from '../../../../../lib/nakama/Nakama'
-	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
-	import { c } from '../../../../../lib/utils/classes'
 	import { UserManager } from '../../../../../lib/nakama/UserManager'
+	import { c } from '../../../../../lib/utils/classes'
 
 	const { audio, video, player, debug } = appState.options
 

@@ -55,6 +55,9 @@ devDependencies:
   autoprefixer:
     specifier: ^10.4.14
     version: 10.4.14(postcss@8.4.24)
+  cacheables:
+    specifier: ^1.2.2
+    version: 1.2.2
   camera-controls:
     specifier: ^2.7.2
     version: 2.7.2(three@0.157.0)
@@ -1036,6 +1039,10 @@ packages:
     engines: {node: '>=10.16.0'}
     dependencies:
       streamsearch: 1.1.0
+    dev: true
+
+  /cacheables@1.2.2:
+    resolution: {integrity: sha512-OFYfH4OaycyIqGEqkOzjiYZOKEiyQqv/+K84u6Wzv8P5rUA3BJm+2s0NExe5G6XY9AMOykEZYg2RqVlv1l27HQ==}
     dev: true
 
   /callsites@3.1.0:

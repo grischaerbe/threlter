@@ -32,14 +32,14 @@
 						<span class="font-headline">
 							{track.trackName}
 						</span>
-
-						<!-- DISPLAY OWN NAME HERE? -->
-						<!-- <div class="text-[0.8em]">
-						</div> -->
 					</div>
 
 					{#if track.public}
-						<SpecialButton style="green-inverted" href={`/user/${track.trackId}/time-attack`}>
+						<SpecialButton
+							style="green-inverted"
+							href={`/user/${track.trackId}/time-attack`}
+							preload={false}
+						>
 							Play
 						</SpecialButton>
 					{/if}
@@ -60,6 +60,7 @@
 				<ButtonGroup let:divider={Divider} class="text-[0.7em] !rounded-t-none !border-t-0">
 					{#if showValidate}
 						<PlainButton
+							preload={false}
 							href="/user/{track.trackId}/validate"
 							class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500/80 hover:bg-green-500 focus:bg-green-500"
 						>
@@ -69,6 +70,7 @@
 					{/if}
 					{#if showEdit}
 						<PlainButton
+							preload={false}
 							href="/user/{track.trackId}/edit"
 							class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 						>
@@ -83,7 +85,6 @@
 							if (!track) return
 							const newTrack = track.remix()
 							await TrackManager.saveUserTrack(newTrack)
-							await invalidate(LoadDependencies['menu/my-tracks'])
 							goto(`/user/${newTrack.trackId}/edit`)
 						}}
 					>
@@ -96,7 +97,7 @@
 							on:click={async () => {
 								if (!track) return
 								await TrackManager.deleteUserTrack(track.trackId)
-								invalidate(LoadDependencies['menu/my-tracks'])
+								goto('/menu/my-tracks')
 							}}
 						>
 							Delete

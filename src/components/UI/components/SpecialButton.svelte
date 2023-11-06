@@ -11,6 +11,7 @@
 	export let forceFocusOnMount = false
 	export let style: 'regular' | 'green' | 'green-inverted' | 'inverted' | 'red' | 'red-inverted' =
 		'regular'
+	export let preload = true
 
 	export const styles: Record<typeof style, string> = {
 		regular: 'text-orange bg-blue-darkest hover:bg-blue-darker focus:bg-blue-darker',
@@ -70,6 +71,7 @@
 		styles[style],
 		_class
 	)}
+	data-sveltekit-preload-data={preload ? 'hover' : 'tap'}
 >
 	<slot />
 </svelte:element>

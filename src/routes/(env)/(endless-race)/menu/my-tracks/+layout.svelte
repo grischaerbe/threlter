@@ -13,7 +13,7 @@
 
 	$: userHasTracks = data.tracks.length > 0
 
-	const page = queryParam<number>('page', {
+	const currentPage = queryParam<number>('page', {
 		encode(value) {
 			return value.toString()
 		},
@@ -27,6 +27,7 @@
 
 <BlurryCard class="h-full min-h-0 grid grid-cols-3 gap-[15px]">
 	<TrackList
+		preload={false}
 		class="col-span-1"
 		tracks={data.tracks}
 		selectedTrackId={data.selectedTrackId}
@@ -36,13 +37,13 @@
 		hasNextPage={data.hasMore}
 		hasPreviousPage={data.page > 1}
 		on:nextPage={() => {
-			page.update((page) => {
+			currentPage.update((page) => {
 				if (!page) return page
 				return page + 1
 			})
 		}}
 		on:previousPage={() => {
-			page.update((page) => {
+			currentPage.update((page) => {
 				if (!page) return page
 				return page - 1
 			})

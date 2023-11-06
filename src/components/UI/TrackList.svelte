@@ -9,6 +9,7 @@
 	export let selectedTrackId: string | undefined = undefined
 	export let hasNextPage: boolean = false
 	export let hasPreviousPage: boolean = false
+	export let preload = true
 	export let selectTrackHref: ((track: UserTrack) => string) | undefined = undefined
 
 	let _class = ''
@@ -28,6 +29,7 @@
 			{#each tracks as track, index}
 				{#if track}
 					<PlainButton
+						{preload}
 						on:click={() => dispatch('trackSelected', track)}
 						href={selectTrackHref ? selectTrackHref(track) : undefined}
 						class={c(

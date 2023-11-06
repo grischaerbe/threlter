@@ -9,6 +9,7 @@
 	export let audioCues = true
 	export let preventFocusOnFocusLost = false
 	export let forceFocusOnMount = false
+	export let preload = true
 
 	const { sfx } = appState.options.audio
 
@@ -53,6 +54,7 @@
 	on:click
 	{disabled}
 	class={c('outline-none leading-none', _class)}
+	data-sveltekit-preload-data={preload ? 'hover' : 'tap'}
 >
 	<slot />
 </svelte:element>

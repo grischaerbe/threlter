@@ -45,12 +45,6 @@
 					{/if}
 				</div>
 
-				{#if !track.public}
-					<div class="text-[0.7em]">
-						Draft – A track must be validated and published before it can be played.
-					</div>
-				{/if}
-
 				{#if track.public}
 					<TrackTimes class="w-[27ch] text-[0.8em]" {track} />
 				{/if}
@@ -58,24 +52,6 @@
 
 			<div class="flex flex-row justify-end items-stretch mb-[2px]">
 				<ButtonGroup let:divider={Divider} class="text-[0.7em] !rounded-t-none !border-t-0">
-					{#if showValidate}
-						<PlainButton
-							href="/user/{track.trackId}/validate"
-							class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-green-500/80 hover:bg-green-500 focus:bg-green-500"
-						>
-							Validate and publish
-						</PlainButton>
-						<Divider />
-					{/if}
-					{#if showEdit}
-						<PlainButton
-							href="/user/{track.trackId}/edit"
-							class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
-						>
-							Edit
-						</PlainButton>
-						<Divider />
-					{/if}
 					<PlainButton
 						class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 						on:click={async () => {
@@ -83,25 +59,11 @@
 							if (!track) return
 							const newTrack = track.remix()
 							await TrackManager.saveUserTrack(newTrack)
-							await invalidate(LoadDependencies['menu/my-tracks'])
 							goto(`/user/${newTrack.trackId}/edit`)
 						}}
 					>
 						Remix
 					</PlainButton>
-					{#if showDelete}
-						<Divider />
-						<PlainButton
-							class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500/80 hover:bg-red-500 focus:bg-red-500"
-							on:click={async () => {
-								if (!track) return
-								await TrackManager.deleteUserTrack(track.trackId)
-								invalidate(LoadDependencies['menu/my-tracks'])
-							}}
-						>
-							Delete
-						</PlainButton>
-					{/if}
 				</ButtonGroup>
 			</div>
 
