@@ -12,7 +12,7 @@
 	import { T, currentWritable } from '@threlte/core'
 	import { interactivity } from '@threlte/extras'
 	import CC from 'camera-controls'
-	import { onMount } from 'svelte'
+	import { onDestroy, onMount } from 'svelte'
 	import { Euler } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
 	import { useEvent } from '../../hooks/useEvents'
@@ -45,8 +45,12 @@
 
 	// update the track remotely whenever it changes
 	const onTrackChanged = () => {
-		TrackManager.saveUserTrackDebounced(track)
+		TrackManager.saveUserTrack(track, 500)
 	}
+
+	onDestroy(() => {
+		TrackManager.saveUserTrack(track)
+	})
 
 	onMount(() => {
 		track.on('change', onTrackChanged)

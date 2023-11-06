@@ -68,15 +68,24 @@ export class TrackManager {
 		await TrackManager.getOwnTracks()
 	}
 
-	static saveUserTrackDebounced = debounce(TrackManager.saveUserTrack, 500)
-	static async saveUserTrack(userTrack: UserTrack) {
-		await Nakama.client.rpc(await SessionManager.getSession(), 'save_user_track', userTrack)
+	static #timeout: ReturnType<typeof setTimeout> | undefined
+	static async saveUserTrack(userTrack: UserTrack, debounce?: number) {
+		if (this.#timeout) clearTimeout(this.#timeout)
+		if (debounce) {
+			return new Promise<void>((resolve) => {
+				this.#timeout = setTimeout(async () => {
+					await Nakama.client.rpc(await SessionManager.getSession(), 'save_user_track', userTrack)
+					resolve()
+				}, debounce)
+			})
+		} else {
+			await Nakama.client.rpc(await SessionManager.getSession(), 'save_user_track', userTrack)
+		}
 	}
 
-	static async publishUserTrack(userTrack: UserTrack, trackRecord: TrackRecord) {
+	static async publishUserTrack(userTrack: UserTrack) {
 		await Nakama.client.rpc(await SessionManager.getSession(), 'publish_user_track', {
-			userTrack,
-			trackRecord
+			userTrack
 		})
 	}
 

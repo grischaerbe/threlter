@@ -26,6 +26,7 @@
 	import type { Box3 } from 'three'
 	import BoundsState from './BoundsState.svelte'
 	import OutOfBounds from './UI/OutOfBounds.svelte'
+	import Velocity from './UI/Velocity.svelte'
 
 	export let track: Track
 	export let trackRecordsManager: TrackRecordsManager
@@ -192,6 +193,7 @@
 		{/if}
 
 		{#if $state === 'playing'}
+			<Velocity {carState} />
 			<GhostRecorder ghost={$currentRecord.ghost} time={$time} {carState} />
 		{/if}
 

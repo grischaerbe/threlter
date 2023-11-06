@@ -17,7 +17,7 @@
 	export let restart: () => void
 
 	const publish = async () => {
-		await TrackManager.publishUserTrack(track, trackRecordsManager.current)
+		await TrackManager.publishUserTrack(track)
 		goto(`/menu/my-tracks/${track.trackId}`)
 	}
 </script>
