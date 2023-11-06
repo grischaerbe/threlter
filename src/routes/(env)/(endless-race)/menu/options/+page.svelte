@@ -40,7 +40,39 @@
 			hoveringOverColor && 'bg-transparent'
 		)}
 	>
-		<div class={c('transition', hoveringOverColor && 'opacity-0')}>
+		<div class="mb-[10px] font-headline">Color</div>
+		<div
+			class="flex flex-row gap-[10px]"
+			on:pointerenter={() => {
+				cardOpacity.set(0.25)
+				hoveringOverColor = true
+			}}
+			on:pointerleave={() => {
+				cardOpacity.set(1)
+				hoveringOverColor = false
+			}}
+		>
+			{#each colors as c}
+				<button
+					use:keyboardNavigationAction
+					class="h-[20px] w-[20px] block border-[3px] border-white/20 rounded-sm outline-none"
+					style="background-color: {c};"
+					on:click={() => {
+						color.set(c)
+					}}
+					on:focus={() => {
+						cardOpacity.set(0.25)
+						hoveringOverColor = true
+					}}
+					on:blur={() => {
+						cardOpacity.set(1)
+						hoveringOverColor = false
+					}}
+				/>
+			{/each}
+		</div>
+
+		<div class={c('transition mt-[20px]', hoveringOverColor && 'opacity-0')}>
 			<div class="mb-[10px] font-headline">Name</div>
 
 			<div class="flex flex-row items-end text-[0.8em] w-full">
@@ -88,38 +120,6 @@
 				<div class="mt-[5px] text-red-500 text-[0.8em] mb-[20px]">Name too long</div>
 			{/if}
 		</div>
-
-		<div class="my-[10px] font-headline">Color</div>
-		<div
-			class="flex flex-row gap-[10px]"
-			on:pointerenter={() => {
-				cardOpacity.set(0.25)
-				hoveringOverColor = true
-			}}
-			on:pointerleave={() => {
-				cardOpacity.set(1)
-				hoveringOverColor = false
-			}}
-		>
-			{#each colors as c}
-				<button
-					use:keyboardNavigationAction
-					class="h-[20px] w-[20px] block border-[3px] border-white/20 rounded-sm outline-none"
-					style="background-color: {c};"
-					on:click={() => {
-						color.set(c)
-					}}
-					on:focus={() => {
-						cardOpacity.set(0.25)
-						hoveringOverColor = true
-					}}
-					on:blur={() => {
-						cardOpacity.set(1)
-						hoveringOverColor = false
-					}}
-				/>
-			{/each}
-		</div>
 	</Card>
 
 	<Card
@@ -133,7 +133,7 @@
 		<Checkbox class="pl-0" bind:checked={$shadows}>SHADOWS</Checkbox>
 		<Checkbox class="pl-0" bind:checked={$postprocessing}>POST PROCESSING</Checkbox>
 
-		<div class="my-[10px] font-headline">Resolution</div>
+		<div class="mb-[10px] mt-[20px] font-headline">Resolution</div>
 
 		<Checkbox
 			class="pl-0"
