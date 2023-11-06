@@ -5,6 +5,7 @@
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { currentSearchParamsString } from '../../../../../lib/utils/queryParamsString.js'
 	import { c } from '../../../../../lib/utils/classes'
+	import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
 
 	export let data
 
@@ -17,8 +18,7 @@
 		decode(value) {
 			if (!value) return 1
 			return parseInt(value)
-		},
-		defaultValue: 1
+		}
 	})
 
 	const inactiveTabButtonClasses =
@@ -31,23 +31,49 @@
 		<SpecialButton
 			style="inverted"
 			on:click={() => {
-				sort.set('hot')
+				sort.set(TrackManager.Sort.TopMonthly)
 			}}
 			class={c(
-				'border-b-0 rounded-b-none rounded-r-none',
-				!$sort || $sort === 'hot' ? activeTabButtonClasses : inactiveTabButtonClasses
+				'border-b-0 rounded-b-none rounded-r-none border-r-0',
+				!$sort || $sort === TrackManager.Sort.TopMonthly
+					? activeTabButtonClasses
+					: inactiveTabButtonClasses
 			)}
 		>
-			Hot
+			MONTHLY
 		</SpecialButton>
 		<SpecialButton
 			style="inverted"
 			on:click={() => {
-				sort.set('new')
+				sort.set(TrackManager.Sort.TopWeekly)
+			}}
+			class={c(
+				'border-b-0 rounded-b-none rounded-t-none border-r-0',
+				$sort === TrackManager.Sort.TopWeekly ? activeTabButtonClasses : inactiveTabButtonClasses
+			)}
+		>
+			WEEKLY
+		</SpecialButton>
+		<SpecialButton
+			style="inverted"
+			on:click={() => {
+				sort.set(TrackManager.Sort.TopDaily)
+			}}
+			class={c(
+				'border-b-0 rounded-b-none rounded-t-none',
+				$sort === TrackManager.Sort.TopDaily ? activeTabButtonClasses : inactiveTabButtonClasses
+			)}
+		>
+			DAILY
+		</SpecialButton>
+		<SpecialButton
+			style="inverted"
+			on:click={() => {
+				sort.set(TrackManager.Sort.New)
 			}}
 			class={c(
 				'border-b-0 rounded-b-none rounded-l-none border-l-0',
-				$sort === 'new' ? activeTabButtonClasses : inactiveTabButtonClasses
+				$sort === TrackManager.Sort.New ? activeTabButtonClasses : inactiveTabButtonClasses
 			)}
 		>
 			new

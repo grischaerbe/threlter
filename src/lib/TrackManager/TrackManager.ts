@@ -15,12 +15,21 @@ enum FetchIntent {
 	Validate = 'validate'
 }
 
+export enum Sort {
+	New = 'new',
+	TopDaily = 'top-daily',
+	TopWeekly = 'top-weekly',
+	TopMonthly = 'top-monthly',
+	TopAllTime = 'top-all-time'
+}
+
 export class TrackManager {
 	public static FetchIntent = FetchIntent
+	public static Sort = Sort
 
 	static async getOwnTracks(page: number = 1, perPage: number = 10) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
-			sort: 'new',
+			sort: Sort.New,
 			own: true,
 			limit: perPage,
 			page
@@ -74,7 +83,7 @@ export class TrackManager {
 	/**
 	 * Tracks by other users, only validated tracks.
 	 */
-	public static async getCommunityTracks(sort: 'hot' | 'new', limit: number, page: number) {
+	public static async getCommunityTracks(sort: Sort, limit: number, page: number) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
 			sort,
 			limit,
