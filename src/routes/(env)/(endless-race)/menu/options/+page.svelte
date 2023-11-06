@@ -10,6 +10,7 @@
 	import { Nakama } from '../../../../../lib/nakama/Nakama'
 	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 	import { c } from '../../../../../lib/utils/classes'
+	import { UserManager } from '../../../../../lib/nakama/UserManager'
 
 	const { audio, video, player, debug } = appState.options
 
@@ -20,6 +21,7 @@
 	const colors = ['#fe3d00', '#BABACA', '#353535', '#6892be', '#FFD700']
 
 	let currentPlayerName = appState.options.player.name.current
+	let error = false
 
 	const { keyboardNavigationAction } = useKeyboardNavigation()
 
@@ -51,21 +53,42 @@
 					inputClass="!rounded-r-none !border-r-0 h-[46px]"
 					preventFocusOnFocusLost
 					bind:value={currentPlayerName}
+					on:input={() => {
+						error = false
+					}}
 				/>
 
 				<SpecialButton
-					disabled={!currentPlayerName.length}
 					class="h-[46px] !rounded-l-none"
 					on:click={async () => {
-						name.set(currentPlayerName)
-						Nakama.client.updateAccount(await SessionManager.getSession(), {
-							username: currentPlayerName
-						})
+						if (!currentPlayerName.length || currentPlayerName.length > 24) {
+							error = true
+							return
+						}
+
+						const { success } = await UserManager.updateAccount(currentPlayerName)
+
+						if (!success) {
+							error = true
+						} else {
+							error = false
+							name.set(currentPlayerName)
+						}
 					}}
 				>
 					Save
 				</SpecialButton>
 			</div>
+
+			{#if !currentPlayerName.length && error}
+				<div class="mt-[5px] text-red-500 text-[0.8em] mb-[20px]">Please insert a name</div>
+			{:else if error}
+				<div class="mt-[5px] text-red-500 text-[0.8em] mb-[20px]">Name already taken</div>
+			{/if}
+
+			{#if currentPlayerName.length > 24}
+				<div class="mt-[5px] text-red-500 text-[0.8em] mb-[20px]">Name too long</div>
+			{/if}
 		</div>
 
 		<div class="my-[10px] font-headline">Color</div>

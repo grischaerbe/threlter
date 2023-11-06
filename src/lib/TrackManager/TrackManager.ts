@@ -57,15 +57,9 @@ export class TrackManager {
 	}
 
 	static async deleteUserTrack(trackId: string) {
-		await Nakama.client.deleteStorageObjects(await SessionManager.getSession(), {
-			object_ids: [
-				{
-					collection: 'user-tracks',
-					key: trackId
-				}
-			]
+		await Nakama.client.rpc(await SessionManager.getSession(), 'delete_user_track', {
+			trackId
 		})
-		await TrackManager.getOwnTracks()
 	}
 
 	static #timeout: ReturnType<typeof setTimeout> | undefined

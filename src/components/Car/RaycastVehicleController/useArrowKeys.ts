@@ -1,8 +1,10 @@
-import { currentWritable } from '@threlte/core'
+import { currentWritable, watch } from '@threlte/core'
 import { onDestroy } from 'svelte'
 import { derived } from 'svelte/store'
 
 export const useArrowKeys = () => {
+	const active = currentWritable(true)
+
 	type Key = 'ArrowUp' | 'ArrowLeft' | 'ArrowDown' | 'ArrowRight'
 
 	const arrowKeys = currentWritable<Record<Key, boolean>>({
@@ -29,6 +31,7 @@ export const useArrowKeys = () => {
 	}
 
 	const onKeyDown = (e: KeyboardEvent) => {
+		if (!active.current) return
 		const key = mapWASDToArrowKeys(e)
 		if (!keys.includes(key)) return
 		e.preventDefault()
@@ -39,6 +42,7 @@ export const useArrowKeys = () => {
 	}
 
 	const onKeyUp = (e: KeyboardEvent) => {
+		if (!active.current) return
 		const key = mapWASDToArrowKeys(e)
 		if (!keys.includes(key)) return
 		e.preventDefault()
@@ -66,6 +70,17 @@ export const useArrowKeys = () => {
 		}
 	}
 
+	watch(active, (active) => {
+		if (!active) {
+			arrowKeys.set({
+				ArrowDown: false,
+				ArrowLeft: false,
+				ArrowRight: false,
+				ArrowUp: false
+			})
+		}
+	})
+
 	window.addEventListener('keydown', onKeyDown)
 	window.addEventListener('keyup', onKeyUp)
 	window.addEventListener('visibilitychange', onVisibilityChange)
@@ -78,6 +93,7 @@ export const useArrowKeys = () => {
 
 	return {
 		axis,
-		arrowKeys
+		arrowKeys,
+		active
 	}
 }

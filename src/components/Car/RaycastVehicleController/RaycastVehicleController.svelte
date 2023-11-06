@@ -175,8 +175,11 @@
 		return axis
 	})
 
-	const { axis: keyboardAxis } = useArrowKeys()
+	const { axis: keyboardAxis, active: activeKeys } = useArrowKeys()
 	$: axis.set($keyboardAxis)
+
+	// disable the listening to keys when the car is inactive
+	$: activeKeys.set(active)
 
 	enum Wheel {
 		'FL' = 'FL',

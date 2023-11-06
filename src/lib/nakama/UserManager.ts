@@ -1,5 +1,6 @@
 import type { User } from '@heroiclabs/nakama-js'
 import { SessionManager } from './SessionManager'
+import { Nakama } from './Nakama'
 
 /**
  * This class will eventually be used to manage the current user, get users, etc.
@@ -23,5 +24,29 @@ export class UserManager {
 		return typeof userIdOrUser === 'string'
 			? userIdOrUser === SessionManager.userId
 			: userIdOrUser.id === SessionManager.userId
+	}
+
+	public static async updateAccount(username: string): Promise<{ success: boolean }> {
+		try {
+			const response = (await Nakama.client.rpc(
+				await SessionManager.getSession(),
+				'update_account',
+				{
+					username,
+					timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+				}
+			)) as { payload: { success: boolean } }
+			if (!response.payload?.success) {
+				throw new Error('Failed to update account')
+			}
+			return {
+				success: true
+			}
+		} catch (error) {
+			console.warn(error)
+			return {
+				success: false
+			}
+		}
 	}
 }
