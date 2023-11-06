@@ -18,7 +18,7 @@
 
 	const publish = async () => {
 		await TrackManager.publishUserTrack(track, trackRecordsManager.current)
-		goto('/menu/my-tracks')
+		goto(`/menu/my-tracks/${track.trackId}`)
 	}
 </script>
 
