@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Track } from '$lib/Track/Track'
+	import type { Leaderboard } from '../../lib/Leaderboard/Leaderboard'
 	import type { TrackRecordsManager } from '../../lib/TrackRecord/TrackRecordsManager'
 	import CommonGamePlay from '../CommonGamePlay/CommonGamePlay.svelte'
 	import TimeAttackFinished from './UI/TimeAttackFinished.svelte'
@@ -8,6 +9,7 @@
 
 	export let track: Track
 	export let trackRecordsManager: TrackRecordsManager
+	export let leaderboard: Leaderboard
 </script>
 
 <CommonGamePlay {track} {trackRecordsManager}>
@@ -21,7 +23,7 @@
 		{proceed}
 		{restart}
 	/>
-	<TimeAttackIntro slot="ui-intro" let:proceed {proceed} {track} />
+	<TimeAttackIntro slot="ui-intro" let:proceed {proceed} {track} {leaderboard} />
 	<TimeAttackFinished
 		slot="ui-finished"
 		let:time

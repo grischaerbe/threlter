@@ -1,15 +1,23 @@
 import { redirect } from '@sveltejs/kit'
-import type { LayoutLoad } from './$types'
 import { TrackManager } from '../../../../lib/TrackManager/TrackManager'
-import { TrackRecordsManager } from '../../../../lib/TrackRecord/TrackRecordsManager'
 import { SessionManager } from '../../../../lib/nakama/SessionManager'
+import type { LayoutLoad } from './$types'
 
 export const load = (async ({ params, parent, route }) => {
 	// the parent layout logs in the user and creates the nakama session, so we
 	// need to wait for it
 	await parent()
 
-	const track = await TrackManager.getUserTrack(params.trackId)
+	let fetchIntent = TrackManager.FetchIntent.View
+	if (route.id.includes('edit')) {
+		fetchIntent = TrackManager.FetchIntent.Edit
+	} else if (route.id.includes('time-attack')) {
+		fetchIntent = TrackManager.FetchIntent.Play
+	} else if (route.id.includes('validate')) {
+		fetchIntent = TrackManager.FetchIntent.Validate
+	}
+
+	const track = await TrackManager.getUserTrack(params.trackId, fetchIntent)
 
 	// if the track doesn't exist, redirect to the main menu
 	if (!track) {
@@ -22,8 +30,8 @@ export const load = (async ({ params, parent, route }) => {
 		throw redirect(307, '/menu/main')
 	}
 
-	// if the track is public and the user is trying to edit it, return to the my tracks menu
-	if (track.public && route.id.includes('edit')) {
+	// if the track is public and the user is trying to edit or validate it, return to the my tracks menu
+	if (track.public && (route.id.includes('edit') || route.id.includes('validate'))) {
 		throw redirect(307, '/menu/my-tracks')
 	}
 

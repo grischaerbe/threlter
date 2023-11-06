@@ -6,4 +6,8 @@
 	data.trackRecordsManager.setGhostRecords(true, true)
 </script>
 
-<TimeAttack track={data.track} trackRecordsManager={data.trackRecordsManager} />
+<TimeAttack
+	leaderboard={data.leaderboard}
+	track={data.track}
+	trackRecordsManager={data.trackRecordsManager}
+/>

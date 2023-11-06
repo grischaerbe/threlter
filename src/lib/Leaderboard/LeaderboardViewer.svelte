@@ -10,7 +10,7 @@
 <h2 class="mb-[15px]">Weekly Leaderboard</h2>
 
 <div class="flex flex-col gap-[5px] text-[0.8em]">
-	{#if leaderboard}
+	{#if leaderboard && leaderboard.leaderboardEntries.length}
 		{#each leaderboard.leaderboardEntries as entry, i}
 			<div class="flex gap-[5px]">
 				<span class="font-mono mr-2">{entry.rank}.</span>
@@ -20,6 +20,8 @@
 				</span>
 			</div>
 		{/each}
+	{:else}
+		<div class="text-[0.8em]">No entries yet.</div>
 	{/if}
 
 	{#if leaderboard.hasPreviousPage || leaderboard.hasNextPage}

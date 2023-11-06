@@ -6,7 +6,7 @@ import { currentSearchParamsString } from '../../../../../../lib/utils/queryPara
 import { get } from 'svelte/store'
 
 export const load = (async ({ params }) => {
-	const track = await TrackManager.getUserTrack(params.trackId)
+	const track = await TrackManager.getUserTrack(params.trackId, TrackManager.FetchIntent.View)
 
 	if (!track) throw redirect(307, `/menu/explore${get(currentSearchParamsString)}`)
 

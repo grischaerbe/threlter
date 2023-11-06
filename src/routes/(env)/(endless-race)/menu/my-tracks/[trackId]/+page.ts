@@ -3,7 +3,7 @@ import { TrackManager } from '../../../../../../lib/TrackManager/TrackManager'
 import type { PageLoad } from './$types'
 
 export const load = (async ({ params }) => {
-	const track = await TrackManager.getUserTrack(params.trackId)
+	const track = await TrackManager.getUserTrack(params.trackId, TrackManager.FetchIntent.View)
 
 	if (!track) throw new Error('Track not found')
 

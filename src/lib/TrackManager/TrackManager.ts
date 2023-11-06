@@ -8,7 +8,16 @@ const filterUndefined = <T>(d: T | undefined): d is T => {
 	return !!d
 }
 
+enum FetchIntent {
+	View = 'view',
+	Edit = 'edit',
+	Play = 'play',
+	Validate = 'validate'
+}
+
 export class TrackManager {
+	public static FetchIntent = FetchIntent
+
 	static async getOwnTracks(page: number = 1, perPage: number = 10) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
 			sort: 'new',
@@ -27,10 +36,12 @@ export class TrackManager {
 		}
 	}
 
-	static async getUserTrack(trackId: string) {
+	static async getUserTrack(trackId: string, intent: FetchIntent) {
 		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_track', {
-			trackId
+			trackId,
+			intent
 		})
+
 		const { object } = response.payload as { object: { value: any } }
 		if (!object) return undefined
 		return UserTrack.fromData(object)
