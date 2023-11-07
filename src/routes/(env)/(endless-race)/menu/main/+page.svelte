@@ -1,8 +1,6 @@
 <script lang="ts">
 	import BottomBar from '$components/UI/components/BottomBar.svelte'
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
-	import { Nakama } from '../../../../../lib/nakama/Nakama'
-	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 </script>
 
 <BottomBar>
