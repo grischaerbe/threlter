@@ -8,6 +8,8 @@
 	<TopBarLayout>
 		<TopMenu slot="topbar-center" />
 
-		<slot />
+		<div class="max-w-[1200px] h-full mx-auto">
+			<slot />
+		</div>
 	</TopBarLayout>
 </UiWrapper>

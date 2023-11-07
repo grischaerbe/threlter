@@ -6,7 +6,8 @@ import { Track, TrackSchema } from './Track'
 export const UserTrackSchema = TrackSchema.extend({
 	userId: z.string(),
 	public: z.boolean(),
-	userTrackRecord: TrackRecordSchema.optional()
+	userTrackRecord: TrackRecordSchema.optional(),
+	thumbnailUrl: z.string().optional()
 })
 
 export class UserTrack extends Track {
@@ -14,6 +15,7 @@ export class UserTrack extends Track {
 	userTrackRecord?: TrackRecord
 	userId: string
 	public = false
+	thumbnailUrl?: string
 
 	constructor(userId: string) {
 		super()
@@ -25,7 +27,8 @@ export class UserTrack extends Track {
 			...super.toJSON(),
 			userId: this.userId,
 			public: this.public,
-			userTrackRecord: this.userTrackRecord?.toJSON()
+			userTrackRecord: this.userTrackRecord?.toJSON(),
+			thumbnailUrl: this.thumbnailUrl
 		}
 	}
 
@@ -44,6 +47,9 @@ export class UserTrack extends Track {
 		this.userTrackRecord = parsed.userTrackRecord
 			? TrackRecord.fromData(parsed.userTrackRecord)
 			: undefined
+		this.thumbnailUrl = parsed.thumbnailUrl
+
+		console.log(this.thumbnailUrl)
 		return this
 	}
 

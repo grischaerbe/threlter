@@ -40,8 +40,3 @@
 		</T.Mesh>
 	{/await}
 {/if}
-
-<!-- Incompatible with postprocessing (https://github.com/pmndrs/postprocessing/issues/308) -->
-<!-- {#if $postprocessing}
-	<Lenflare />
-{/if} -->

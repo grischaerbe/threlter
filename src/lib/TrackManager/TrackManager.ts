@@ -206,4 +206,19 @@ export class TrackManager {
 			return undefined
 		}
 	}
+
+	/**
+	 * Returns a presigned URL for uploading a track thumbnail.
+	 * The track must exist and the user must be the owner of the track.
+	 */
+	public static async getTrackThumbnailUploadUrl(trackId: string) {
+		const response = (await Nakama.client.rpc(
+			await SessionManager.getSession(),
+			'create_track_thumbnail_upload_url',
+			{
+				trackId
+			}
+		)) as { payload: { presignedPutUrl: string; headers: Record<string, string> } }
+		return response.payload
+	}
 }

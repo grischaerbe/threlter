@@ -10,13 +10,13 @@
 	let radius = 0
 	let sphere = new Sphere()
 
-	export let boundsBox3: Box3 | undefined
+	export let boundsBox3: Box3 | undefined = undefined
 
 	const r = async () => {
 		await tick()
 		// calculate bounding sphere of group and children
 		group.updateWorldMatrix(true, true)
-		boundsBox3 = new Box3().setFromObject(group)
+		boundsBox3 = boundsBox3 ? boundsBox3.setFromObject(group) : new Box3().setFromObject(group)
 		sphere = boundsBox3.getBoundingSphere(new Sphere())
 		center = sphere.center
 		radius = sphere.radius
@@ -28,5 +28,5 @@
 </script>
 
 <T is={group}>
-	<slot {center} {radius} {sphere} />
+	<slot {center} {radius} {sphere} box3={boundsBox3} />
 </T>

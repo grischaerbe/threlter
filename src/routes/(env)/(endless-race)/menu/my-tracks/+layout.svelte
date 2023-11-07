@@ -53,7 +53,7 @@
 	<slot />
 
 	<div
-		class="bottom-0 pb-[15px] bg-gradient-to-t from-blue-950 to-transparent pt-[60px] left-0 w-full justify-center absolute flex flex-row gap-[15px] text-[1em]"
+		class="fixed bottom-0 pb-[30px] left-0 w-full justify-center flex flex-row gap-[15px] text-[1em]"
 	>
 		<SpecialButton
 			style="inverted"
