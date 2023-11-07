@@ -6,6 +6,9 @@
 	import PlainButton from './components/PlainButton.svelte'
 
 	export let tracks: UserTrack[]
+	export let page: number
+	export let itemsPerPage: number
+	export let showItemNumbers: boolean = false
 	export let selectedTrackId: string | undefined = undefined
 	export let hasNextPage: boolean = false
 	export let hasPreviousPage: boolean = false
@@ -21,6 +24,14 @@
 		previousPage: void
 	}
 	const dispatch = createRawEventDispatcher<$$Events>()
+
+	$: maxNumberLength = String(tracks.length + (page - 1) * itemsPerPage).length
+
+	const padNumber = (number: number) => {
+		const numberString = String(number)
+		const padLength = maxNumberLength - numberString.length
+		return '0'.repeat(padLength) + numberString
+	}
 </script>
 
 {#if tracks.length}
@@ -33,20 +44,34 @@
 						on:click={() => dispatch('trackSelected', track)}
 						href={selectTrackHref ? selectTrackHref(track) : undefined}
 						class={c(
-							'text-orange text-left px-[12px] py-[8px] hover:bg-blue-darker focus:bg-blue-darker outline-none',
+							'text-orange text-left px-[12px] py-[12px] hover:bg-blue-darker focus:bg-blue-darker outline-none border-b border-[#171F44]',
 							selectedTrackId === track.trackId && '!bg-orange !text-blue-darkest',
 							index === 0 && 'pt-[11px]',
 							index === tracks.length - 1 && 'pb-[11px]'
 						)}
 					>
-						{track.trackName}
+						{#if showItemNumbers}
+							<div class="flex items-center">
+								<div
+									class="font-mono opacity-30 text-right mr-[15px]"
+									style="width: {maxNumberLength}ch;"
+								>
+									{padNumber(index + 1 + (page - 1) * itemsPerPage)}
+								</div>
+								<div>
+									{track.trackName}
+								</div>
+							</div>
+						{:else}
+							{track.trackName}
+						{/if}
 					</PlainButton>
 				{/if}
 			{/each}
 		</div>
 
 		{#if hasNextPage || hasPreviousPage}
-			<div class="text-[0.8em] flex justify-stretch [&>*]:flex-1 gap-[5px] px-[5px] py-[10px]">
+			<div class="text-[0.8em] flex justify-stretch [&>*]:flex-1 gap-[5px] px-[5px] py-[15px]">
 				<PlainButton
 					on:click={() => {
 						if (!hasPreviousPage) return

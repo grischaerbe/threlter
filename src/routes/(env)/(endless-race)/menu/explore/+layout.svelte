@@ -32,9 +32,7 @@
 		<SpecialButton
 			preload={false}
 			style="inverted"
-			on:click={() => {
-				sort.set(TrackManager.Sort.TopMonthly)
-			}}
+			href={`/menu/explore?sort=${TrackManager.Sort.TopMonthly}`}
 			class={c(
 				'border-b-0 rounded-b-none rounded-r-none border-r-0',
 				!$sort || $sort === TrackManager.Sort.TopMonthly
@@ -47,9 +45,7 @@
 		<SpecialButton
 			preload={false}
 			style="inverted"
-			on:click={() => {
-				sort.set(TrackManager.Sort.TopWeekly)
-			}}
+			href={`/menu/explore?sort=${TrackManager.Sort.TopWeekly}`}
 			class={c(
 				'border-b-0 rounded-b-none rounded-t-none border-r-0',
 				$sort === TrackManager.Sort.TopWeekly ? activeTabButtonClasses : inactiveTabButtonClasses
@@ -60,9 +56,7 @@
 		<SpecialButton
 			preload={false}
 			style="inverted"
-			on:click={() => {
-				sort.set(TrackManager.Sort.TopDaily)
-			}}
+			href={`/menu/explore?sort=${TrackManager.Sort.TopDaily}`}
 			class={c(
 				'border-b-0 rounded-b-none rounded-t-none',
 				$sort === TrackManager.Sort.TopDaily ? activeTabButtonClasses : inactiveTabButtonClasses
@@ -73,9 +67,7 @@
 		<SpecialButton
 			preload={false}
 			style="inverted"
-			on:click={() => {
-				sort.set(TrackManager.Sort.New)
-			}}
+			href={`/menu/explore?sort=${TrackManager.Sort.New}`}
 			class={c(
 				'border-b-0 rounded-b-none rounded-l-none border-l-0',
 				$sort === TrackManager.Sort.New ? activeTabButtonClasses : inactiveTabButtonClasses
@@ -88,6 +80,9 @@
 	<BlurryCard class="min-h-0 rounded-tl-none flex-1">
 		<div class="grid grid-cols-3 gap-[15px]">
 			<TrackList
+				page={data.page}
+				showItemNumbers={$sort !== TrackManager.Sort.New}
+				itemsPerPage={data.itemsPerPage}
 				preload={false}
 				class="col-span-1"
 				tracks={data.tracks}

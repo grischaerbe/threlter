@@ -15,6 +15,7 @@ export const load = (async ({ params, url }) => {
 	return {
 		tracks,
 		selectedTrackId: params.trackId,
+		itemsPerPage: limit,
 		hasMore,
 		page
 	}

@@ -5,10 +5,11 @@
 	import { T, currentWritable, useFrame, watch } from '@threlte/core'
 	import { Suspense, useGamepad } from '@threlte/extras'
 	import type CC from 'camera-controls'
+	import type { ComponentProps } from 'svelte'
 	import { spring } from 'svelte/motion'
 	import { derived } from 'svelte/store'
+	import type { Box3 } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import { useEvent } from '../../hooks/useEvents'
 	import type { TrackRecordsManager } from '../../lib/TrackRecord/TrackRecordsManager'
 	import { toReadable } from '../../lib/utils/toStore'
 	import CameraControls from '../CameraControls/CameraControls.svelte'
@@ -19,17 +20,25 @@
 	import LoadingUi from '../UI/LoadingUi.svelte'
 	import UiWrapper from '../UI/UiWrapper.svelte'
 	import Bounds from './Bounds.svelte'
+	import BoundsState from './BoundsState.svelte'
 	import GhostPlayer from './GhostPlayer.svelte'
 	import GhostRecorder from './GhostRecorder.svelte'
 	import CountIn from './UI/CountIn.svelte'
 	import GamePlay from './UI/GamePlay.svelte'
-	import type { Box3 } from 'three'
-	import BoundsState from './BoundsState.svelte'
 	import OutOfBounds from './UI/OutOfBounds.svelte'
 	import Velocity from './UI/Velocity.svelte'
 
 	export let track: Track
 	export let trackRecordsManager: TrackRecordsManager
+
+	// forwarded from <Car>
+	let takeSnapshot: ComponentProps<Car>['takeSnapshot']
+	let restore: ComponentProps<Car>['restore']
+	let clearSnapshot: ComponentProps<Car>['clearSnapshot']
+	let respawn: ComponentProps<Car>['respawn']
+
+	// forwarded from <TrackViewer>
+	let resetTrackViewer: ComponentProps<TrackViewer>['reset']
 
 	const currentRecord = toReadable(trackRecordsManager, 'current')
 	const ghostRecords = toReadable(trackRecordsManager, 'ghostRecords')
@@ -91,39 +100,55 @@
 		}
 	}
 
-	const resetTrackViewer = useEvent('reset-track-viewer')
-	const respawnCar = useEvent('respawn-car')
-
 	const restart = () => {
 		paused.set(false)
-		respawnCar()
-		resetTrackViewer()
+		respawn?.()
+		resetTrackViewer?.()
 		state.set('intro')
 		time.set(0)
 	}
 
 	watch(state, (state) => {
-		// when we're "playing", we initialize a new working track record
+		// when we're "playing", we initialize a new working track record and clear
+		// the snapshot of the <RaycastVehicleController>
 		if (state === 'playing') {
+			clearSnapshot?.()
 			trackRecordsManager.reset()
 		}
 	})
 
 	const softReset = () => {
-		respawnCar()
-		resetTrackViewer()
+		respawn?.()
+		resetTrackViewer?.()
 		state.set('count-in')
 		time.set(0)
 	}
 
-	const softResetGame = () => {
+	gamepad.clusterRight.on('press', () => {
 		if ($state === 'playing' && !$paused) {
 			softReset()
 		}
-	}
+	})
 
-	gamepad.clusterBottom.on('press', softResetGame)
-	useKeyDown('Enter', softResetGame)
+	useKeyDown('Backspace', (e) => {
+		if ($state === 'playing' && !$paused) {
+			e.preventDefault()
+			softReset()
+		}
+	})
+
+	// pressing enter restores the car to the last checkpoint
+	gamepad.clusterBottom.on('press', () => {
+		if ($state === 'playing' && !$paused) {
+			restore?.()
+		}
+	})
+	useKeyDown('Enter', (e) => {
+		if ($state === 'playing' && !$paused) {
+			e.preventDefault()
+			restore?.()
+		}
+	})
 
 	const onFinishReached = () => {
 		trackRecordsManager.setCurrentFinalTime($time)
@@ -146,7 +171,15 @@
 	<LoadingUi slot="fallback" />
 
 	<Bounds let:center let:radius let:sphere bind:boundsBox3>
-		<TrackViewer let:trackElement {track} on:trackcompleted={onFinishReached}>
+		<TrackViewer
+			let:trackElement
+			{track}
+			on:trackcompleted={onFinishReached}
+			on:checkpointReached={() => {
+				takeSnapshot?.()
+			}}
+			bind:reset={resetTrackViewer}
+		>
 			<TrackElementTransform {trackElement}>
 				<TrackElement {trackElement} />
 			</TrackElementTransform>
@@ -179,6 +212,10 @@
 		freezeCamera={$state === 'finished'}
 		useCarCamera={$state !== 'intro'}
 		let:carState
+		bind:takeSnapshot
+		bind:restore
+		bind:clearSnapshot
+		bind:respawn
 	>
 		{#if $state === 'playing' && boundsBox3}
 			<BoundsState {boundsBox3} {carState} let:isOutOfBounds>

@@ -48,8 +48,6 @@ export class UserTrack extends Track {
 			? TrackRecord.fromData(parsed.userTrackRecord)
 			: undefined
 		this.thumbnailUrl = parsed.thumbnailUrl
-
-		console.log(this.thumbnailUrl)
 		return this
 	}
 

@@ -31,10 +31,9 @@ export const useArrowKeys = () => {
 	}
 
 	const onKeyDown = (e: KeyboardEvent) => {
-		if (!active.current) return
 		const key = mapWASDToArrowKeys(e)
 		if (!keys.includes(key)) return
-		e.preventDefault()
+		if (active.current) e.preventDefault()
 		arrowKeys.update((keys) => {
 			keys[key as keyof typeof keys] = true
 			return keys
@@ -42,10 +41,9 @@ export const useArrowKeys = () => {
 	}
 
 	const onKeyUp = (e: KeyboardEvent) => {
-		if (!active.current) return
 		const key = mapWASDToArrowKeys(e)
 		if (!keys.includes(key)) return
-		e.preventDefault()
+		if (active.current) e.preventDefault()
 		arrowKeys.update((keys) => {
 			keys[key as keyof typeof keys] = false
 			return keys

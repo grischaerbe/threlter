@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { useEvent } from '$hooks/useEvents'
 	import { appState } from '$stores/app'
 	import { T } from '@threlte/core'
 	import { onReveal } from '@threlte/extras'
-	import { onDestroy } from 'svelte'
+	import { onDestroy, type ComponentProps } from 'svelte'
 	import { writable } from 'svelte/store'
 	import { PerspectiveCamera, Quaternion, Vector3 } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
@@ -24,17 +23,17 @@
 		revealed.set(true)
 	})
 
-	let respawnCar: (() => void) | undefined = undefined
-
-	useEvent('respawn-car', () => {
-		respawnCar?.()
-	})
-
 	export let active = false
 	export let freeze = false
 	export let useCarCamera = true
 	export let freezeCamera = false
 	export let volume = 1
+
+	// forwarded from <RaycastVehicleController>
+	export let takeSnapshot: ComponentProps<RaycastVehicleController>['takeSnapshot'] = undefined
+	export let restore: ComponentProps<RaycastVehicleController>['restore'] = undefined
+	export let clearSnapshot: ComponentProps<RaycastVehicleController>['clearSnapshot'] = undefined
+	export let respawn: ComponentProps<RaycastVehicleController>['respawn'] = undefined
 
 	const { disable, enable } = useKeyboardNavigation()
 
@@ -43,6 +42,7 @@
 	} else {
 		enable()
 	}
+
 	onDestroy(() => {
 		enable()
 	})
@@ -70,13 +70,16 @@
 />
 
 <RaycastVehicleController
-	bind:respawn={respawnCar}
+	bind:respawn
 	debug={$debug}
 	{active}
 	{volume}
 	useAudio={$sfx && $revealed}
 	{freeze}
 	let:carState
+	bind:takeSnapshot
+	bind:restore
+	bind:clearSnapshot
 >
 	<slot {carState} />
 

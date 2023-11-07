@@ -26,6 +26,7 @@ export const load = (async ({ url }) => {
 	return {
 		tracks,
 		hasMore,
+		itemsPerPage: limit,
 		page
 	}
 }) satisfies LayoutLoad

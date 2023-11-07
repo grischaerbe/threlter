@@ -178,7 +178,11 @@
 	const { axis: keyboardAxis, active: activeKeys } = useArrowKeys()
 	$: axis.set($keyboardAxis)
 
-	// disable the listening to keys when the car is inactive
+	// disable the listening to keys when the car is inactive. This is necessary
+	// since listening to the arrow keys is making it necessary to
+	// `e.preventDefault()` on the keydown event, which is preventing the browser
+	// from scrolling the page. Also, this needs to happen on the WASD keys as
+	// well, so it breaks the keys even when the car isn't active.
 	$: activeKeys.set(active)
 
 	enum Wheel {
@@ -526,6 +530,64 @@
 	}
 
 	const collideWithGroup = computeBitMask([0], [], [])
+
+	type Snapshot = {
+		worldPosition: RapierVector
+		worldQuaternion: RapierRotation
+		linearVelocity: RapierVector
+		angularVelocity: RapierVector
+		camera: {
+			innerGroupPosition: Vector3
+			dummyGroupPosition: Vector3
+			groupPosition: Vector3
+		}
+	}
+
+	let snapshot: Snapshot | undefined
+
+	export const clearSnapshot = () => {
+		snapshot = undefined
+	}
+
+	export const takeSnapshot = () => {
+		if (!rigidBody) return
+		snapshot = {
+			worldPosition: rigidBody.translation(),
+			worldQuaternion: rigidBody.rotation(),
+			linearVelocity: rigidBody.linvel(),
+			angularVelocity: rigidBody.angvel(),
+			camera: {
+				innerGroupPosition: innerGroup.position.clone(),
+				dummyGroupPosition: dummyGroup.position.clone(),
+				groupPosition: group.position.clone()
+			}
+		}
+	}
+
+	// Stage for applying the snapshot. The rapier <World> runs on order -999, so
+	// to apply the snapshot we need to be earlier than that.
+	const { start: applySnapshot, stop } = useFrame(
+		() => {
+			if (!snapshot) {
+				stop()
+				return
+			}
+			rigidBody.setTranslation(snapshot.worldPosition, true)
+			rigidBody.setRotation(snapshot.worldQuaternion, true)
+			rigidBody.setLinvel(snapshot.linearVelocity, true)
+			rigidBody.setAngvel(snapshot.angularVelocity, true)
+			innerGroup.position.copy(snapshot.camera.innerGroupPosition)
+			dummyGroup.position.copy(snapshot.camera.dummyGroupPosition)
+			group.position.copy(snapshot.camera.groupPosition)
+			stop()
+		},
+		{ order: -1000, autostart: false }
+	)
+
+	export const restore = () => {
+		if (!snapshot) return
+		applySnapshot()
+	}
 
 	useFrame((_, delta) => {
 		if (!rigidBody || !collider) return

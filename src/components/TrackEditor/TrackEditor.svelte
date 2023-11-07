@@ -9,13 +9,12 @@
 	import TopBarLayout from '$components/UI/layouts/TopBarLayout.svelte'
 	import { useKeyDown } from '$hooks/useKeyDown'
 	import { useKeyUp } from '$hooks/useKeyUp'
-	import { T, currentWritable } from '@threlte/core'
+	import { T, currentWritable, watch } from '@threlte/core'
 	import { interactivity } from '@threlte/extras'
 	import CC from 'camera-controls'
-	import { onDestroy, onMount } from 'svelte'
+	import { onDestroy, onMount, type ComponentProps } from 'svelte'
 	import { Euler } from 'three'
 	import { DEG2RAD } from 'three/src/math/MathUtils'
-	import { useEvent } from '../../hooks/useEvents'
 	import type { UserTrack } from '../../lib/Track/UserTrack'
 	import { TrackManager } from '../../lib/TrackManager/TrackManager'
 	import { c } from '../../lib/utils/classes'
@@ -37,9 +36,17 @@
 	import TrackEditorInfo from './UI/TrackEditorInfo.svelte'
 	import TrackEditorMenu from './UI/TrackEditorMenu.svelte'
 	import { createTrackEditorContext } from './context'
-	import { toReadable } from '../../lib/utils/toStore'
 
 	const { visibility } = appState
+
+	// forwarded from <Car>
+	let takeSnapshot: ComponentProps<Car>['takeSnapshot']
+	let restore: ComponentProps<Car>['restore']
+	let clearSnapshot: ComponentProps<Car>['clearSnapshot']
+	let respawn: ComponentProps<Car>['respawn']
+
+	// forwarded from <TrackViewer>
+	let resetTrackViewer: ComponentProps<TrackViewer>['reset']
 
 	export let track: UserTrack
 
@@ -253,13 +260,17 @@
 		wireframe = !wireframe
 	})
 
-	const respawnCar = useEvent('respawn-car')
-	const resetTrackViewer = useEvent('reset-track-viewer')
-
 	useKeyDown('Enter', () => {
 		if ($view === 'car') {
-			respawnCar()
-			resetTrackViewer()
+			restore?.()
+		}
+	})
+
+	useKeyDown('Backspace', () => {
+		if ($view === 'car') {
+			respawn?.()
+			clearSnapshot?.()
+			resetTrackViewer?.()
 		}
 	})
 </script>
@@ -474,8 +485,8 @@
 				slot="topbar-right"
 				forceFocusOnMount
 				on:click={() => {
-					respawnCar()
-					resetTrackViewer()
+					respawn?.()
+					resetTrackViewer?.()
 				}}
 			>
 				Reset
@@ -485,7 +496,14 @@
 {/if}
 
 <!-- 3D -->
-<TrackViewer {track} let:trackElement>
+<TrackViewer
+	{track}
+	let:trackElement
+	bind:reset={resetTrackViewer}
+	on:checkpointReached={() => {
+		takeSnapshot?.()
+	}}
+>
 	<TrackEditorElementTransformControls
 		{trackElement}
 		on:mouseDown={() => (cameraControlsActive = false)}
@@ -505,7 +523,16 @@
 	</TrackElementTransform>
 </TrackViewer>
 
-<Car freeze={carFrozen} active={carActive} useCarCamera={carActive} volume={carActive ? 1 : 0} />
+<Car
+	freeze={carFrozen}
+	active={carActive}
+	useCarCamera={carActive}
+	volume={carActive ? 1 : 0}
+	bind:takeSnapshot
+	bind:restore
+	bind:clearSnapshot
+	bind:respawn
+/>
 
 <T.PerspectiveCamera
 	makeDefault={$view === 'edit' && $editView === 'orbit'}

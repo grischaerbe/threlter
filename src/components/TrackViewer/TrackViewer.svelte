@@ -20,10 +20,9 @@
 	import type { Track } from '$lib/Track/Track'
 	import { currentWritable, type CurrentWritable } from '@threlte/core'
 	import { createEventDispatcher, getContext, setContext } from 'svelte'
-	import { useEvent } from '../../hooks/useEvents'
-	import { useAudioProvider } from '../Utilities/AudioProvider.svelte'
-	import { appState } from '../../stores/app'
 	import { toReadable } from '../../lib/utils/toStore'
+	import { appState } from '../../stores/app'
+	import { useAudioProvider } from '../Utilities/AudioProvider.svelte'
 
 	const { sfx } = appState.options.audio
 
@@ -33,6 +32,7 @@
 
 	const dispatch = createEventDispatcher<{
 		trackcompleted: void
+		checkpointReached: { trackElementId: string }
 	}>()
 
 	const { playAudio } = useAudioProvider()
@@ -41,13 +41,15 @@
 	const trackCompleted = currentWritable(false)
 
 	const checkpointReached = (trackElementId: string) => {
-		if (!checkpointsReached.current.has(trackElementId) && $sfx) {
+		if (checkpointsReached.current.has(trackElementId)) return
+		if ($sfx) {
 			playAudio('success1')
 		}
 		checkpointsReached.update((set) => {
 			set.add(trackElementId)
 			return set
 		})
+		dispatch('checkpointReached', { trackElementId })
 	}
 
 	const finishReached = () => {
@@ -76,13 +78,13 @@
 
 	setContext('track-context', ctx)
 
-	useEvent('reset-track-viewer', () => {
+	export const reset = () => {
 		checkpointsReached.update((set) => {
 			set.clear()
 			return set
 		})
 		trackCompleted.set(false)
-	})
+	}
 </script>
 
 {#each $elements as element (element.id)}

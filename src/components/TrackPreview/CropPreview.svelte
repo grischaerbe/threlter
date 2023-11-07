@@ -64,7 +64,6 @@
 			)
 
 			canvas.toBlob((blob) => {
-				console.log(blob)
 				if (!blob) return
 				dispatch('blob', blob)
 			})

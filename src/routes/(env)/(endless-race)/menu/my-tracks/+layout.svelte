@@ -27,6 +27,8 @@
 
 <BlurryCard class="h-full min-h-0 grid grid-cols-3 gap-[15px]">
 	<TrackList
+		page={data.page}
+		itemsPerPage={data.itemsPerPage}
 		preload={false}
 		class="col-span-1"
 		tracks={data.tracks}
