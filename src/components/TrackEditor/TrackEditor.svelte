@@ -44,6 +44,7 @@
 	let restore: ComponentProps<Car>['restore']
 	let clearSnapshot: ComponentProps<Car>['clearSnapshot']
 	let respawn: ComponentProps<Car>['respawn']
+	let hasSnapshot: ComponentProps<Car>['hasSnapshot']
 
 	// forwarded from <TrackViewer>
 	let resetTrackViewer: ComponentProps<TrackViewer>['reset']
@@ -262,7 +263,12 @@
 
 	useKeyDown('Enter', () => {
 		if ($view === 'car') {
-			restore?.()
+			if (hasSnapshot?.()) {
+				restore?.()
+			} else {
+				respawn?.()
+				resetTrackViewer?.()
+			}
 		}
 	})
 
@@ -532,6 +538,7 @@
 	bind:restore
 	bind:clearSnapshot
 	bind:respawn
+	bind:hasSnapshot
 />
 
 <T.PerspectiveCamera

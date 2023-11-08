@@ -68,17 +68,6 @@ export const useArrowKeys = () => {
 		}
 	}
 
-	watch(active, (active) => {
-		if (!active) {
-			arrowKeys.set({
-				ArrowDown: false,
-				ArrowLeft: false,
-				ArrowRight: false,
-				ArrowUp: false
-			})
-		}
-	})
-
 	window.addEventListener('keydown', onKeyDown)
 	window.addEventListener('keyup', onKeyUp)
 	window.addEventListener('visibilitychange', onVisibilityChange)

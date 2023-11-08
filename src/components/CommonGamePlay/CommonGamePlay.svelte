@@ -36,6 +36,7 @@
 	let restore: ComponentProps<Car>['restore']
 	let clearSnapshot: ComponentProps<Car>['clearSnapshot']
 	let respawn: ComponentProps<Car>['respawn']
+	let hasSnapshot: ComponentProps<Car>['hasSnapshot']
 
 	// forwarded from <TrackViewer>
 	let resetTrackViewer: ComponentProps<TrackViewer>['reset']
@@ -72,8 +73,13 @@
 	$: carVolumeSpring.set($carVolume)
 
 	useFrame((_, delta) => {
-		if ($paused || $state !== 'playing') return
-		time.update((t) => t + delta * 1000)
+		if ($state === 'playing') {
+			if (!$paused) {
+				time.update((t) => t + delta * 1000)
+			}
+		} else if ($state === 'finished') {
+			time.update((t) => t + delta * 1000)
+		}
 	})
 
 	const gamepad = useGamepad()
@@ -140,13 +146,21 @@
 	// pressing enter restores the car to the last checkpoint
 	gamepad.clusterBottom.on('press', () => {
 		if ($state === 'playing' && !$paused) {
-			restore?.()
+			if (hasSnapshot?.()) {
+				restore?.()
+			} else {
+				softReset()
+			}
 		}
 	})
 	useKeyDown('Enter', (e) => {
 		if ($state === 'playing' && !$paused) {
 			e.preventDefault()
-			restore?.()
+			if (hasSnapshot?.()) {
+				restore?.()
+			} else {
+				softReset()
+			}
 		}
 	})
 
@@ -169,6 +183,43 @@
 
 <Suspense final let:suspended>
 	<LoadingUi slot="fallback" />
+
+	<Car
+		freeze={$carFrozen}
+		active={$carActive}
+		volume={$carVolumeSpring}
+		freezeCamera={$state === 'finished'}
+		useCarCamera={$state !== 'intro'}
+		bind:takeSnapshot
+		bind:restore
+		bind:clearSnapshot
+		bind:respawn
+		bind:hasSnapshot
+		let:carState
+	>
+		{#if $state === 'playing' && boundsBox3}
+			<BoundsState {boundsBox3} {carState} let:isOutOfBounds>
+				{#if isOutOfBounds}
+					<UiWrapper>
+						<slot name="ui-out-of-bounds" {restart} {softReset}>
+							<OutOfBounds />
+						</slot>
+					</UiWrapper>
+				{/if}
+			</BoundsState>
+		{/if}
+
+		{#if $state === 'playing'}
+			<Velocity {carState} />
+			<GhostRecorder ghost={$currentRecord.ghost} time={$time} {carState} />
+		{/if}
+
+		{#each $ghostRecords as trackRecord}
+			{#key trackRecord.recordId}
+				<GhostPlayer {carState} {trackRecord} time={$time} />
+			{/key}
+		{/each}
+	</Car>
 
 	<Bounds let:center let:radius let:sphere bind:boundsBox3>
 		<TrackViewer
@@ -204,42 +255,6 @@
 			</T.PerspectiveCamera>
 		{/if}
 	</Bounds>
-
-	<Car
-		active={$carActive}
-		volume={$carVolumeSpring}
-		freeze={$carFrozen}
-		freezeCamera={$state === 'finished'}
-		useCarCamera={$state !== 'intro'}
-		let:carState
-		bind:takeSnapshot
-		bind:restore
-		bind:clearSnapshot
-		bind:respawn
-	>
-		{#if $state === 'playing' && boundsBox3}
-			<BoundsState {boundsBox3} {carState} let:isOutOfBounds>
-				{#if isOutOfBounds}
-					<UiWrapper>
-						<slot name="ui-out-of-bounds" {restart} {softReset}>
-							<OutOfBounds />
-						</slot>
-					</UiWrapper>
-				{/if}
-			</BoundsState>
-		{/if}
-
-		{#if $state === 'playing'}
-			<Velocity {carState} />
-			<GhostRecorder ghost={$currentRecord.ghost} time={$time} {carState} />
-		{/if}
-
-		{#each $ghostRecords as trackRecord}
-			{#key trackRecord.recordId}
-				<GhostPlayer {carState} {trackRecord} time={$time} />
-			{/key}
-		{/each}
-	</Car>
 
 	{#if !suspended}
 		<!-- UI -->

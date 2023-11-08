@@ -65,24 +65,25 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 		</CollisionGroups>
 	</T.Group>
 
+	<!-- Floor Colliders -->
 	<T.Group position.y={-0.25}>
 		<Collider shape="cuboid" args={[5, 0.25, 5]} bind:refresh={refreshFns[1]} />
 	</T.Group>
 
 	<!-- Stand colliders -->
 	<T.Group position.y={2.36278} position.z={4.36758} rotation.x={-0.227438}>
-		<Collider bind:refresh={refreshFns[4]} shape="cuboid" args={[0.2, 1.925, 0.1]} />
+		<Collider bind:refresh={refreshFns[2]} shape="cuboid" args={[0.2, 1.925, 0.1]} />
 	</T.Group>
 	<T.Group position.y={2.36278} position.z={-4.36758} rotation.x={0.227438}>
-		<Collider bind:refresh={refreshFns[5]} shape="cuboid" args={[0.2, 1.925, 0.1]} />
+		<Collider bind:refresh={refreshFns[3]} shape="cuboid" args={[0.2, 1.925, 0.1]} />
 	</T.Group>
 
 	<!-- Stand Base Colliders -->
 	<T.Group position.y={0.22} position.z={4.78}>
-		<Collider bind:refresh={refreshFns[6]} shape="cuboid" args={[1, 0.22, 0.225]} />
+		<Collider bind:refresh={refreshFns[4]} shape="cuboid" args={[1, 0.22, 0.225]} />
 	</T.Group>
 	<T.Group position.y={0.22} position.z={-4.78}>
-		<Collider bind:refresh={refreshFns[7]} shape="cuboid" args={[1, 0.22, 0.225]} />
+		<Collider bind:refresh={refreshFns[5]} shape="cuboid" args={[1, 0.22, 0.225]} />
 	</T.Group>
 
 	{#if $gltf}
@@ -93,14 +94,18 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 			material={$gltf.materials.Metall}
 		/>
 
-		<AutoColliders shape="cuboid" bind:refresh={refreshFns[2]}>
-			<T.Mesh
-				castShadow
-				receiveShadow
-				geometry={$gltf.nodes.Roof.geometry}
-				material={$gltf.materials.Metall}
-			/>
-		</AutoColliders>
+		<!-- Roof Collider-->
+		<T.Group position.y={5 - 0.33}>
+			<Collider shape="cuboid" args={[2, 0.33, 5]} bind:refresh={refreshFns[6]} />
+		</T.Group>
+
+		<Collider bind:refresh={refreshFns[7]} shape="cuboid" args={[1, 0.22, 0.225]} />
+		<T.Mesh
+			castShadow
+			receiveShadow
+			geometry={$gltf.nodes.Roof.geometry}
+			material={$gltf.materials.Metall}
+		/>
 
 		<T.Mesh
 			castShadow
@@ -117,7 +122,7 @@ Command: npx @threlte/gltf@1.0.0-next.9 /Users/grischaerbe/Documents/Projects/20
 				geometry={$gltf.nodes.Sign_1.geometry}
 				material={$gltf.materials.FinishSign}
 			/>
-			<AutoColliders shape="cuboid" bind:refresh={refreshFns[3]}>
+			<AutoColliders shape="cuboid" bind:refresh={refreshFns[8]}>
 				<T.Mesh
 					castShadow
 					receiveShadow

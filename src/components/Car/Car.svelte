@@ -34,6 +34,7 @@
 	export let restore: ComponentProps<RaycastVehicleController>['restore'] = undefined
 	export let clearSnapshot: ComponentProps<RaycastVehicleController>['clearSnapshot'] = undefined
 	export let respawn: ComponentProps<RaycastVehicleController>['respawn'] = undefined
+	export let hasSnapshot: ComponentProps<RaycastVehicleController>['hasSnapshot'] = undefined
 
 	const { disable, enable } = useKeyboardNavigation()
 
@@ -70,16 +71,17 @@
 />
 
 <RaycastVehicleController
-	bind:respawn
 	debug={$debug}
 	{active}
 	{volume}
 	useAudio={$sfx && $revealed}
 	{freeze}
 	let:carState
+	bind:respawn
 	bind:takeSnapshot
 	bind:restore
 	bind:clearSnapshot
+	bind:hasSnapshot
 >
 	<slot {carState} />
 

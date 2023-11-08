@@ -14,6 +14,7 @@ export const useRefreshCollider = () => {
 
 		watch([position, rotation], async () => {
 			await tick()
+			console.log('refresh collider')
 			refreshFns.forEach((fn) => fn())
 		})
 	}

@@ -545,6 +545,10 @@
 
 	let snapshot: Snapshot | undefined
 
+	export const hasSnapshot = () => {
+		return !!snapshot
+	}
+
 	export const clearSnapshot = () => {
 		snapshot = undefined
 	}
