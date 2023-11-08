@@ -24,15 +24,15 @@ export const load = (async ({ params, parent, route }) => {
 		throw redirect(307, '/menu/main')
 	}
 
-	// if the track is not owned by the current user, redirect to the main menu if
-	// the user is trying to edit it
-	if (route.id.includes('edit') && track.userId !== SessionManager.userId) {
+	// 1. if the track is not owned by the current user, redirect to the main menu
+	//    if the user is trying to edit it
+	// 2. if the track is public and the user is trying to edit or validate it,
+	//    return to the my tracks menu
+	if (
+		(route.id.includes('edit') || route.id.includes('validate')) &&
+		(track.userId !== SessionManager.userId || track.public)
+	) {
 		throw redirect(307, '/menu/main')
-	}
-
-	// if the track is public and the user is trying to edit or validate it, return to the my tracks menu
-	if (track.public && (route.id.includes('edit') || route.id.includes('validate'))) {
-		throw redirect(307, '/menu/my-tracks')
 	}
 
 	return {
