@@ -1,5 +1,6 @@
 import { z, type TypeOf } from 'zod'
 import { GhostFrame, GhostFrameSchema } from './GhostFrame'
+import { v4 } from 'uuid'
 
 export const GhostSchema = z.object({
 	id: z.string(),
@@ -8,7 +9,7 @@ export const GhostSchema = z.object({
 
 export class Ghost {
 	public frames: GhostFrame[]
-	public id = Math.random().toString(36).substring(2, 9)
+	public id = v4()
 	public averageTimeBetweenFrames = -1
 	public thresholdFactor = 2
 

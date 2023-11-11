@@ -57,7 +57,7 @@ export class UserTrack extends Track {
 		cloned.setFromData(JSON.parse(JSON.stringify(this)))
 		cloned.trackName = `${this.trackName} (Remix)`
 		cloned.userTrackRecord = undefined
-		cloned.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+		cloned.trackId = Track.createTrackId()
 		cloned.userId = SessionManager.userId
 		return cloned
 	}

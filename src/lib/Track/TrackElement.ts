@@ -1,6 +1,7 @@
 import type { EulerOrder, Vector3Tuple } from 'three'
 import type { TrackElementType } from './Track'
 import { z, type TypeOf } from 'zod'
+import { v4 } from 'uuid'
 
 export const TrackElementSchema = z.object({
 	id: z.string(),
@@ -10,7 +11,8 @@ export const TrackElementSchema = z.object({
 })
 
 export class TrackElement {
-	public id: string = Math.random().toString(36).substring(2, 9)
+	public id: string = v4()
+
 	public type: TrackElementType
 	public position: Vector3Tuple
 	public rotation: [x: number, y: number, z: number, order: EulerOrder]

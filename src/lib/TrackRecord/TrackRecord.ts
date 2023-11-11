@@ -1,5 +1,6 @@
 import { z, type TypeOf } from 'zod'
 import { Ghost, GhostSchema } from './Ghost'
+import { v4 } from 'uuid'
 
 export const TrackRecordSchema = z.object({
 	recordId: z.string(),
@@ -17,7 +18,7 @@ export const TrackRecordSchema = z.object({
  * It is saved to local storage except for the ghost.
  */
 export class TrackRecord {
-	recordId: string = Math.random().toString(36).substring(2, 9)
+	recordId: string = v4()
 	public trackId: string
 	public userId: string
 

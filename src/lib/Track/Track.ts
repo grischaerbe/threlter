@@ -3,6 +3,7 @@ import type { EulerOrder, Vector3Tuple } from 'three'
 import z, { type TypeOf } from 'zod'
 import { Dispatcher } from './Dispatcher'
 import { TrackData, TrackDataSchema } from './TrackData'
+import { v4 } from 'uuid'
 
 export type TrackElementType = keyof typeof trackElementPrototypes
 
@@ -29,7 +30,7 @@ type Events = {
 export class Track extends Dispatcher<Events> {
 	isTrack: true = true
 
-	trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+	trackId = Track.createTrackId()
 	trackData = new TrackData()
 	trackName = ''
 
@@ -37,6 +38,10 @@ export class Track extends Dispatcher<Events> {
 		gold: 0,
 		silver: 0,
 		bronze: 0
+	}
+
+	public static createTrackId() {
+		return v4()
 	}
 
 	public toJSON(): TypeOf<typeof TrackSchema> {
@@ -69,7 +74,7 @@ export class Track extends Dispatcher<Events> {
 	public remix() {
 		const cloned = new Track()
 		cloned.setFromData(JSON.parse(JSON.stringify(this)))
-		cloned.trackId = `Track-${Math.random().toString(36).substring(2, 9)}`
+		cloned.trackId = Track.createTrackId()
 		return cloned
 	}
 
