@@ -14,6 +14,7 @@
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
 	import Resolution from '../components/Utilities/Resolution.svelte'
 	import { sunPos } from '../config'
+	import { PUBLIC_GOOGLE_CLIENT_ID } from '$env/static/public'
 
 	export let data
 
@@ -109,10 +110,7 @@
 	<!-- user is not authenticated, show sign in UI -->
 	<SignIn redirectUrl={data.redirectTo}>
 		<svelte:fragment let:googleAuthCallback>
-			<GoogleLogin
-				clientId="427985590037-nl1s5mndlvoeflcp1am1u7195deakf8e.apps.googleusercontent.com"
-				callback={googleAuthCallback}
-			/>
+			<GoogleLogin clientId={PUBLIC_GOOGLE_CLIENT_ID} callback={googleAuthCallback} />
 		</svelte:fragment>
 	</SignIn>
 {/if}
