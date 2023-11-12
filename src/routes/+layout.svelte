@@ -2,6 +2,7 @@
 	import { page } from '$app/stores'
 	import KeyboardNavigation from '$components/UI/KeyboardNavigation.svelte'
 	import AudioProvider from '$components/Utilities/AudioProvider.svelte'
+	import { PUBLIC_GOOGLE_CLIENT_ID } from '$env/static/public'
 	import { appState } from '$stores/app'
 	import { Canvas, T } from '@threlte/core'
 	import { AudioListener, CSM, Suspense } from '@threlte/extras'
@@ -12,9 +13,9 @@
 	import Renderer from '../components/Renderer.svelte'
 	import SignIn from '../components/Session/SignIn.svelte'
 	import LoadingUi from '../components/UI/LoadingUi.svelte'
+	import Card from '../components/UI/components/Card.svelte'
 	import Resolution from '../components/Utilities/Resolution.svelte'
 	import { sunPos } from '../config'
-	import { PUBLIC_GOOGLE_CLIENT_ID } from '$env/static/public'
 
 	export let data
 
@@ -108,9 +109,21 @@
 	</div>
 {:else}
 	<!-- user is not authenticated, show sign in UI -->
-	<SignIn redirectUrl={data.redirectTo}>
-		<svelte:fragment let:googleAuthCallback>
-			<GoogleLogin clientId={PUBLIC_GOOGLE_CLIENT_ID} callback={googleAuthCallback} />
-		</svelte:fragment>
-	</SignIn>
+	<div
+		class="w-full h-full absolute bg-black text-white flex flex-col justify-center items-center cursor-auto"
+	>
+		<img
+			class="max-w-[60vw] border-[3px] border-blue-darker rounded-xl mb-[30px] max-h-[50vh]"
+			src="/images/232580867-88e8d414-6b9b-45d1-93cc-5777538a4b11.png"
+			alt="Threltemania preview"
+		/>
+		<Card class="border-[3px] border-blue-darker">
+			<h2 class="font-headline mb-[10px] text-center text-2xl">PLAY NOW</h2>
+			<SignIn redirectUrl={data.redirectTo}>
+				<svelte:fragment let:googleAuthCallback>
+					<GoogleLogin clientId={PUBLIC_GOOGLE_CLIENT_ID} callback={googleAuthCallback} />
+				</svelte:fragment>
+			</SignIn>
+		</Card>
+	</div>
 {/if}
