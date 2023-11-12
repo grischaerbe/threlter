@@ -1,11 +1,10 @@
-import { redirect } from '@sveltejs/kit'
+import { cache } from '../../../../../lib/Cache/cache'
 import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
 import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 import type { LayoutLoad } from './$types'
-import { cache } from '../../../../../lib/Cache/cache'
 
 export const load = (async ({ url }) => {
-	if (!SessionManager.userId) throw redirect(307, '/')
+	await SessionManager.awaitSession()
 
 	const sort = (url.searchParams.get('sort') as any) ?? TrackManager.Sort.TopMonthly
 	const limit = 10

@@ -2,14 +2,13 @@
 	import { page } from '$app/stores'
 	import { SessionManager } from '../../../lib/nakama/SessionManager'
 	import { c } from '../../../lib/utils/classes'
-	import { toReadable } from '../../../lib/utils/toStore'
 	import SpecialButton from '../components/SpecialButton.svelte'
 
 	$: isExplore = $page.route.id?.includes('explore') ?? false
 	$: isMyTracks = $page.route.id?.includes('my-tracks') ?? false
 	$: isOptions = $page.route.id?.includes('options') ?? false
 
-	const userId = toReadable(SessionManager, 'userId')
+	const userId = SessionManager.userId
 </script>
 
 <div class="mb-[30px]">
@@ -25,18 +24,21 @@
 
 	<div class="flex gap-[5px]">
 		<SpecialButton
+			preload={false}
 			href={isExplore ? '/menu/main' : '/menu/explore'}
 			class={c('flex-1 whitespace-nowrap', isExplore && '!bg-blue-dark')}
 		>
 			Explore
 		</SpecialButton>
 		<SpecialButton
+			preload={false}
 			href={isMyTracks ? '/menu/main' : '/menu/my-tracks'}
 			class={c('flex-1 whitespace-nowrap', isMyTracks && '!bg-blue-dark')}
 		>
 			My Tracks
 		</SpecialButton>
 		<SpecialButton
+			preload={false}
 			href={isOptions ? '/menu/main' : '/menu/options'}
 			class={c('flex-1 whitespace-nowrap', isOptions && '!bg-blue-dark')}
 		>

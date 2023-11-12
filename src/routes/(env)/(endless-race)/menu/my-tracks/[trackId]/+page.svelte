@@ -94,8 +94,6 @@
 			<PlainButton
 				class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 				on:click={async () => {
-					if (!SessionManager.userId) return
-					if (!track) return
 					const newTrack = track.remix()
 					await TrackManager.saveUserTrack(newTrack)
 					goto(`/user/${newTrack.trackId}/edit`)
@@ -108,7 +106,6 @@
 				<PlainButton
 					class="font-mono uppercase tracking-wide px-2 py-1 text-blue-darkest bg-red-500/80 hover:bg-red-500 focus:bg-red-500"
 					on:click={async () => {
-						if (!track) return
 						await TrackManager.deleteUserTrack(track.trackId)
 						goto('/menu/my-tracks')
 					}}

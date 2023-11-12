@@ -70,7 +70,6 @@
 			<PlainButton
 				class="font-mono uppercase tracking-wide px-2 py-1 text-orange bg-blue-950/60 hover:bg-blue-950/80 focus:bg-blue-950/80"
 				on:click={async () => {
-					if (!SessionManager.userId) return
 					if (!track) return
 					const newTrack = track.remix()
 					await TrackManager.saveUserTrack(newTrack)

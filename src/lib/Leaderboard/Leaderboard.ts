@@ -34,7 +34,7 @@ export class Leaderboard {
 		const response = await Nakama.client.listLeaderboardRecordsAroundOwner(
 			await SessionManager.getSession(),
 			this.trackId,
-			SessionManager.userId!,
+			SessionManager.getUserId(),
 			1
 		)
 

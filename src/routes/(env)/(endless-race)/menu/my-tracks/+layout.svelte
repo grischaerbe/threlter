@@ -61,8 +61,7 @@
 			style="inverted"
 			forceFocusOnMount={!userHasTracks}
 			on:click={async () => {
-				if (!SessionManager.userId) return
-				const track = new UserTrack(SessionManager.userId)
+				const track = new UserTrack(SessionManager.getUserId())
 				track.trackName = 'Unnamed Track'
 				track.addTrackElement('Box')
 				await TrackManager.saveUserTrack(track)

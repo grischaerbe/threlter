@@ -1,4 +1,4 @@
-import { debounce } from 'lodash-es'
+import type { Session } from '@heroiclabs/nakama-js'
 import { UserTrack } from '../Track/UserTrack'
 import { TrackRecord } from '../TrackRecord/TrackRecord'
 import { Nakama } from '../nakama/Nakama'
@@ -28,7 +28,7 @@ export class TrackManager {
 	public static Sort = Sort
 
 	static async getOwnTracks(page: number = 1, perPage: number = 10) {
-		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
+		const response = await Nakama.client.rpc(SessionManager.getSession(), 'get_user_tracks', {
 			sort: Sort.New,
 			own: true,
 			limit: perPage,
@@ -46,7 +46,7 @@ export class TrackManager {
 	}
 
 	static async getUserTrack(trackId: string, intent: FetchIntent) {
-		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_track', {
+		const response = await Nakama.client.rpc(SessionManager.getSession(), 'get_user_track', {
 			trackId,
 			intent
 		})
@@ -57,7 +57,7 @@ export class TrackManager {
 	}
 
 	static async deleteUserTrack(trackId: string) {
-		await Nakama.client.rpc(await SessionManager.getSession(), 'delete_user_track', {
+		await Nakama.client.rpc(SessionManager.getSession(), 'delete_user_track', {
 			trackId
 		})
 	}
@@ -68,17 +68,17 @@ export class TrackManager {
 		if (debounce) {
 			return new Promise<void>((resolve) => {
 				this.#timeout = setTimeout(async () => {
-					await Nakama.client.rpc(await SessionManager.getSession(), 'save_user_track', userTrack)
+					await Nakama.client.rpc(SessionManager.getSession(), 'save_user_track', userTrack)
 					resolve()
 				}, debounce)
 			})
 		} else {
-			await Nakama.client.rpc(await SessionManager.getSession(), 'save_user_track', userTrack)
+			await Nakama.client.rpc(SessionManager.getSession(), 'save_user_track', userTrack)
 		}
 	}
 
 	static async publishUserTrack(userTrack: UserTrack) {
-		await Nakama.client.rpc(await SessionManager.getSession(), 'publish_user_track', {
+		await Nakama.client.rpc(SessionManager.getSession(), 'publish_user_track', {
 			userTrack
 		})
 	}
@@ -87,7 +87,7 @@ export class TrackManager {
 	 * Tracks by other users, only validated tracks.
 	 */
 	public static async getCommunityTracks(sort: Sort, limit: number, page: number) {
-		const response = await Nakama.client.rpc(await SessionManager.getSession(), 'get_user_tracks', {
+		const response = await Nakama.client.rpc(SessionManager.getSession(), 'get_user_tracks', {
 			sort,
 			limit,
 			page
@@ -109,14 +109,19 @@ export class TrackManager {
 	}
 
 	public static async addTrackRecord(trackRecord: TrackRecord) {
-		await Nakama.client.rpc(await SessionManager.getSession(), 'add_track_record', {
+		await Nakama.client.rpc(SessionManager.getSession(), 'add_track_record', {
 			trackRecord
 		})
 	}
 
-	public static async getLeaderboard(trackId: string, limit: number, cursor?: string) {
+	public static async getLeaderboard(
+		session: Session,
+		trackId: string,
+		limit: number,
+		cursor?: string
+	) {
 		const response = await Nakama.client.listLeaderboardRecords(
-			await SessionManager.getSession(),
+			session,
 			trackId,
 			undefined,
 			limit,
@@ -150,18 +155,28 @@ export class TrackManager {
 				.filter(filterUndefined),
 			hasNext: !!response.next_cursor,
 			next: () => {
-				return TrackManager.getLeaderboard(trackId, limit, response.next_cursor)
+				return TrackManager.getLeaderboard(
+					SessionManager.getSession(),
+					trackId,
+					limit,
+					response.next_cursor
+				)
 			},
 			hasPrevious: !!response.prev_cursor,
 			previous: () => {
-				return TrackManager.getLeaderboard(trackId, limit, response.prev_cursor)
+				return TrackManager.getLeaderboard(
+					SessionManager.getSession(),
+					trackId,
+					limit,
+					response.prev_cursor
+				)
 			}
 		}
 	}
 
 	public static async getUser(userIds: string[]) {
 		const response = await Nakama.client.getUsers(
-			await SessionManager.getSession(),
+			SessionManager.getSession(),
 			userIds,
 			undefined,
 			undefined
@@ -172,7 +187,7 @@ export class TrackManager {
 	public static async getTrackRecord(trackId: string, rank: number) {
 		try {
 			const response = await Nakama.client.listLeaderboardRecords(
-				await SessionManager.getSession(),
+				SessionManager.getSession(),
 				trackId,
 				undefined,
 				rank,
@@ -189,12 +204,11 @@ export class TrackManager {
 	}
 
 	public static async getOwnTrackRecord(trackId: string) {
-		if (!SessionManager.userId) throw new Error('User not logged in')
 		try {
 			const response = await Nakama.client.listLeaderboardRecordsAroundOwner(
-				await SessionManager.getSession(),
+				SessionManager.getSession(),
 				trackId,
-				SessionManager.userId,
+				SessionManager.getUserId(),
 				1
 			)
 			const trackRecords = response.records?.map((record) => {
@@ -213,7 +227,7 @@ export class TrackManager {
 	 */
 	public static async getTrackThumbnailUploadUrl(trackId: string) {
 		const response = (await Nakama.client.rpc(
-			await SessionManager.getSession(),
+			SessionManager.getSession(),
 			'create_track_thumbnail_upload_url',
 			{
 				trackId

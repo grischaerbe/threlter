@@ -1,10 +1,9 @@
-import { redirect } from '@sveltejs/kit'
 import { TrackManager } from '../../../../../lib/TrackManager/TrackManager'
 import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 import type { LayoutLoad } from './$types'
 
 export const load = (async ({ params, url }) => {
-	if (!SessionManager.userId) throw redirect(307, '/')
+	await SessionManager.awaitSession()
 
 	const page = Number(url.searchParams.get('page') ?? 1)
 

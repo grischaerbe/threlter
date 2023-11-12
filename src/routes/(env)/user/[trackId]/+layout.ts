@@ -4,9 +4,7 @@ import { SessionManager } from '../../../../lib/nakama/SessionManager'
 import type { LayoutLoad } from './$types'
 
 export const load = (async ({ params, parent, route }) => {
-	// the parent layout logs in the user and creates the nakama session, so we
-	// need to wait for it
-	await parent()
+	await SessionManager.awaitSession()
 
 	let fetchIntent = TrackManager.FetchIntent.View
 	if (route.id.includes('edit')) {
@@ -30,7 +28,7 @@ export const load = (async ({ params, parent, route }) => {
 	//    return to the my tracks menu
 	if (
 		(route.id.includes('edit') || route.id.includes('validate')) &&
-		(track.userId !== SessionManager.userId || track.public)
+		(track.userId !== SessionManager.getUserId() || track.public)
 	) {
 		throw redirect(307, '/menu/main')
 	}

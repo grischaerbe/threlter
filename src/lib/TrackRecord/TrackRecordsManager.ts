@@ -3,10 +3,6 @@ import { TrackManager } from '../TrackManager/TrackManager'
 import { SessionManager } from '../nakama/SessionManager'
 import { TrackRecord } from './TrackRecord'
 
-function filterUndefined(value: TrackRecord | undefined): value is TrackRecord {
-	return value !== undefined
-}
-
 type Events = {
 	change: any
 	newPersonalRecord: TrackRecord
@@ -24,13 +20,12 @@ export class TrackRecordsManager extends Dispatcher<Events> {
 	current: TrackRecord
 
 	static async fromTrackId(trackId: string) {
-		if (!SessionManager.userId) throw new Error('Session not set')
 		const [rankedTrackRecord, ownTrackRecord] = await Promise.all([
 			TrackManager.getTrackRecord(trackId, 1),
 			TrackManager.getOwnTrackRecord(trackId)
 		])
 		return new TrackRecordsManager(
-			SessionManager.userId,
+			SessionManager.getUserId(),
 			trackId,
 			rankedTrackRecord,
 			ownTrackRecord

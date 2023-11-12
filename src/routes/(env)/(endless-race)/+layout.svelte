@@ -39,7 +39,10 @@
 			{showIntro}
 			bind:cameraFadeOpacity
 			on:introcomplete={() => {
-				goto('/menu/main')
+				if ($page.route.id === '/(env)/(endless-race)') {
+					// we only want to do this if we're still on the intro page
+					goto('/menu/main')
+				}
 			}}
 		/>
 

@@ -1,15 +1,16 @@
-import { redirect } from '@sveltejs/kit'
+import { TrackRecordsManager } from '../../../../../lib/TrackRecord/TrackRecordsManager'
 import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 import type { PageLoad } from './$types'
-import { TrackRecordsManager } from '../../../../../lib/TrackRecord/TrackRecordsManager'
 
 export const load = (async ({ parent }) => {
+	await SessionManager.awaitSession()
+
 	const parentData = await parent()
 
-	const userId = SessionManager.userId
-	if (!userId) throw redirect(307, '/menu/main')
-
-	const trackRecordsManager = new TrackRecordsManager(userId, parentData.track.trackId)
+	const trackRecordsManager = new TrackRecordsManager(
+		SessionManager.getUserId(),
+		parentData.track.trackId
+	)
 
 	return {
 		trackRecordsManager

@@ -52,13 +52,12 @@ export class UserTrack extends Track {
 	}
 
 	public remix() {
-		if (!SessionManager.userId) throw new Error('User not logged in')
 		const cloned = new UserTrack('')
 		cloned.setFromData(JSON.parse(JSON.stringify(this)))
 		cloned.trackName = `${this.trackName} (Remix)`
 		cloned.userTrackRecord = undefined
 		cloned.trackId = Track.createTrackId()
-		cloned.userId = SessionManager.userId
+		cloned.userId = SessionManager.getUserId()
 		return cloned
 	}
 }

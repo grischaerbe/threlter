@@ -12,7 +12,7 @@ export class UserManager {
 	public static formatUserName(userIdOrUser: string | User, userName?: string): string | undefined {
 		let uId = typeof userIdOrUser === 'string' ? userIdOrUser : userIdOrUser.id
 		let uName = typeof userIdOrUser === 'string' ? userName : userIdOrUser.username
-		if (uId === SessionManager.userId) {
+		if (uId === SessionManager.getUserId()) {
 			return `${uName} (you)`
 		}
 		return uName
@@ -22,8 +22,8 @@ export class UserManager {
 	public static isSelf(user: User): boolean
 	public static isSelf(userIdOrUser: string | User) {
 		return typeof userIdOrUser === 'string'
-			? userIdOrUser === SessionManager.userId
-			: userIdOrUser.id === SessionManager.userId
+			? userIdOrUser === SessionManager.getUserId()
+			: userIdOrUser.id === SessionManager.getUserId()
 	}
 
 	public static async updateAccount(username: string): Promise<{ success: boolean }> {
