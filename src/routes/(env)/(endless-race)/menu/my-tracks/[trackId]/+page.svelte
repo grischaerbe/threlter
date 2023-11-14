@@ -118,7 +118,7 @@
 
 	{#if leaderboard}
 		<Card class="mt-[20px]">
-			<LeaderboardViewer {leaderboard} />
+			<LeaderboardViewer {leaderboard} title="Weekly Leaderboard" />
 		</Card>
 	{/if}
 </div>

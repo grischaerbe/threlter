@@ -5,7 +5,7 @@ import { filterUndefined } from '../utils/filterUndefined'
 import { LeaderboardEntry } from './LeaderboardEntry'
 
 export class Leaderboard {
-	public trackId: string
+	public leaderboardId: string
 	public leaderboardEntries: LeaderboardEntry[] = []
 	public ownLeaderboardEntry?: LeaderboardEntry
 	public page = 1
@@ -21,7 +21,7 @@ export class Leaderboard {
 	}
 
 	private constructor(trackId: string) {
-		this.trackId = trackId
+		this.leaderboardId = trackId
 	}
 
 	public static async fromTrackId(trackId: string) {
@@ -30,10 +30,22 @@ export class Leaderboard {
 		return leaderboard
 	}
 
+	public static async fromMatchId(matchId: string) {
+		const leaderboard = new Leaderboard(`match:${matchId}`)
+		await Promise.all([leaderboard.fetchOwnEntry(), leaderboard.fetchEntries()])
+		return leaderboard
+	}
+
+	public static async fromLeaderboardId(leaderboardId: string) {
+		const leaderboard = new Leaderboard(leaderboardId)
+		await Promise.all([leaderboard.fetchOwnEntry(), leaderboard.fetchEntries()])
+		return leaderboard
+	}
+
 	private async fetchOwnEntry() {
 		const response = await Nakama.client.listLeaderboardRecordsAroundOwner(
 			await SessionManager.getSession(),
-			this.trackId,
+			this.leaderboardId,
 			SessionManager.getUserId(),
 			1
 		)
@@ -52,7 +64,7 @@ export class Leaderboard {
 		}
 
 		this.ownLeaderboardEntry = new LeaderboardEntry(
-			this.trackId,
+			this.leaderboardId,
 			record.owner_id,
 			record.username,
 			record.score,
@@ -66,7 +78,7 @@ export class Leaderboard {
 
 		const response = await Nakama.client.listLeaderboardRecords(
 			await SessionManager.getSession(),
-			this.trackId,
+			this.leaderboardId,
 			undefined,
 			this.entriesPerPage,
 			cursor
@@ -88,7 +100,7 @@ export class Leaderboard {
 					)
 						return undefined
 					return new LeaderboardEntry(
-						this.trackId,
+						this.leaderboardId,
 						record.owner_id,
 						record.username,
 						record.score,
@@ -99,6 +111,10 @@ export class Leaderboard {
 				.filter(filterUndefined) ?? []
 
 		this.loading = false
+	}
+
+	public async refresh() {
+		await Promise.all([this.fetchOwnEntry(), this.fetchEntries()])
 	}
 
 	public async nextPage() {

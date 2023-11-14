@@ -21,7 +21,7 @@
 
 	<div class="flex flex-col gap-[15px] items-start">
 		<Card class="inline-block text-[0.9em] w-[18em]">
-			<LeaderboardViewer {leaderboard} />
+			<LeaderboardViewer {leaderboard} title="Weekly Leaderboard" />
 		</Card>
 		<Card class="flex flex-col gap-[10px] w-max">
 			<div class="font-headline">Controls</div>

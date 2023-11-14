@@ -108,9 +108,10 @@ export class TrackManager {
 		}
 	}
 
-	public static async addTrackRecord(trackRecord: TrackRecord) {
+	public static async addTrackRecord(trackRecord: TrackRecord, matchId?: string) {
 		await Nakama.client.rpc(SessionManager.getSession(), 'add_track_record', {
-			trackRecord
+			trackRecord,
+			matchId
 		})
 	}
 

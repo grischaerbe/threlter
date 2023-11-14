@@ -8,6 +8,7 @@
 	import TrackTimes from '../../../../../../components/UI/components/TrackTimes.svelte'
 	import LeaderboardViewer from '../../../../../../lib/Leaderboard/LeaderboardViewer.svelte'
 	import { TrackManager } from '../../../../../../lib/TrackManager/TrackManager'
+	import { MatchManager } from '../../../../../../lib/nakama/MatchManager'
 	import { SessionManager } from '../../../../../../lib/nakama/SessionManager'
 	import { UserManager } from '../../../../../../lib/nakama/UserManager'
 	import { shareTrack } from '../../../../../../lib/shareTrack'
@@ -49,6 +50,18 @@
 					Play
 				</SpecialButton>
 			{/if}
+
+			{#if track.public}
+				<SpecialButton
+					style="green-inverted"
+					on:click={async () => {
+						const matchId = await MatchManager.createMatch(track.trackId)
+						goto(`/match/${matchId}`)
+					}}
+				>
+					Play Online
+				</SpecialButton>
+			{/if}
 		</div>
 
 		<!-- {#if track.public}
@@ -83,7 +96,7 @@
 
 	{#if leaderboard}
 		<Card class="mt-[20px]">
-			<LeaderboardViewer {leaderboard} />
+			<LeaderboardViewer {leaderboard} title="Weekly Leaderboard" />
 		</Card>
 	{/if}
 </div>

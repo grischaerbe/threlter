@@ -2,16 +2,20 @@
 	import FormattedTime from '../../components/UI/components/FormattedTime.svelte'
 	import SpecialButton from '../../components/UI/components/SpecialButton.svelte'
 	import { UserManager } from '../nakama/UserManager'
+	import { toReadable } from '../utils/toStore'
 	import type { Leaderboard } from './Leaderboard'
 
+	export let title: string
 	export let leaderboard: Leaderboard
+
+	const entries = toReadable(leaderboard, 'leaderboardEntries')
 </script>
 
-<h2 class="mb-[15px]">Weekly Leaderboard</h2>
+<h2 class="mb-[15px]">{title}</h2>
 
 <div class="flex flex-col gap-[5px] text-[0.8em]">
-	{#if leaderboard && leaderboard.leaderboardEntries.length}
-		{#each leaderboard.leaderboardEntries as entry, i}
+	{#if $entries.length}
+		{#each $entries as entry, i}
 			<div class="flex gap-[5px]">
 				<span class="font-mono mr-2">{entry.rank}.</span>
 				<FormattedTime time={entry.time} />

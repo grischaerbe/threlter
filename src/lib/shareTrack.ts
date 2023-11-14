@@ -8,15 +8,15 @@ export const shareTrack = async (track: Track, leaderboard?: Leaderboard) => {
 				track.trackName
 		  }? 
 			
-See for yourself: https://threltemania.com/user/${track.trackId}/time-attack`
+See for yourself: https://threltemania.com/menu/explore/${track.trackId}`
 		: `Can you beat me on ${track.trackName}?
 		
-See for yourself: https://threltemania.com/user/${track.trackId}/time-attack`
+See for yourself: https://threltemania.com/menu/explore/${track.trackId}`
 
 	if ('share' in navigator) {
 		navigator.share({
 			text,
-			url: `https://threltemania.com/user/${track.trackId}/time-attack`,
+			url: `https://threltemania.com/menu/explore/${track.trackId}`,
 			title: 'Threltemania'
 		})
 	} else if ('clipboard' in navigator) {
