@@ -9,6 +9,7 @@
 	import SpecialButton from '../../../../../components/UI/components/SpecialButton.svelte'
 	import { UserManager } from '../../../../../lib/nakama/UserManager'
 	import { c } from '../../../../../lib/utils/classes'
+	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
 
 	const { audio, video, player, debug } = appState.options
 
@@ -18,7 +19,7 @@
 
 	const colors = ['#fe3d00', '#BABACA', '#353535', '#6892be', '#FFD700']
 
-	let currentPlayerName = appState.options.player.name.current
+	let currentPlayerName = SessionManager.getSession().username ?? ''
 	let error = false
 
 	const { keyboardNavigationAction } = useKeyboardNavigation()
