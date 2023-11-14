@@ -2,7 +2,7 @@ import { Nakama } from './Nakama'
 import { SessionManager } from './SessionManager'
 
 export class SocketManager {
-	public static socket = Nakama.client.createSocket(false)
+	public static socket = Nakama.client.createSocket(true)
 
 	/**
 	 * Creates
