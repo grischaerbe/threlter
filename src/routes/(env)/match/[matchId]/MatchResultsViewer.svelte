@@ -20,20 +20,18 @@
 			>
 				<div class="">
 					<h3>
-						<span class="w-[2ch] inline-block">
-							{result.record?.rank}.
-						</span>
+						{#if result.record?.rank !== undefined}
+							<span class="w-[2ch] inline-block">
+								{result.record?.rank}.
+							</span>
+						{/if}
 						{result.player.presence.username}
 					</h3>
 				</div>
 
-				{#if result.record?.score !== undefined}
-					<div class="text-right">
-						<FormattedTime time={result.record?.score} />
-					</div>
-				{:else}
-					<div>–</div>
-				{/if}
+				<div class="text-right">
+					<FormattedTime time={result.record?.score ?? 0} />
+				</div>
 			</div>
 		{/each}
 	</div>
