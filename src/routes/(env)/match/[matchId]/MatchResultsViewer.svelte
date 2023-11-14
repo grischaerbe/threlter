@@ -9,9 +9,9 @@
 </script>
 
 <Card>
-	<h2 class="mb-[20px] font-headline">Live Ranking</h2>
+	<h2 class="mb-[5px] font-headline">Live Ranking</h2>
 
-	<h3 class="text-[0.8em] mb-[10px]">{$players.length} Player{$players.length > 1 ? 's' : ''}</h3>
+	<h3 class="text-[0.7em] mb-[30px]">{$players.length} Player{$players.length > 1 ? 's' : ''}</h3>
 
 	<div>
 		{#each $results as result}
