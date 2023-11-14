@@ -7,11 +7,13 @@
 	import SpecialButton from '../../../../components/UI/components/SpecialButton.svelte'
 	import type { Leaderboard } from '../../../../lib/Leaderboard/Leaderboard'
 	import LeaderboardViewer from '../../../../lib/Leaderboard/LeaderboardViewer.svelte'
+	import type { MatchResults } from '../../../../lib/MatchResults/MatchResults'
+	import MatchResultsViewer from './MatchResultsViewer.svelte'
 
 	export let proceed: () => void
 	export let restart: () => void
 	export let track: Track
-	export let leaderboard: Leaderboard | undefined = undefined
+	export let matchResults: MatchResults
 </script>
 
 <div class="absolute top-0 left-0 w-full h-full bg-blue-950/30 backdrop-blur p-[15px]">
@@ -27,11 +29,9 @@
 		</svelte:fragment>
 
 		<div class="flex flex-col gap-[15px] items-start">
-			{#if leaderboard}
-				<Card class="inline-block text-[0.9em] w-[18em]">
-					<LeaderboardViewer {leaderboard} title="Match Results" />
-				</Card>
-			{/if}
+			<Card class="inline-block text-[0.9em] w-[18em]">
+				<MatchResultsViewer {matchResults} />
+			</Card>
 			<Card class="flex flex-col gap-[10px] w-max">
 				<div class="font-headline">Controls</div>
 

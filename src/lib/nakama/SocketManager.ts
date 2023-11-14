@@ -1,8 +1,11 @@
+import { PUBLIC_NAKAMA_USE_SSL } from '$env/static/public'
 import { Nakama } from './Nakama'
 import { SessionManager } from './SessionManager'
 
+const ssl = PUBLIC_NAKAMA_USE_SSL === 'true' || PUBLIC_NAKAMA_USE_SSL === '1'
+
 export class SocketManager {
-	public static socket = Nakama.client.createSocket(true)
+	public static socket = Nakama.client.createSocket(ssl)
 
 	/**
 	 * Creates

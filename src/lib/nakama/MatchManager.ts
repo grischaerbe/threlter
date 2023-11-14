@@ -4,6 +4,7 @@ import { SessionManager } from './SessionManager'
 import { SocketManager } from './SocketManager'
 import { Player } from './Player'
 import { currentWritable, type CurrentWritable } from '@threlte/core'
+import { MatchResults } from '../MatchResults/MatchResults'
 
 // Distributive conditional type
 type ServerMessageType<
@@ -23,9 +24,11 @@ export class MatchManager<
 	ServerMessage extends Record<any, any>
 > {
 	public matchId: string
+	public leaderboardId: string
 	public match: Match | undefined
 	public socket: Socket
 	public players: CurrentWritable<Player[]> = currentWritable([])
+	public matchResults: MatchResults
 
 	public ClientOpCode: ClientOpCode
 	public ServerOpCode: ServerOpCode
@@ -47,6 +50,8 @@ export class MatchManager<
 		this.matchId = matchId
 		this.ClientOpCode = ClientOpCode
 		this.ServerOpCode = ServerOpCode
+		this.leaderboardId = MatchManager.getMatchLeaderboardId(matchId)
+		this.matchResults = new MatchResults(this)
 	}
 
 	private onMatchData(matchData: MatchData) {
@@ -112,6 +117,7 @@ export class MatchManager<
 		if (this.match.presences) {
 			this.players.set(this.match.presences.map((presence) => new Player(presence)))
 		}
+		this.matchResults.update()
 		return this.match
 	}
 

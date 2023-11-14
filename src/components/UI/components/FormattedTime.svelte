@@ -13,7 +13,7 @@
 </script>
 
 <!-- force into mono space -->
-<div class={c('font-segments', _class)}>
+<div class={c('font-segments whitespace-nowrap', _class)}>
 	{#each new Array(9).fill(0) as _, index}
 		<span
 			class={c(

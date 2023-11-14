@@ -50,7 +50,8 @@ export type State = {
 export enum ClientOpCode {
 	NoOp,
 	Ready,
-	TransformUpdate
+	TransformUpdate,
+	LeaderboardRecordAdd
 }
 
 export enum ServerOpCode {
@@ -59,7 +60,8 @@ export enum ServerOpCode {
 	TransformUpdates,
 	MatchStarted,
 	MatchFinished,
-	MatchRestart
+	MatchRestart,
+	UpdateLeaderboard
 }
 
 export type ServerMessage = {
@@ -69,7 +71,6 @@ export type ServerMessage = {
 		matchDurationInMilliseconds: number
 		trackId: string
 		tickRate: number
-		leaderboardId: string
 	}
 	[ServerOpCode.TransformUpdates]: {
 		transforms: {
@@ -84,6 +85,7 @@ export type ServerMessage = {
 	[ServerOpCode.MatchRestart]: {
 		trackId: string
 	}
+	[ServerOpCode.UpdateLeaderboard]: {}
 }
 
 export type ClientMessage = {
@@ -93,4 +95,5 @@ export type ClientMessage = {
 		position: [number, number, number]
 		rotation: [number, number, number, number]
 	}
+	[ClientOpCode.LeaderboardRecordAdd]: {}
 }

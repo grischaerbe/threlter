@@ -9,9 +9,6 @@ import {
 	type ServerMessage
 } from '../../../../lib/nakama/matchHandler/time-trial/types'
 import type { PageLoad } from './$types'
-import type { Track } from '../../../../lib/Track/Track'
-import { TrackManager } from '../../../../lib/TrackManager/TrackManager'
-import type { UserTrack } from '../../../../lib/Track/UserTrack'
 
 export const load = (async ({ params }) => {
 	await SessionManager.awaitSession()
@@ -26,7 +23,7 @@ export const load = (async ({ params }) => {
 	>(params.matchId, SocketManager.socket, ClientOpCode, ServerOpCode)
 
 	try {
-		const match = await matchManager.join()
+		await matchManager.join()
 	} catch (e) {
 		const err = e as any
 		if (err.message === 'Match not found') {
