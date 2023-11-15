@@ -5,15 +5,13 @@
 	import BottomScreenTrackName from '../../../../components/UI/components/BottomScreenTrackName.svelte'
 	import Key from '../../../../components/UI/components/Key.svelte'
 	import SpecialButton from '../../../../components/UI/components/SpecialButton.svelte'
-	import type { Leaderboard } from '../../../../lib/Leaderboard/Leaderboard'
-	import LeaderboardViewer from '../../../../lib/Leaderboard/LeaderboardViewer.svelte'
-	import type { MatchResults } from '../../../../lib/MatchResults/MatchResults'
-	import MatchResultsViewer from './MatchResultsViewer.svelte'
+	import type { TimeTrialMatchManager } from '../../../../lib/nakama/matchHandler/time-trial/TimeTrialMatchManager'
+	import MatchResultsViewer from './TimeTrialMatchResultsViewer.svelte'
 
 	export let proceed: () => void
 	export let restart: () => void
 	export let track: Track
-	export let matchResults: MatchResults
+	export let matchManager: TimeTrialMatchManager
 </script>
 
 <div class="absolute top-0 left-0 w-full h-full bg-blue-950/30 backdrop-blur p-[15px]">
@@ -30,7 +28,7 @@
 
 		<div class="flex flex-col gap-[15px] items-start">
 			<Card class="inline-block text-[0.9em] w-[18em]">
-				<MatchResultsViewer {matchResults} />
+				<MatchResultsViewer {matchManager} />
 			</Card>
 			<Card class="flex flex-col gap-[10px] w-max">
 				<div class="font-headline">Controls</div>

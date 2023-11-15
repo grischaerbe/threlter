@@ -1,11 +1,10 @@
 <script lang="ts">
 	import Card from '../../../../components/UI/components/Card.svelte'
 	import FormattedTime from '../../../../components/UI/components/FormattedTime.svelte'
-	import type { MatchResults } from '../../../../lib/MatchResults/MatchResults'
+	import type { TimeTrialMatchManager } from '../../../../lib/nakama/matchHandler/time-trial/TimeTrialMatchManager'
 
-	export let matchResults: MatchResults
-	const { results } = matchResults
-	const { players } = matchResults.matchManager
+	export let matchManager: TimeTrialMatchManager
+	const { results, players } = matchManager
 </script>
 
 <Card>

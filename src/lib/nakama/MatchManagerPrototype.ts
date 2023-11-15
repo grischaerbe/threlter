@@ -1,8 +1,5 @@
-import type { Match, MatchData, MatchPresenceEvent, Socket } from '@heroiclabs/nakama-js'
-import { currentWritable, type CurrentWritable } from '@threlte/core'
-import { MatchResults } from '../MatchResults/MatchResults'
+import type { Match, MatchData, MatchPresenceEvent, Presence, Socket } from '@heroiclabs/nakama-js'
 import { Nakama } from './Nakama'
-import { Player } from './Player'
 import { SessionManager } from './SessionManager'
 import { SocketManager } from './SocketManager'
 
@@ -17,20 +14,15 @@ type ServerMessageType<
 	  }
 	: never
 
-export abstract class MatchManagerPrototype<
+export abstract class AbstractMatchManager<
 	ClientOpCode,
 	ServerOpCode,
 	ClientMessage extends Record<any, any>,
-	ServerMessage extends Record<any, any>,
-	State
+	ServerMessage extends Record<any, any>
 > {
 	public matchId: string
-	public leaderboardId: string
 	public match: Match | undefined
 	public socket: Socket
-	public players: CurrentWritable<Player[]> = currentWritable([])
-	public matchResults: MatchResults
-	public state: State
 
 	public ClientOpCode: ClientOpCode
 	public ServerOpCode: ServerOpCode
@@ -42,21 +34,25 @@ export abstract class MatchManagerPrototype<
 		matchId: string,
 		socket: Socket,
 		ClientOpCode: ClientOpCode,
-		ServerOpCode: ServerOpCode,
-		state: State
+		ServerOpCode: ServerOpCode
 	) {
 		this.socket = socket
 		this.matchId = matchId
 		this.ClientOpCode = ClientOpCode
 		this.ServerOpCode = ServerOpCode
-		this.leaderboardId = MatchManagerPrototype.getMatchLeaderboardId(matchId)
-		this.matchResults = new MatchResults(this)
-		this.state = state
 	}
 
-	abstract processMessage<OpCode extends keyof ServerMessage>(
+	protected abstract processMessage<OpCode extends keyof ServerMessage>(
 		message: ServerMessageType<ServerMessage, OpCode>
 	): void
+
+	protected abstract processJoins(joins: Presence[]): void
+
+	protected abstract processLeaves(leaves: Presence[]): void
+
+	protected abstract onJoin(): void
+
+	protected abstract onLeave(): void
 
 	private onMatchData(matchData: MatchData) {
 		if (!this.sendOrReceiveMessages) return
@@ -82,24 +78,12 @@ export abstract class MatchManagerPrototype<
 
 	private onMatchPresence(matchPresence: MatchPresenceEvent) {
 		if (!this.sendOrReceiveMessages) return
-		this.players.update((players) => {
-			// joins
-			const joined = matchPresence.joins
-				? [...players, ...matchPresence.joins.map((presence) => new Player(presence))]
-				: players
-
-			// leaves
-			const left = matchPresence.leaves
-				? joined.filter((player) => {
-						// we only keep players that we do not find in the matchPresence.leaves array
-						return !matchPresence.leaves.find(
-							(presence) => presence.user_id === player.presence.user_id
-						)
-				  })
-				: joined
-
-			return left
-		})
+		if (matchPresence.joins && matchPresence.joins.length) {
+			this.processJoins(matchPresence.joins)
+		}
+		if (matchPresence.leaves && matchPresence.leaves.length) {
+			this.processLeaves(matchPresence.leaves)
+		}
 	}
 
 	async join() {
@@ -107,11 +91,10 @@ export abstract class MatchManagerPrototype<
 		this.socket.onmatchdata = this.onMatchData.bind(this)
 		this.socket.onmatchpresence = this.onMatchPresence.bind(this)
 		this.match = await SocketManager.socket.joinMatch(this.matchId)
-		if (this.match.presences) {
-			this.players.set(this.match.presences.map((presence) => new Player(presence)))
+		if (this.match.presences && this.match.presences.length) {
+			this.processJoins(this.match.presences)
 		}
-		this.matchResults.update()
-		return this.match
+		this.onJoin()
 	}
 
 	async leave() {
@@ -120,6 +103,7 @@ export abstract class MatchManagerPrototype<
 		this.sendOrReceiveMessages = false
 		await SocketManager.socket.leaveMatch(this.matchId)
 		this.match = undefined
+		this.onLeave()
 	}
 
 	public static async createMatch(trackId: string) {

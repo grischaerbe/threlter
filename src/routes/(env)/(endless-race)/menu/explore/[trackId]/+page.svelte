@@ -1,15 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import TrackPreview from '../../../../../../components/TrackPreview/TrackPreview.svelte'
 	import ButtonGroup from '../../../../../../components/UI/components/ButtonGroup/ButtonGroup.svelte'
 	import Card from '../../../../../../components/UI/components/Card.svelte'
 	import PlainButton from '../../../../../../components/UI/components/PlainButton.svelte'
 	import SpecialButton from '../../../../../../components/UI/components/SpecialButton.svelte'
-	import TrackTimes from '../../../../../../components/UI/components/TrackTimes.svelte'
 	import LeaderboardViewer from '../../../../../../lib/Leaderboard/LeaderboardViewer.svelte'
 	import { TrackManager } from '../../../../../../lib/TrackManager/TrackManager'
-	import { MatchManager } from '../../../../../../lib/nakama/MatchManager'
-	import { SessionManager } from '../../../../../../lib/nakama/SessionManager'
+	import { AbstractMatchManager } from '../../../../../../lib/nakama/MatchManagerPrototype'
 	import { UserManager } from '../../../../../../lib/nakama/UserManager'
 	import { shareTrack } from '../../../../../../lib/shareTrack'
 	import { c } from '../../../../../../lib/utils/classes'
@@ -55,7 +52,7 @@
 				<SpecialButton
 					style="green-inverted"
 					on:click={async () => {
-						const matchId = await MatchManager.createMatch(track.trackId)
+						const matchId = await AbstractMatchManager.createMatch(track.trackId)
 						goto(`/match/${matchId}`)
 					}}
 				>

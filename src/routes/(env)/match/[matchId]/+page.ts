@@ -1,13 +1,8 @@
 import { error } from '@sveltejs/kit'
-import { MatchManager } from '../../../../lib/nakama/MatchManager'
 import { SessionManager } from '../../../../lib/nakama/SessionManager'
 import { SocketManager } from '../../../../lib/nakama/SocketManager'
-import {
-	ClientOpCode,
-	ServerOpCode,
-	type ClientMessage,
-	type ServerMessage
-} from '../../../../lib/nakama/matchHandler/time-trial/types'
+import { TimeTrialMatchManager } from '../../../../lib/nakama/matchHandler/time-trial/TimeTrialMatchManager'
+import { ClientOpCode, ServerOpCode } from '../../../../lib/nakama/matchHandler/time-trial/types'
 import type { PageLoad } from './$types'
 
 export const load = (async ({ params }) => {
@@ -15,12 +10,7 @@ export const load = (async ({ params }) => {
 
 	await SocketManager.connect()
 
-	const matchManager = new MatchManager<
-		typeof ClientOpCode,
-		typeof ServerOpCode,
-		ClientMessage,
-		ServerMessage
-	>(params.matchId, SocketManager.socket, ClientOpCode, ServerOpCode)
+	const matchManager = new TimeTrialMatchManager(params.matchId)
 
 	try {
 		await matchManager.join()
