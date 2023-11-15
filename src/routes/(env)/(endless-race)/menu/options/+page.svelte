@@ -10,6 +10,7 @@
 	import { UserManager } from '../../../../../lib/nakama/UserManager'
 	import { c } from '../../../../../lib/utils/classes'
 	import { SessionManager } from '../../../../../lib/nakama/SessionManager'
+	import { Session } from '@heroiclabs/nakama-js'
 
 	const { audio, video, player, debug } = appState.options
 
@@ -98,6 +99,7 @@
 						}
 
 						const { success } = await UserManager.updateAccount(currentPlayerName)
+						await SessionManager.refreshSession()
 
 						if (!success) {
 							error = true

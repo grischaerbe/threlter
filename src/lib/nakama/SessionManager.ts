@@ -69,6 +69,12 @@ export class SessionManager {
 		return true
 	}
 
+	public static async refreshSession() {
+		const session = await Nakama.client.sessionRefresh(this.getSession())
+		this.session.set(session)
+		this.processNewSession()
+	}
+
 	public static async signInWithGoogle(credential: string) {
 		const session = await Nakama.client.authenticateGoogle(credential, true)
 		this.session.set(session)
