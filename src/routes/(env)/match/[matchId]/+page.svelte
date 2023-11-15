@@ -17,6 +17,10 @@
 	import MatchPaused from './MatchPaused.svelte'
 	import MatchResultsViewer from './MatchResultsViewer.svelte'
 	import TrackProvider from './TrackProvider.svelte'
+	import BottomScreenTrackName from '../../../../components/UI/components/BottomScreenTrackName.svelte'
+	import TopBarLayout from '../../../../components/UI/layouts/TopBarLayout.svelte'
+	import SpecialButton from '../../../../components/UI/components/SpecialButton.svelte'
+	import Controls from '../../../../components/UI/Controls.svelte'
 
 	export let data: PageData
 
@@ -167,15 +171,38 @@
 					</svelte:fragment>
 
 					<svelte:fragment slot="ui-warm-up">
-						<div class="absolute top-0 right-0 p-[15px] text-right">
+						<BottomScreenTrackName title={track.trackName} />
+						<TopBarLayout>
+							<SpecialButton slot="topbar-left" preventFocusOnFocusLost href="/menu/main">
+								Menu
+							</SpecialButton>
+
+							<div class="absolute top-0 right-0 p-[15px] text-right pointer-events-auto">
+								<p class="text-[1em]">Match starts in</p>
+								<div class="text-[1.5em]">
+									<CountDown countDownTo={matchStartTime} includeMilliseconds={false} />
+								</div>
+							</div>
+
+							<div class="flex flex-col gap-[15px] items-start">
+								<Card>
+									<MatchResultsViewer matchResults={data.matchManager.matchResults} />
+								</Card>
+								<Card class="flex flex-col gap-[10px] w-max">
+									<Controls />
+								</Card>
+							</div>
+						</TopBarLayout>
+
+						<!-- <div class="absolute top-0 right-0 p-[15px] text-right">
 							<p class="text-[1em]">Match starts in</p>
 							<div class="text-[1.5em]">
 								<CountDown countDownTo={matchStartTime} includeMilliseconds={false} />
 							</div>
 						</div>
 						<Card class="max-w-[400px]">
-							<MatchResultsViewer matchResults={data.matchManager.matchResults} />
-						</Card>
+							
+						</Card> -->
 					</svelte:fragment>
 
 					<svelte:fragment slot="ui-cool-down">

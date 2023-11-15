@@ -5,9 +5,10 @@ import type { MatchManager } from '../nakama/MatchManager'
 import { Nakama } from '../nakama/Nakama'
 import type { Player } from '../nakama/Player'
 import { SessionManager } from '../nakama/SessionManager'
+import type { MatchManagerPrototype } from '../nakama/MatchManagerPrototype'
 
 export class MatchResults {
-	public matchManager: MatchManager<any, any, any, any>
+	public matchManager: MatchManagerPrototype<any, any, any, any, any>
 	private records: CurrentWritable<LeaderboardRecord[]> = currentWritable([])
 
 	public results: Readable<
@@ -17,7 +18,7 @@ export class MatchResults {
 		}[]
 	>
 
-	constructor(matchManager: MatchManager<any, any, any, any>) {
+	constructor(matchManager: MatchManagerPrototype<any, any, any, any, any>) {
 		this.matchManager = matchManager
 		this.results = derived([this.records, this.matchManager.players], ([records, players]) => {
 			return players
