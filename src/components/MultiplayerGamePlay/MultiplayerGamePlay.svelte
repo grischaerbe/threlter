@@ -18,10 +18,7 @@
 	import Bounds from '../CommonGamePlay/Bounds.svelte'
 	import BoundsState from '../CommonGamePlay/BoundsState.svelte'
 	import GhostRecorder from '../CommonGamePlay/GhostRecorder.svelte'
-	import CountIn from '../CommonGamePlay/UI/CountIn.svelte'
-	import GamePlay from '../CommonGamePlay/UI/GamePlay.svelte'
 	import OutOfBounds from '../CommonGamePlay/UI/OutOfBounds.svelte'
-	import Velocity from '../CommonGamePlay/UI/Velocity.svelte'
 	import TrackElement from '../TrackViewer/TrackElement.svelte'
 	import TrackElementTransform from '../TrackViewer/TrackElementTransform.svelte'
 	import TrackViewer from '../TrackViewer/TrackViewer.svelte'
@@ -30,6 +27,7 @@
 
 	export let track: Track
 	export let matchState: MatchState
+	export let matchEndTime: number
 
 	let currentTrackRecord = new TrackRecord(SessionManager.getUserId(), track.trackId)
 
@@ -58,8 +56,12 @@
 	$: if (matchState === MatchState.InProgress) {
 		state.set('count-in')
 	} else if (matchState === MatchState.CoolDown) {
+		clearSnapshot?.()
+		resetTrackViewer?.()
 		state.set('cool-down')
 	} else if (matchState === MatchState.WarmUp) {
+		clearSnapshot?.()
+		resetTrackViewer?.()
 		state.set('warm-up')
 	}
 
@@ -70,7 +72,7 @@
 	})
 
 	const carFrozen = derived([state], ([state]) => {
-		if (state === 'playing' || state === 'finished') return false
+		if (state === 'playing' || state === 'finished' || state === 'cool-down') return false
 		return true
 	})
 
@@ -227,7 +229,6 @@
 	{/if}
 
 	{#if $state === 'playing'}
-		<Velocity {carState} />
 		<GhostRecorder ghost={currentTrackRecord.ghost} time={$time} {carState} />
 	{/if}
 </Car>
@@ -274,20 +275,19 @@
 		{:else if $state === 'warm-up'}
 			<slot name="ui-warm-up" />
 		{:else if $state === 'count-in'}
-			<CountIn
-				on:countindone={() => {
+			<slot
+				name="ui-count-in"
+				time={$time}
+				start={() => {
 					state.set('playing')
 				}}
-				time={$time}
 			/>
 		{:else if $state === 'playing'}
 			{#if showLeaderboard}
 				<slot name="ui-leaderboard" />
 			{/if}
 
-			<slot name="ui-playing" time={$time}>
-				<GamePlay time={$time} />
-			</slot>
+			<slot name="ui-playing" time={$time} />
 		{:else if $state === 'finished'}
 			<slot name="ui-finished" time={$time} />
 		{:else if $state === 'cool-down'}

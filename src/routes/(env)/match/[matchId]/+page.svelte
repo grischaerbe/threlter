@@ -3,20 +3,20 @@
 	import { Suspense } from '@threlte/extras'
 	import { onDestroy, type ComponentEvents } from 'svelte'
 	import type { CarState } from '../../../../components/Car/RaycastVehicleController/types'
+	import CountIn from '../../../../components/CommonGamePlay/UI/CountIn.svelte'
 	import MultiplayerGamePlay from '../../../../components/MultiplayerGamePlay/MultiplayerGamePlay.svelte'
 	import Player from '../../../../components/MultiplayerGamePlay/Player.svelte'
+	import CountDown from '../../../../components/MultiplayerGamePlay/UI/CountDown.svelte'
 	import LoadingUi from '../../../../components/UI/LoadingUi.svelte'
 	import Card from '../../../../components/UI/components/Card.svelte'
 	import CurrentTime from '../../../../components/UI/components/CurrentTime.svelte'
-	import LeaderboardViewer from '../../../../lib/Leaderboard/LeaderboardViewer.svelte'
 	import { TrackManager } from '../../../../lib/TrackManager/TrackManager'
 	import { SessionManager } from '../../../../lib/nakama/SessionManager'
 	import { MatchState } from '../../../../lib/nakama/matchHandler/time-trial/types'
 	import type { PageData } from './$types'
-	import LeaderboardProvider from './LeaderboardProvider.svelte'
 	import MatchPaused from './MatchPaused.svelte'
-	import TrackProvider from './TrackProvider.svelte'
 	import MatchResultsViewer from './MatchResultsViewer.svelte'
+	import TrackProvider from './TrackProvider.svelte'
 
 	export let data: PageData
 
@@ -26,6 +26,9 @@
 	let tickRate = 0
 	let trackId: string | undefined = undefined
 	let round = 0
+	let matchStartTime = 0
+	let matchEndTime = 0
+	let restartMatchTime = 0
 
 	useFrame(() => {
 		data.matchManager.processQueue((message) => {
@@ -35,12 +38,15 @@
 					matchState = message.data.matchState
 					trackId = message.data.trackId
 					tickRate = message.data.tickRate
+					matchEndTime = message.data.matchEndTime
+					matchStartTime = message.data.matchStartTime
+					restartMatchTime = message.data.restartMatchTime
 					break
 				case data.matchManager.ServerOpCode.MatchStarted:
 					matchState = MatchState.InProgress
 					break
 				case data.matchManager.ServerOpCode.MatchFinished:
-					matchState = MatchState.WarmUp
+					matchState = MatchState.CoolDown
 					break
 				case data.matchManager.ServerOpCode.TransformUpdates:
 					for (const [userId, { position, rotation }] of Object.entries(message.data.transforms)) {
@@ -54,6 +60,9 @@
 					break
 				case data.matchManager.ServerOpCode.MatchRestart:
 					round++
+					matchStartTime = message.data.matchStartTime
+					restartMatchTime = message.data.restartMatchTime
+					matchEndTime = message.data.matchEndTime
 					// clear all records
 					data.matchManager.matchResults.clearRecords()
 					// reset all player positions and rotations
@@ -109,6 +118,7 @@
 
 			<TrackProvider {trackId} let:track>
 				<MultiplayerGamePlay
+					{matchEndTime}
 					{track}
 					{matchState}
 					on:carstate={onCarState}
@@ -129,6 +139,25 @@
 						</Card>
 					</svelte:fragment>
 
+					<svelte:fragment slot="ui-count-in" let:time let:start>
+						<div class="absolute top-0 right-0 p-[15px] text-right">
+							<div class="text-[1.5em]">
+								<CountDown countDownTo={matchEndTime} includeMilliseconds={false} />
+							</div>
+						</div>
+
+						<CountIn on:countindone={start} {time} />
+					</svelte:fragment>
+
+					<svelte:fragment slot="ui-playing" let:time>
+						<div class="absolute top-0 right-0 p-[15px] text-right">
+							<div class="text-[1.5em]">
+								<CountDown countDownTo={matchEndTime} includeMilliseconds={false} />
+							</div>
+						</div>
+						<CurrentTime {time} />
+					</svelte:fragment>
+
 					<svelte:fragment slot="ghosts" let:carState>
 						{#each $players as player}
 							{#if player.presence.user_id !== SessionManager.getUserId()}
@@ -138,12 +167,24 @@
 					</svelte:fragment>
 
 					<svelte:fragment slot="ui-warm-up">
+						<div class="absolute top-0 right-0 p-[15px] text-right">
+							<p class="text-[1em]">Match starts in</p>
+							<div class="text-[1.5em]">
+								<CountDown countDownTo={matchStartTime} includeMilliseconds={false} />
+							</div>
+						</div>
 						<Card class="max-w-[400px]">
 							<MatchResultsViewer matchResults={data.matchManager.matchResults} />
 						</Card>
 					</svelte:fragment>
 
 					<svelte:fragment slot="ui-cool-down">
+						<div class="absolute top-0 right-0 p-[15px] text-right">
+							<p class="text-[1em]">Next match starts in</p>
+							<div class="text-[1.5em]">
+								<CountDown countDownTo={restartMatchTime} includeMilliseconds={false} />
+							</div>
+						</div>
 						<Card class="max-w-[400px]">
 							<MatchResultsViewer matchResults={data.matchManager.matchResults} />
 						</Card>

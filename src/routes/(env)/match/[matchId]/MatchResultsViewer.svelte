@@ -19,13 +19,15 @@
 				class="grid grid-cols-2 gap-[40px] text-[0.8em] border-b border-orange py-[5px] first:border-t"
 			>
 				<div class="">
-					<h3>
+					<h3 class="whitespace-nowrap">
 						{#if result.record?.rank !== undefined}
 							<span class="w-[2ch] inline-block">
 								{result.record?.rank}.
 							</span>
 						{/if}
-						{result.player.presence.username}
+						<span class="whitespace-nowrap">
+							{result.player.presence.username}
+						</span>
 					</h3>
 				</div>
 

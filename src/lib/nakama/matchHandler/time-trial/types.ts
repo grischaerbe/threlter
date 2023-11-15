@@ -68,7 +68,11 @@ export type ServerMessage = {
 	[ServerOpCode.NoOp]: {}
 	[ServerOpCode.GameUpdate]: {
 		matchState: MatchState
-		matchDurationInMilliseconds: number
+		matchStartTime: number
+		matchEndTime: number
+		matchDurationInMs: number
+		restartMatchTime: number
+		serverTime: number
 		trackId: string
 		tickRate: number
 	}
@@ -84,6 +88,11 @@ export type ServerMessage = {
 	[ServerOpCode.MatchFinished]: {}
 	[ServerOpCode.MatchRestart]: {
 		trackId: string
+		matchStartTime: number
+		matchEndTime: number
+		matchDurationInMs: number
+		restartMatchTime: number
+		serverTime: number
 	}
 	[ServerOpCode.UpdateLeaderboard]: {}
 }
