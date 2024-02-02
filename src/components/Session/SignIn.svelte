@@ -13,8 +13,8 @@
 
 	const googleAuthCallback = async (args: GoogleSignInResponse) => {
 		await SessionManager.signInWithGoogle(args.credential)
+		if (redirectUrl) await goto(redirectUrl)
 		await invalidate(LoadDependencies['app:authenticated'])
-		if (redirectUrl) goto(redirectUrl)
 	}
 </script>
 

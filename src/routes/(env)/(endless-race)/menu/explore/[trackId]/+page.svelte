@@ -48,7 +48,7 @@
 				</SpecialButton>
 			{/if}
 
-			{#if track.public}
+			<!-- {#if track.public}
 				<SpecialButton
 					style="green-inverted"
 					on:click={async () => {
@@ -58,7 +58,7 @@
 				>
 					Play Online
 				</SpecialButton>
-			{/if}
+			{/if} -->
 		</div>
 
 		<!-- {#if track.public}

@@ -73,11 +73,7 @@
 	$: carVolumeSpring.set($carVolume)
 
 	useFrame((_, delta) => {
-		if ($state === 'playing') {
-			if (!$paused) {
-				time.update((t) => t + delta * 1000)
-			}
-		} else if ($state === 'finished') {
+		if ($state === 'playing' && !$paused) {
 			time.update((t) => t + delta * 1000)
 		}
 	})
